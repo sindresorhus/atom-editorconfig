@@ -1,0 +1,20 @@
+{
+  "name": "editorconfig",
+  "version": "0.0.0",
+  "description": "Helps developers maintain consistent coding styles between different editors",
+  "license": "MIT",
+  "repository": "sindresorhus/atom-editorconfig",
+  "private": true,
+  "author": {
+    "name": "Sindre Sorhus",
+    "email": "sindresorhus@gmail.com",
+    "url": "http://sindresorhus.com"
+  },
+  "engines": {
+    "atom": ">=0.60.0"
+  },
+  "dependencies": {
+    "emissary": "^1.0.0",
+    "editorconfig": "^0.11.4"
+  }
+}
