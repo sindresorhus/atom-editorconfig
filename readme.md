@@ -26,6 +26,12 @@ See the EditorConfig [documentation](http://editorconfig.org).
 - indent_size
 
 
+## Features
+
+- Applies the above settings from your `.editorconfig` file
+- Syntax highlights `.editorconfig` files
+
+
 ## Example file
 
 ```ini
