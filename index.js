@@ -23,11 +23,17 @@ function init(editor) {
 	}
 
 	if (config.indent_style === 'space') {
-		editor.setTabLength(config.indent_size);
-	}
+		editor.setSoftTabs(true);
 
-	if (config.indent_style) {
-		editor.setSoftTabs(config.indent_style === 'space');
+		if (config.indent_size) {
+			editor.setTabLength(config.indent_size);
+		}
+	} else if (config.indent_style === 'tab') {
+		editor.setSoftTabs(false);
+
+		if (config.tab_width) {
+			editor.setTabLength(config.tab_width);
+		}
 	}
 }
 
