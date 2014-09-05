@@ -9,11 +9,11 @@
 
 ## Install
 
-```bash
+```sh
 $ apm install editorconfig
 ```
 
-Or Settings ➔ Packages ➔ Search for `editorconfig`
+Or Settings → Packages → Search for `editorconfig`
 
 
 ## Getting started
@@ -52,4 +52,4 @@ insert_final_newline = true
 
 ## License
 
-[MIT](http://opensource.org/licenses/MIT) © [Sindre Sorhus](http://sindresorhus.com)
+MIT © [Sindre Sorhus](http://sindresorhus.com)
