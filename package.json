@@ -14,7 +14,7 @@
     "atom": ">=0.60.0"
   },
   "dependencies": {
-    "emissary": "^1.0.0",
-    "editorconfig": "^0.11.4"
+    "editorconfig": "^0.12.0",
+    "emissary": "^1.0.0"
   }
 }
