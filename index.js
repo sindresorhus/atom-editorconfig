@@ -16,7 +16,6 @@ function init(editor) {
 		return;
 	}
 
-	// get config associated to edited file
 	var config = editorconfig.parse(file);
 
 	if (Object.keys(config).length === 0) {
