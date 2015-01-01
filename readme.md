@@ -26,7 +26,7 @@ See the EditorConfig [documentation](http://editorconfig.org).
 - root
 - indent_style
 - indent_size
-- charset (possible values: latin1, utf-8, utf-16be, utf-16le)
+- charset (supported values: latin1, utf-8, utf-16be, utf-16le)
 
 ## Features
 
