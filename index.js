@@ -16,25 +16,25 @@ function init(editor) {
 		return;
 	}
 
-	var config = editorconfig.parse(file);
-
-	if (Object.keys(config).length === 0) {
-		return;
-	}
-
-	if (config.indent_style === 'space') {
-		editor.setSoftTabs(true);
-
-		if (config.indent_size) {
-			editor.setTabLength(config.indent_size);
+	editorconfig.parse(file).then(function (config) {
+		if (Object.keys(config).length === 0) {
+			return;
 		}
-	} else if (config.indent_style === 'tab') {
-		editor.setSoftTabs(false);
 
-		if (config.tab_width) {
-			editor.setTabLength(config.tab_width);
+		if (config.indent_style === 'space') {
+			editor.setSoftTabs(true);
+
+			if (config.indent_size) {
+				editor.setTabLength(config.indent_size);
+			}
+		} else if (config.indent_style === 'tab') {
+			editor.setSoftTabs(false);
+
+			if (config.tab_width) {
+				editor.setTabLength(config.tab_width);
+			}
 		}
-	}
+	});
 }
 
 plugin.activate = function () {
