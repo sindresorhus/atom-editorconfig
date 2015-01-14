@@ -34,6 +34,12 @@ function init(editor) {
 				editor.setTabLength(config.tab_width);
 			}
 		}
+
+		if (config.charset) {
+			// EditorConfig charset names matches iconv charset names.
+			// Which is used by Atom. So no charset name convertion is needed.
+			editor.setEncoding(config.charset);
+		}
 	});
 }
 
