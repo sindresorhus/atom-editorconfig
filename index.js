@@ -10,7 +10,7 @@ function init(editor) {
 		return;
 	}
 
-	var file = editor.getUri();
+	var file = editor.getURI();
 
 	if (!file) {
 		return;
@@ -46,5 +46,5 @@ function init(editor) {
 }
 
 plugin.activate = function () {
-	atom.workspace.eachEditor(init);
+	atom.workspace.observeTextEditors(init);
 };
