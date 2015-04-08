@@ -9,7 +9,7 @@
 
 ## Install
 
-```sh
+```
 $ apm install editorconfig
 ```
 
@@ -38,7 +38,6 @@ See the EditorConfig [documentation](http://editorconfig.org).
 ## Example file
 
 ```ini
-# editorconfig.org
 root = true
 
 [*]
