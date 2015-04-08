@@ -43,10 +43,10 @@ root = true
 [*]
 indent_style = space
 indent_size = 4
-end_of_line = lf
+end_of_line = lf # doesn't work yet
 charset = utf-8
-trim_trailing_whitespace = true
-insert_final_newline = true
+trim_trailing_whitespace = true # doesn't work yet
+insert_final_newline = true # doesn't work yet
 ```
 
 
