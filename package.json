@@ -8,10 +8,10 @@
   "author": {
     "name": "Sindre Sorhus",
     "email": "sindresorhus@gmail.com",
-    "url": "http://sindresorhus.com"
+    "url": "sindresorhus.com"
   },
   "engines": {
-    "atom": ">=0.160.0"
+    "atom": ">=0.190.0"
   },
   "dependencies": {
     "editorconfig": "^0.12.2",
