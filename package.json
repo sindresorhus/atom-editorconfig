@@ -13,6 +13,12 @@
   "engines": {
     "atom": ">=0.190.0"
   },
+  "keywords": [
+    "format",
+    "code",
+    "style",
+    "code-style"
+  ],
   "dependencies": {
     "editorconfig": "^0.12.2",
     "emissary": "^1.0.0"
