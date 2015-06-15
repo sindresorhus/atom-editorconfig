@@ -20,15 +20,13 @@ function init(editor) {
 			return;
 		}
 
-		const isTab = config.indent_style === 'tab' || !editor.softTabs;
-
-		if (isTab) {
+		if (config.indent_style === 'tab') {
 			editor.setSoftTabs(false);
 
 			if (config.tab_width) {
 				editor.setTabLength(config.tab_width);
 			}
-		} else {
+		} else if(config.indent_style === 'space') {
 			editor.setSoftTabs(true);
 
 			if (config.indent_size) {
