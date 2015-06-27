@@ -20,7 +20,6 @@
     "code-style"
   ],
   "dependencies": {
-    "editorconfig": "^0.12.2",
-    "emissary": "^1.0.0"
+    "editorconfig": "^0.12.2"
   }
 }

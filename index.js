@@ -1,8 +1,5 @@
 'use babel';
-import {Subscriber} from 'emissary';
 import editorconfig from 'editorconfig';
-
-Subscriber.extend(exports);
 
 function init(editor) {
 	if (!editor) {
