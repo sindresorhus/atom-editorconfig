@@ -17,23 +17,15 @@ function init(editor) {
 			return;
 		}
 
-		let indent_style = null;
+		const indentStyle = config.indent_style || editor.getSoftTabs() ? 'space' : 'tab';
 
-		if (config.indent_style) {
-			// Use the editorconfig indent style
-			indent_style = config.indent_style;
-		} else {
-			// Use the user's default indent style
-			indent_style = editor.getSoftTabs() ? 'space' : 'tab';
-		}
-
-		if (indent_style === 'tab') {
+		if (indentStyle === 'tab') {
 			editor.setSoftTabs(false);
 
 			if (config.tab_width) {
 				editor.setTabLength(config.tab_width);
 			}
-		} else if (indent_style === 'space') {
+		} else if (indentStyle === 'space') {
 			editor.setSoftTabs(true);
 
 			if (config.indent_size) {
