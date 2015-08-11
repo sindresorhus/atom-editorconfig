@@ -1,7 +1,10 @@
 'use babel';
 import editorconfig from 'editorconfig';
+import generateConfig from './commands/generate';
 
 function init(editor) {
+	generateConfig();
+
 	if (!editor) {
 		return;
 	}
