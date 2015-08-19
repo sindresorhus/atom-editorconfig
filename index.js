@@ -9,9 +9,9 @@ function init(editor) {
 	const file = editor.getURI();
 
 	const lineEndings = {
-		crlf: "\r\n",
-		lf: "\n",
-		cr: "\r"
+		crlf: '\r\n',
+		lf: '\n',
+		cr: '\r'
 	};
 
 	if (!file) {
@@ -41,7 +41,7 @@ function init(editor) {
 			var preferredLineEnding = lineEndings[config.end_of_line];
 			var buffer = editor.getBuffer();
 			buffer.setPreferredLineEnding(preferredLineEnding);
-			buffer.setText(buffer.getText().replace(/\n|\r/g, preferredLineEnding));
+			buffer.setText(buffer.getText().replace(/\r?\n|\r/g, preferredLineEnding));
 		}
 
 		if (config.charset) {
