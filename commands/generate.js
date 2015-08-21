@@ -12,26 +12,25 @@ const init = () => {
 	};
 
 	const indent = conf.editor.softTabs ?
-				'indent_style = space\nindent_size = ' + conf.editor.tabLength :
+				`indent_style = space\nindent_size = ${conf.editor.tabLength}` :
 				'indent_style = tab';
 
 	const endOfLine = process.platform === 'win32' ? 'crlf' : 'lf';
 	const charset = conf.core.fileEncoding.replace('utf8', 'utf-8') || 'utf-8';
 
-	const ret = [
-		'root = true',
-		'',
-		'[*]',
-		indent,
-		'end_of_line = ' + endOfLine,
-		'charset = ' + charset,
-		'trim_trailing_whitespace = ' + conf.whitespace.removeTrailingWhitespace,
-		'insert_final_newline = ' + conf.whitespace.ensureSingleTrailingNewline,
-		'',
-		'[*.md]',
-		'trim_trailing_whitespace = false',
-		''
-	].join('\n');
+	const ret =
+`root = true
+
+[*]
+${indent}
+end_of_line = ${endOfLine}
+charset = ${charset}
+trim_trailing_whitespace = ${conf.whitespace.removeTrailingWhitespace}
+insert_final_newline = ${conf.whitespace.ensureSingleTrailingNewline}
+
+[*.md]
+trim_trailing_whitespace = false
+`;
 
 	fs.access(configFile, err => {
 		if (err) {
