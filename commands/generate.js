@@ -51,6 +51,6 @@ const init = () => {
 	});
 };
 
-module.exports = function () {
+export default () => {
 	atom.commands.add('atom-workspace', 'EditorConfig:generate-config', init);
 };

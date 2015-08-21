@@ -44,6 +44,6 @@ function init(editor) {
 	});
 }
 
-export let activate = () => {
+export const activate = () => {
 	atom.workspace.observeTextEditors(init);
 };
