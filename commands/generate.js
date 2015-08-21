@@ -2,79 +2,55 @@
 import fs from 'fs';
 import path from 'path';
 
-const getProjectRoot = () => {
-	return atom.project.getPaths()[0];
-};
+const init = () => {
+	const configFile = path.join(atom.project.getPaths()[0], '.editorconfig');
 
-const configAlreadyExists = (e) => {
-	atom.notifications.addError(e);
-};
-
-const successfullyGenerated = (output) => {
-	atom.notifications.addSuccess('.editorconfig file was successfully generated.', {
-		'detail': 'An .editorconfig file was successfully generated based on your current settings.\nIt\'s stored in your project\'s root.'
-	});
-};
-
-const generateConfig = () => {
-	const config = {
+	const conf = {
 		core: atom.config.get('core'),
 		editor: atom.config.get('editor'),
 		whitespace: atom.config.get('whitespace')
 	};
 
-	const data = {
-		root: true,
-		end_of_line: process.platform === 'win32' ? 'crlf' : 'lf',
-		charset: config.core.fileEncoding || 'utf-8',
-		insert_final_newline: config.whitespace.ensureSingleTrailingNewline,
-		trim_trailing_whitespace: config.whitespace.removeTrailingWhitespace
-	};
+	const indent = conf.editor.softTabs ?
+				'indent_style = space\nindent_size = ' + conf.editor.tabLength :
+				'indent_style = tab';
 
-	if (config.editor.softTabs) {
-		data.indent_style = 'space';
-		data.indent_size = config.editor.tabLength;
-	} else {
-		data.indent_style = 'tab';
-		data.tab_width = config.editor.tabLength;
-	}
+	const endOfLine = process.platform === 'win32' ? 'crlf' : 'lf';
+	const charset = conf.core.fileEncoding.replace('utf8', 'utf-8') || 'utf-8';
 
-	let output = [
-		'# EditorConfig is awesome: http://EditorConfig.org',
-		'# top-most EditorConfig file',
-		'root = ' + data.root,
+	const ret = [
+		'root = true',
 		'',
 		'[*]',
+		indent,
+		'end_of_line = ' + endOfLine,
+		'charset = ' + charset,
+		'trim_trailing_whitespace = ' + conf.whitespace.removeTrailingWhitespace,
+		'insert_final_newline = ' + conf.whitespace.ensureSingleTrailingNewline,
 		'',
-		'charset = ' + data.charset,
-		'end_of_line = ' + data.end_of_line,
-		'insert_final_newline = ' + data.insert_final_newline,
-		'trim_trailing_whitespace = ' + data.trim_trailing_whitespace,
-		'indent_style = ' + data.indent_style,
+		'[*.md]',
+		'trim_trailing_whitespace = false',
 		''
 	].join('\n');
 
-	if (data.indent_style === 'space') {
-		output += 'indent_size = ' + data.indent_size;
-	} else {
-		output += 'tab_width = ' + data.tab_width;
-	}
+	fs.access(configFile, err => {
+		if (err) {
+			fs.writeFile(configFile, ret, err => {
+				if (err) {
+					atom.notifications.addError(err);
+					return;
+				}
 
-	fs.access(path.join(getProjectRoot(), '/.editorconfig'), fs.F_OK, (e) => {
-		if (!e) {
-			// config file already exists in the project root
-			configAlreadyExists('.editorconfig file already exists in your project\'s root.');
+				atom.notifications.addSuccess('.editorconfig file successfully generated', {
+					detail: 'An .editorconfig file was successfully generated in your project based on your current settings.'
+				});
+			});
 		} else {
-			// config file isn't in the project root
-			fs.writeFile(path.join(getProjectRoot(), '/.editorconfig'), output, () =>
-			successfullyGenerated());
+			atom.notifications.addError('An .editorconfig file already exists in your project root.');
 		}
 	});
 };
 
 module.exports = function () {
-	const target = 'atom-workspace';
-	const command = 'editorconfig:generate-configuration-file';
-
-	atom.commands.add(target, command,  () => generateConfig());
+	atom.commands.add('atom-workspace', 'EditorConfig:generate-config', init);
 };
