@@ -1,7 +1,10 @@
 'use babel';
 import editorconfig from 'editorconfig';
+import generateConfig from './commands/generate';
 
 function init(editor) {
+	generateConfig();
+
 	if (!editor) {
 		return;
 	}
@@ -23,13 +26,15 @@ function init(editor) {
 			return;
 		}
 
-		if (config.indent_style === 'tab') {
+		const indentStyle = config.indent_style || (editor.getSoftTabs() ? 'space' : 'tab');
+
+		if (indentStyle === 'tab') {
 			editor.setSoftTabs(false);
 
 			if (config.tab_width) {
 				editor.setTabLength(config.tab_width);
 			}
-		} else if (config.indent_style === 'space') {
+		} else if (indentStyle === 'space') {
 			editor.setSoftTabs(true);
 
 			if (config.indent_size) {
@@ -52,6 +57,6 @@ function init(editor) {
 	});
 }
 
-export let activate = () => {
+export const activate = () => {
 	atom.workspace.observeTextEditors(init);
 };

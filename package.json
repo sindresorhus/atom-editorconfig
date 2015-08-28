@@ -1,6 +1,6 @@
 {
   "name": "editorconfig",
-  "version": "1.0.1",
+  "version": "1.1.1",
   "description": "Helps developers maintain consistent coding styles between different editors",
   "license": "MIT",
   "repository": "sindresorhus/atom-editorconfig",
@@ -13,6 +13,9 @@
   "engines": {
     "atom": ">=1.0.0"
   },
+  "scripts": {
+    "test": "xo"
+  },
   "keywords": [
     "format",
     "code",
@@ -21,5 +24,14 @@
   ],
   "dependencies": {
     "editorconfig": "^0.12.2"
+  },
+  "devDependencies": {
+    "xo": "*"
+  },
+  "xo": {
+    "esnext": true,
+    "globals": [
+      "atom"
+    ]
   }
 }

@@ -31,6 +31,7 @@ See the EditorConfig [documentation](http://editorconfig.org).
 
 - Applies the above settings from your `.editorconfig` file
 - Syntax highlights `.editorconfig` files
+- Ability to [generate](#generate-config) an `.editorconfig` file based on the current settings
 
 
 ## Example file
@@ -46,6 +47,11 @@ charset = utf-8
 trim_trailing_whitespace = true # doesn't work yet
 insert_final_newline = true # doesn't work yet
 ```
+
+
+## Generate config
+
+You can generate an `.editorconfig` file based on the current setting by opening the Command Palette and choosing `EditorConfig: Generate Config`.
 
 
 ## License
