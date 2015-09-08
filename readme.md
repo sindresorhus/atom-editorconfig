@@ -11,7 +11,7 @@
 $ apm install editorconfig
 ```
 
-Or Settings → Install → Search for `editorconfig`
+Or, Settings → Install → Search for `editorconfig`
 
 
 ## Getting started

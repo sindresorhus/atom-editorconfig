@@ -1,4 +1,4 @@
-'use babel';
+/** @babel */
 import editorconfig from 'editorconfig';
 import generateConfig from './commands/generate';
 
