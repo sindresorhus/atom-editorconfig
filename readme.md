@@ -25,7 +25,8 @@ See the EditorConfig [documentation](http://editorconfig.org).
 - indent_style
 - indent_size
 - charset *(supported values: `latin1`, `utf-8`, `utf-16be`, `utf-16le`)*
-- end_of_line *(supported values: `cr`, `lf`, `crlf`)*
+- end_of_line *(supported values: `lf`, `crlf`)*
+
 
 ## Features
 

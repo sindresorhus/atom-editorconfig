@@ -13,8 +13,7 @@ function init(editor) {
 
 	const lineEndings = {
 		crlf: '\r\n',
-		lf: '\n',
-		cr: '\r'
+		lf: '\n'
 	};
 
 	if (!file) {
@@ -42,11 +41,11 @@ function init(editor) {
 			}
 		}
 
-		if (config.end_of_line && lineEndings.hasOwnProperty(config.end_of_line)) {
-			var preferredLineEnding = lineEndings[config.end_of_line];
-			var buffer = editor.getBuffer();
+		if (config.end_of_line && config.end_of_line in lineEndings) {
+			const preferredLineEnding = lineEndings[config.end_of_line];
+			const buffer = editor.getBuffer();
 			buffer.setPreferredLineEnding(preferredLineEnding);
-			buffer.setText(buffer.getText().replace(/\r?\n|\r/g, preferredLineEnding));
+			buffer.setText(buffer.getText().replace(/\r?\n/g, preferredLineEnding));
 		}
 
 		if (config.charset) {
