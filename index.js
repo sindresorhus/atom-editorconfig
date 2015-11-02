@@ -51,9 +51,11 @@ function init(editor) {
 		}
 
 		if (config.charset) {
-			// EditorConfig charset names matches iconv charset names.
-			// Which is used by Atom. So no charset name convertion is needed.
-			editor.setEncoding(config.charset);
+			// By default Atom uses charset name without any dashes in them
+			// (i.e. 'utf16le' instead of 'utf-16le').
+			const preferredCharset = config.charset.replace(/-/g, '').toLowerCase();
+			editor.setEncoding(preferredCharset);
+
 		}
 	});
 }
