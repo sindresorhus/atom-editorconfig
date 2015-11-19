@@ -45,7 +45,7 @@ function init(editor) {
 			const preferredLineEnding = lineEndings[config.end_of_line];
 			const buffer = editor.getBuffer();
 			buffer.setPreferredLineEnding(preferredLineEnding);
-			buffer.backwardsScanInRange(/\r?\n/g, buffer.getRange(), ({replace}) => {
+			buffer.ScanInRange(/\r?\n/g, buffer.getRange(), ({replace}) => {
 				replace(preferredLineEnding);
 			});
 		}
