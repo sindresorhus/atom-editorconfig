@@ -42,12 +42,12 @@ function init(editor) {
 		}
 
 		if (config.end_of_line && config.end_of_line in lineEndings) {
+			const cachedBufferRanges = editor.getSelectedBufferRanges();
 			const preferredLineEnding = lineEndings[config.end_of_line];
 			const buffer = editor.getBuffer();
 			buffer.setPreferredLineEnding(preferredLineEnding);
-			buffer.backwardsScanInRange(/\r?\n/g, buffer.getRange(), ({replace}) => {
-				replace(preferredLineEnding);
-			});
+			buffer.setTextInRange(buffer.getRange(), buffer.getText());
+			editor.setSelectedBufferRanges(cachedBufferRanges);
 		}
 
 		if (config.charset) {
