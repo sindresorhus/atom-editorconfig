@@ -1,6 +1,7 @@
 /** @babel */
 import editorconfig from 'editorconfig';
 import generateConfig from './commands/generate';
+import setText from 'atom-set-text';
 
 function init(editor) {
 	generateConfig();
@@ -42,12 +43,11 @@ function init(editor) {
 		}
 
 		if (config.end_of_line && config.end_of_line in lineEndings) {
-			const cachedBufferRanges = editor.getSelectedBufferRanges();
 			const preferredLineEnding = lineEndings[config.end_of_line];
 			const buffer = editor.getBuffer();
+			const newText = buffer.getText().replace(/\r?\n/g, preferredLineEnding);
 			buffer.setPreferredLineEnding(preferredLineEnding);
-			buffer.setTextInRange(buffer.getRange(), buffer.getText());
-			editor.setSelectedBufferRanges(cachedBufferRanges);
+			setText(newText);
 		}
 
 		if (config.charset) {
