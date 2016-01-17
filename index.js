@@ -47,7 +47,7 @@ function init(editor) {
 			const buffer = editor.getBuffer();
 			const newText = buffer.getText().replace(/\r?\n/g, preferredLineEnding);
 			buffer.setPreferredLineEnding(preferredLineEnding);
-			setText(newText);
+			setText(newText, editor);
 		}
 
 		if (config.charset) {
