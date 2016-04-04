@@ -35,7 +35,8 @@
       "atom"
     ],
     "ignores": [
-      "atom/**"
+      "atom/**",
+      "spec/**"
     ]
   }
 }
