@@ -33,6 +33,9 @@
     "esnext": true,
     "globals": [
       "atom"
+    ],
+    "ignores": [
+      "atom/**"
     ]
   }
 }
