@@ -14,18 +14,18 @@ matrix:
       dist: trusty
       sudo: required
       language: cpp
-      env: ATOM_CHANNEL=stable APM_TEST_PACKAGES="xo" CHROME_DEVEL_SANDBOX=""
+      env: ATOM_CHANNEL=stable APM_TEST_PACKAGES="" CHROME_DEVEL_SANDBOX=""
     - os: linux
       dist: trusty
       sudo: required
       language: cpp
-      env: ATOM_CHANNEL=beta APM_TEST_PACKAGES="xo" CHROME_DEVEL_SANDBOX=""
+      env: ATOM_CHANNEL=beta APM_TEST_PACKAGES="" CHROME_DEVEL_SANDBOX=""
     - os: osx
       language: objective-c
-      env: ATOM_CHANNEL=stable APM_TEST_PACKAGES="xo"
+      env: ATOM_CHANNEL=stable APM_TEST_PACKAGES=""
     - os: osx
       language: objective-c
-      env: ATOM_CHANNEL=beta APM_TEST_PACKAGES="xo"
+      env: ATOM_CHANNEL=beta APM_TEST_PACKAGES=""
 
 addons:
   apt:
@@ -35,4 +35,4 @@ addons:
     - libgnome-keyring-dev
     - fakeroot
 
-script: 'curl -s https://raw.githubusercontent.com/atom/ci/master/build-package.sh | sh && xo'
+script: 'curl -s https://raw.githubusercontent.com/atom/ci/master/build-package.sh | sh && "$APM_SCRIPT_PATH" install --dev && xo'
