@@ -14,24 +14,18 @@ matrix:
       dist: trusty
       sudo: required
       language: cpp
-      env: ATOM_CHANNEL=stable APM_TEST_PACKAGES="" CHROME_DEVEL_SANDBOX=""
+      env: ATOM_CHANNEL=stable APM_TEST_PACKAGES="xo" CHROME_DEVEL_SANDBOX=""
     - os: linux
       dist: trusty
       sudo: required
       language: cpp
-      env: ATOM_CHANNEL=beta APM_TEST_PACKAGES="" CHROME_DEVEL_SANDBOX=""
+      env: ATOM_CHANNEL=beta APM_TEST_PACKAGES="xo" CHROME_DEVEL_SANDBOX=""
     - os: osx
       language: objective-c
-      env: ATOM_CHANNEL=stable APM_TEST_PACKAGES=""
+      env: ATOM_CHANNEL=stable APM_TEST_PACKAGES="xo"
     - os: osx
       language: objective-c
-      env: ATOM_CHANNEL=beta APM_TEST_PACKAGES=""
-
-
-env:
-  global:
-    - APM_TEST_PACKAGES=""
-
+      env: ATOM_CHANNEL=beta APM_TEST_PACKAGES="xo"
 
 addons:
   apt:
