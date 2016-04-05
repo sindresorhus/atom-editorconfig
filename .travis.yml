@@ -35,4 +35,4 @@ addons:
     - libgnome-keyring-dev
     - fakeroot
 
-script: 'curl -s https://raw.githubusercontent.com/atom/ci/master/build-package.sh | sh && "$APM_SCRIPT_PATH" install --dev && xo'
+script: 'curl -s https://raw.githubusercontent.com/atom/ci/master/build-package.sh | sh && $APM_SCRIPT_PATH install --dev && xo'
