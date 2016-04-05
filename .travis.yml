@@ -41,4 +41,4 @@ addons:
     - libgnome-keyring-dev
     - fakeroot
 
-script: 'curl -s https://raw.githubusercontent.com/atom/ci/master/build-package.sh | sh && npm test'
+script: 'curl -s https://raw.githubusercontent.com/atom/ci/master/build-package.sh | sh && xo'
