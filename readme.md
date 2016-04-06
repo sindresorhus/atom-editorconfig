@@ -1,4 +1,4 @@
-# EditorConfig
+# EditorConfig [![Build Status](https://travis-ci.org/sindresorhus/atom-editorconfig.svg?branch=master)](https://travis-ci.org/sindresorhus/atom-editorconfig)
 
 > [EditorConfig](http://editorconfig.org) helps developers maintain consistent coding styles between different editors
 
