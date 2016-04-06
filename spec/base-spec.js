@@ -17,10 +17,10 @@ describe('editorconfig', () => {
 
 	describe('when providing base-settings', () => {
 		const filePath = _path.join(_projectRoot, 'base.txt');
-		var texteditor = null;
+		let texteditor = null;
 
 		atom.workspace.open(filePath)
-    .then((newTexteditor) => {
+		.then((newTexteditor) => {
 			texteditor = newTexteditor;
 		});
 
@@ -28,16 +28,16 @@ describe('editorconfig', () => {
 			expect(texteditor.getSoftTabs()).toBeTruthy();
 		});
 
-    it('should have set the indent_size to 4 characters', () => {
-      expect(texteditor.getTabLength()).toEqual(4);
-    });
+		it('should have set the indent_size to 4 characters', () => {
+			expect(texteditor.getTabLength()).toEqual(4);
+		});
 
-    it('should have set the end_of_line-character to "lf"', () => {
-      expect(texteditor.getBuffer().getPreferredLineEnding()).toMatch("\n");
-    });
+		it('should have set the end_of_line-character to "lf"', () => {
+			expect(texteditor.getBuffer().getPreferredLineEnding()).toMatch("\n");
+		});
 
-    it('should have set the charset of the document to "utf8"', () => {
-      expect(texteditor.getEncoding()).toMatch('utf8');
-    });
+		it('should have set the charset of the document to "utf8"', () => {
+			expect(texteditor.getEncoding()).toMatch('utf8');
+		});
 	});
 });
