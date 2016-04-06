@@ -4,7 +4,6 @@
 this plugin. */
 
 import _path from 'path';
-// _helpers = require(_path.join(__dirname, '_spec-helpers.coffee'));
 
 const _projectRoot = _path.join(__dirname, 'fixtures');
 
