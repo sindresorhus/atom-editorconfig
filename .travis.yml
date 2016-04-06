@@ -1,5 +1,3 @@
-language: generic
-
 notifications:
   email:
     on_success: never
