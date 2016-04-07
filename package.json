@@ -14,7 +14,7 @@
     "atom": ">=1.0.11"
   },
   "scripts": {
-    "test": "xo"
+    "test": "apm test && xo"
   },
   "keywords": [
     "format",
@@ -33,6 +33,10 @@
     "esnext": true,
     "globals": [
       "atom"
+    ],
+    "ignores": [
+      "atom/**",
+      "spec/**"
     ]
   }
 }
