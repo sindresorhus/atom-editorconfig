@@ -1,5 +1,8 @@
-Thank you for filing an issue!
+I am a nice person filing an feedback, idea or issue! :heart:
 
-Please leave your idea, announcement, bug-report, whatever you like. If you file a bug we would appreciate if you could provide us some additional information by approving the following checklist:
+Because i'd like you to take a look on the following unexpected behavior, i
 
-- [ ] 
+- [ ] provide a list of installed packages (try `apm list`),
+- [ ] provide possibly involved `.editorconfig`-files,
+- [ ] described exactly which behavior was **expected** and **what happened** instead and
+- [ ] send you some virtual :candy: to make you happy.

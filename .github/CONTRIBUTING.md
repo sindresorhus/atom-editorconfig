@@ -23,6 +23,12 @@ We prefer if you work on your own fork of `atom-editorconfig`, especially if you
 
 We're following the [XO code style](https://github.com/sindresorhus/xo) (Tip: `$ xo --fix` can fix many issues).
 
+### :microscope: Create Specs
+
+Create at least one test to let us verify your enhancement or fix. Name your test-file `*-spec.js` and put the into the `spec`-directory. If you need to set up special fixtures, try to put them into the `spec/fixtures`-directory.
+
+A simple example for a test-file is the `spec/base-spec.js`-file. If you need help - get in touch! :open_hands:
+
 ### :gift: Pull Requests
 
 Ensure your commit passes `npm test` before generating a pull request, this will save us some time.
