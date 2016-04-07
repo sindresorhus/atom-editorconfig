@@ -1,42 +1,41 @@
 /** @babel */
+/* eslint-env jasmine, atomtest */
 
 /* This file contains all specs to ensure the base-functionality of
 this plugin. */
 
-import _path from 'path';
+import path from 'path';
 
-const _projectRoot = _path.join(__dirname, 'fixtures');
+const projectRoot = path.join(__dirname, 'fixtures');
 
 describe('editorconfig', () => {
 	beforeEach(() => {
-		waitsForPromise(() => {
-			return atom.packages.activatePackage('editorconfig');
-		});
+		waitsForPromise(() => atom.packages.activatePackage('editorconfig'));
 	});
 
 	describe('when providing base-settings', () => {
-		const filePath = _path.join(_projectRoot, 'base.txt');
-		let texteditor = null;
+		const filePath = path.join(projectRoot, 'base.txt');
+		let textEditor = null;
 
 		atom.workspace.open(filePath)
-		.then((newTexteditor) => {
-			texteditor = newTexteditor;
-		});
+			.then(newTextEditor => {
+				textEditor = newTextEditor;
+			});
 
 		it('should have set the indent_style to "space"', () => {
-			expect(texteditor.getSoftTabs()).toBeTruthy();
+			expect(textEditor.getSoftTabs()).toBeTruthy();
 		});
 
 		it('should have set the indent_size to 4 characters', () => {
-			expect(texteditor.getTabLength()).toEqual(4);
+			expect(textEditor.getTabLength()).toEqual(4);
 		});
 
 		it('should have set the end_of_line-character to "lf"', () => {
-			expect(texteditor.getBuffer().getPreferredLineEnding()).toMatch("\n");
+			expect(textEditor.getBuffer().getPreferredLineEnding()).toMatch("\n");
 		});
 
 		it('should have set the charset of the document to "utf8"', () => {
-			expect(texteditor.getEncoding()).toMatch('utf8');
+			expect(textEditor.getEncoding()).toMatch('utf8');
 		});
 	});
 });
