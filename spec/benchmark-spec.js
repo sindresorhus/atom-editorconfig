@@ -6,9 +6,18 @@
 	performance-awareness.
 */
 
-atom.packages.activatePackage('editorconfig')
-	.then(() => {
+describe('editorconfig', () => {
+	beforeEach(() => {
+		waitsForPromise(() => atom.packages.activatePackage('editorconfig'));
+	});
+
+	it('should have been loaded fine', () => {
 		const pack = atom.packages.getLoadedPackage('editorconfig');
 
-		console.info(`The package took ${pack.loadTime}ms to load and ${pack.activateTime}ms to activate.`);
+		expect(pack).not.toBeUndefined();
+		if (typeof pack !== 'undefined') {
+			console.info(`The package took ${pack.loadTime}ms to load \
+and ${pack.activateTime}ms to activate.`);
+		}
 	});
+});
