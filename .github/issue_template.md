@@ -1,6 +1,6 @@
 I am a nice person filing an feedback, idea or issue! :heart:
 
-Because i'd like you to take a look on the following unexpected behavior, i
+Because I'd like you to take a look on the following unexpected behavior, I...
 
 - [ ] provide a list of installed packages (try `apm list`),
 - [ ] provide possibly involved `.editorconfig`-files,
