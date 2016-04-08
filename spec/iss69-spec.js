@@ -24,8 +24,8 @@ describe('editorconfig', () => {
 				textEditor = newTextEditor;
 			});
 
-		it('should shouldn\'t being changed without any action', () => {
-			expect(textEditor.getBuffer().isInConflict()).toBeFalsy();
+		it('shouldn\'t being changed without any action', () => {
+			expect(textEditor.isModified()).toBeFalsy();
 		});
 	});
 });
