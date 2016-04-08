@@ -1,15 +1,11 @@
 /** @babel */
-let editorconfig = null;
-let setText = null;
-let generateConfig = null;
+const lazyReq = require('lazy-req')(require);
+
+const editorconfig = lazyReq('editorconfig');
+const setText = lazyReq('atom-set-text');
+const generateConfig = lazyReq('./commands/generate');
 
 function init(editor) {
-	if (editorconfig === null) {
-		editorconfig = require('editorconfig');
-		setText = require('atom-set-text');
-		generateConfig = require('./commands/generate');
-	}
-
 	generateConfig();
 
 	if (!editor) {
