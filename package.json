@@ -1,5 +1,6 @@
 {
   "name": "editorconfig",
+  "main": "./index.js",
   "version": "1.2.4",
   "description": "Helps developers maintain consistent coding styles between different editors",
   "license": "MIT",
