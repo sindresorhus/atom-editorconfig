@@ -1,9 +1,15 @@
 /** @babel */
-import editorconfig from 'editorconfig';
-import setText from 'atom-set-text';
-import generateConfig from './commands/generate';
+let editorconfig = null;
+let setText = null;
+let generateConfig = null;
 
 function init(editor) {
+	if (editorconfig === null) {
+		editorconfig = require('editorconfig');
+		setText = require('atom-set-text');
+		generateConfig = require('./commands/generate');
+	}
+
 	generateConfig();
 
 	if (!editor) {
