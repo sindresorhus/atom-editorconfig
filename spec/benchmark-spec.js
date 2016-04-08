@@ -1,21 +1,15 @@
 /** @babel */
 /* eslint-env jasmine, atomtest */
 
-/* This file contains all specs to test the startup/load-performance indicated by THE timecop. */
+/*
+	This file contains an informational output for the developer, help getting a
+	performance-awareness.
+*/
 
-describe('editorconfig', () => {
-	beforeEach(() => {
-		waitsForPromise(() => atom.packages.activatePackage('editorconfig'));
+
+atom.packages.activatePackage('editorconfig')
+	.then(() => {
+		const pack = atom.packages.getLoadedPackage('editorconfig');
+
+		console.info(`The package took ${pack.loadTime}ms to load and ${pack.activateTime}ms to activate.`);
 	});
-
-	describe('when activated', () => {
-		const loadLimit = 50; // sets the limit for package-loading in ms.
-		it(`should being loaded in less than ${loadLimit}ms`, () => {
-			expect(atom.packages.getLoadedPackage('editorconfig').loadTime).toBeLessThan(loadLimit);
-		});
-
-		it('should being activated in less than 5ms', () => {
-			expect(atom.packages.getLoadedPackage('editorconfig').activateTime).toBeLessThan(5);
-		});
-	});
-});
