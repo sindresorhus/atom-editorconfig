@@ -9,8 +9,9 @@ describe('editorconfig', () => {
 	});
 
 	describe('when activated', () => {
-		it('should being loaded in less than 5ms', () => {
-			expect(atom.packages.getLoadedPackage('editorconfig').loadTime).toBeLessThan(5);
+		const loadLimit = 50; // sets the limit for package-loading in ms.
+		it(`should being loaded in less than ${loadLimit}ms`, () => {
+			expect(atom.packages.getLoadedPackage('editorconfig').loadTime).toBeLessThan(loadLimit);
 		});
 
 		it('should being activated in less than 5ms', () => {
