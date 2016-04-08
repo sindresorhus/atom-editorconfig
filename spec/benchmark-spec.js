@@ -6,7 +6,6 @@
 	performance-awareness.
 */
 
-
 atom.packages.activatePackage('editorconfig')
 	.then(() => {
 		const pack = atom.packages.getLoadedPackage('editorconfig');
