@@ -1,7 +1,7 @@
 /** @babel */
 const lazyReq = require('lazy-req')(require);
 
-const editorconfig = lazyReq('editorconfig');
+const editorconfig = require('editorconfig');
 const setText = lazyReq('atom-set-text');
 const generateConfig = lazyReq('./commands/generate');
 
