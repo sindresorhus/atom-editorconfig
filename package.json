@@ -14,9 +14,10 @@
     "atom": ">=1.0.11"
   },
   "scripts": {
-    "test": "apm test && xo"
+    "test": "xo && apm test"
   },
   "keywords": [
+    "editorconfig",
     "format",
     "code",
     "style",
@@ -35,8 +36,7 @@
       "atom"
     ],
     "ignores": [
-      "atom/**",
-      "spec/**"
+      "atom/**"
     ]
   }
 }

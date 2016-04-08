@@ -57,4 +57,4 @@ You can generate an `.editorconfig` file based on the current setting by opening
 
 ## License
 
-MIT © [Sindre Sorhus](http://sindresorhus.com)
+MIT © [Sindre Sorhus](https://sindresorhus.com)

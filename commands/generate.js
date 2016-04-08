@@ -1,4 +1,4 @@
-'use babel';
+/** @babel */
 import fs from 'fs';
 import path from 'path';
 
