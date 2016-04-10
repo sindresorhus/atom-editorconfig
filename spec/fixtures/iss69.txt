@@ -1,0 +1,3 @@
+This is some text, to prove it's getting changed when opening.
+Remember editorconfig shouldn't touch files..
+Bye.
