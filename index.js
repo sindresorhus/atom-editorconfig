@@ -1,7 +1,8 @@
 /** @babel */
-import editorconfig from 'editorconfig';
-import setText from 'atom-set-text';
-import generateConfig from './commands/generate';
+const lazyReq = require('lazy-req')(require);
+
+const editorconfig = lazyReq('editorconfig');
+const generateConfig = lazyReq('./commands/generate');
 
 function init(editor) {
 	generateConfig();
@@ -21,7 +22,7 @@ function init(editor) {
 		return;
 	}
 
-	editorconfig.parse(file).then(config => {
+	editorconfig().parse(file).then(config => {
 		if (Object.keys(config).length === 0) {
 			return;
 		}
@@ -44,10 +45,7 @@ function init(editor) {
 
 		if (config.end_of_line && config.end_of_line in lineEndings) {
 			const preferredLineEnding = lineEndings[config.end_of_line];
-			const buffer = editor.getBuffer();
-			const newText = buffer.getText().replace(/\r?\n/g, preferredLineEnding);
-			buffer.setPreferredLineEnding(preferredLineEnding);
-			setText(newText, editor);
+			editor.getBuffer().setPreferredLineEnding(preferredLineEnding);
 		}
 
 		if (config.charset) {
