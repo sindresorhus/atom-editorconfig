@@ -1,6 +1,9 @@
 /** @babel */
-import editorconfig from 'editorconfig';
-import generateConfig from './commands/generate';
+const lazyReq = require('lazy-req')(require);
+
+const editorconfig = lazyReq('editorconfig');
+const setText = lazyReq('atom-set-text');
+const generateConfig = lazyReq('./commands/generate');
 
 function init(editor) {
 	generateConfig();
@@ -20,7 +23,7 @@ function init(editor) {
 		return;
 	}
 
-	editorconfig.parse(file).then(config => {
+	editorconfig().parse(file).then(config => {
 		if (Object.keys(config).length === 0) {
 			return;
 		}
