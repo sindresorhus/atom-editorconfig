@@ -2,7 +2,6 @@
 const lazyReq = require('lazy-req')(require);
 
 const editorconfig = lazyReq('editorconfig');
-const setText = lazyReq('atom-set-text');
 const generateConfig = lazyReq('./commands/generate');
 
 function init(editor) {
