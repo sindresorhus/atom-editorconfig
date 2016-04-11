@@ -24,11 +24,11 @@
     "code-style"
   ],
   "dependencies": {
+    "lazy-req": "^1.1.0",
     "atom-set-text": "^1.1.0",
     "editorconfig": "^0.13.2"
   },
   "devDependencies": {
-    "lazy-req": "^1.1.0",
     "xo": "*"
   },
   "xo": {
