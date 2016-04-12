@@ -6,10 +6,8 @@ const init = () => {
 	let basePath = '';
 	if (atom.project.getPaths().length > 0) {
 		basePath = atom.project.getPaths()[0];
-	} else if (
-      typeof atom.workspace.getActiveTextEditor() !== 'undefined' &&
-		  atom.workspace.getActiveTextEditor().getPath())
-	{
+	} else if (typeof atom.workspace.getActiveTextEditor() !== 'undefined' &&
+						atom.workspace.getActiveTextEditor().getPath()) {
 		basePath = path.dirname(atom.workspace.getActiveTextEditor().getPath());
 	} else {
 		atom.notifications.addError('An .editorconfig file can\'t be generated without a saved file or an open project.');
