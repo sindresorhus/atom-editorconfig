@@ -2,7 +2,7 @@
 const lazyReq = require('lazy-req')(require);
 
 const editorconfig = lazyReq('editorconfig');
-const generateConfig = lazyReq('./commands/generate');
+import generateConfig from './commands/generate';
 
 function init(editor) {
 	generateConfig();
