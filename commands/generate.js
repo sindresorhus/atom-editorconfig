@@ -60,6 +60,8 @@ trim_trailing_whitespace = false
 	});
 };
 
-export default () => {
+const subscriber = () => {
 	atom.commands.add('atom-workspace', 'EditorConfig:generate-config', init);
 };
+
+export {subscriber as default, init};
