@@ -4,15 +4,17 @@ import path from 'path';
 
 const init = () => {
 	let basePath = '';
+
 	if (atom.project.getPaths().length > 0) {
 		basePath = atom.project.getPaths()[0];
 	} else if (typeof atom.workspace.getActiveTextEditor() !== 'undefined' &&
-						atom.workspace.getActiveTextEditor().getPath()) {
+		atom.workspace.getActiveTextEditor().getPath()) {
 		basePath = path.dirname(atom.workspace.getActiveTextEditor().getPath());
 	} else {
-		atom.notifications.addError('An .editorconfig file can\'t be generated without an open file or an open project.');
+		atom.notifications.addError(`An .editorconfig file can't be generated without an open file or project.`);
 		return;
 	}
+
 	const configFile = path.join(basePath, '.editorconfig');
 
 	const conf = {
@@ -22,8 +24,8 @@ const init = () => {
 	};
 
 	const indent = conf.editor.softTabs ?
-				`indent_style = space\nindent_size = ${conf.editor.tabLength}` :
-				'indent_style = tab';
+		`indent_style = space\nindent_size = ${conf.editor.tabLength}` :
+		'indent_style = tab';
 
 	const endOfLine = process.platform === 'win32' ? 'crlf' : 'lf';
 	const charset = conf.core.fileEncoding.replace('utf8', 'utf-8') || 'utf-8';

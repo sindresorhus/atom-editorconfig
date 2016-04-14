@@ -29,9 +29,7 @@ describe('editorconfig', () => {
 				}
 			});
 
-			waitsFor(() => {
-				return typeof atom.workspace.getActiveTextEditor() === 'undefined';
-			}, 'no active TextEditor', 1000);
+			waitsFor(() => typeof atom.workspace.getActiveTextEditor() === 'undefined', 'no active TextEditor', 1000);
 
 			runs(() => {
 				atom.project.setPaths([]);
