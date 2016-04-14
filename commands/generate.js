@@ -3,7 +3,17 @@ import fs from 'fs';
 import path from 'path';
 
 const init = () => {
-	const configFile = path.join(atom.project.getPaths()[0], '.editorconfig');
+	let basePath = '';
+	if (atom.project.getPaths().length > 0) {
+		basePath = atom.project.getPaths()[0];
+	} else if (typeof atom.workspace.getActiveTextEditor() !== 'undefined' &&
+						atom.workspace.getActiveTextEditor().getPath()) {
+		basePath = path.dirname(atom.workspace.getActiveTextEditor().getPath());
+	} else {
+		atom.notifications.addError('An .editorconfig file can\'t be generated without an open file or an open project.');
+		return;
+	}
+	const configFile = path.join(basePath, '.editorconfig');
 
 	const conf = {
 		core: atom.config.get('core'),
@@ -50,6 +60,8 @@ trim_trailing_whitespace = false
 	});
 };
 
-export default () => {
+const subscriber = () => {
 	atom.commands.add('atom-workspace', 'EditorConfig:generate-config', init);
 };
+
+export {subscriber as default, init};

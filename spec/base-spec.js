@@ -13,6 +13,19 @@ describe('editorconfig', () => {
 		waitsForPromise(() => atom.packages.activatePackage('editorconfig'));
 	});
 
+	describe('when active', () => {
+		it('should provide the EditorConfig:generate-config command', () => {
+			let isAvailable = false;
+			atom.commands.findCommands({target: atom.views.getView(atom.workspace)})
+				.forEach(command => {
+					if (command.name === 'EditorConfig:generate-config') {
+						isAvailable = true;
+					}
+				});
+			expect(isAvailable).toBeTruthy();
+		});
+	});
+
 	describe('when providing base-settings', () => {
 		const filePath = path.join(projectRoot, 'base.txt');
 		let textEditor = null;
