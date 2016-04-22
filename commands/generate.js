@@ -48,7 +48,7 @@ trim_trailing_whitespace = false
 		if (err) {
 			fs.writeFile(configFile, ret, err => {
 				if (err) {
-					atom.notifications.addError(err);
+					atom.notifications.addError(err.message);
 					return;
 				}
 
