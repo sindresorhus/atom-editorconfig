@@ -15,14 +15,14 @@ describe('when opening any file', () => {
 	let textEditor = null;
 
 	beforeEach(() => {
-		waitsForPromise(() => {
-			return Promise.all([
+		waitsForPromise(() =>
+			Promise.all([
 				atom.packages.activatePackage('editorconfig'),
 				atom.workspace.open(filePath)
 			]).then(results => {
 				textEditor = results[1];
-			});
-		});
+			})
+		);
 	});
 
 	it('shouldn\'t being changed without any action', () => {

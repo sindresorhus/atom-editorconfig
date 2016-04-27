@@ -11,15 +11,16 @@ const filePath = path.join(projectRoot, 'base.txt');
 
 describe('editorconfig', () => {
 	let textEditor = null;
+
 	beforeEach(() => {
-		waitsForPromise(() => {
-			return Promise.all([
+		waitsForPromise(() =>
+			Promise.all([
 				atom.packages.activatePackage('editorconfig'),
 				atom.workspace.open(filePath)
 			]).then(results => {
 				textEditor = results[1];
-			});
-		});
+			})
+		);
 	});
 
 	it('should provide the EditorConfig:generate-config command', () => {
