@@ -9,23 +9,23 @@
 import path from 'path';
 
 const projectRoot = path.join(__dirname, 'fixtures');
+const filePath = path.join(projectRoot, 'iss69.txt');
 
-describe('editorconfig', () => {
+describe('when opening any file', () => {
+	let textEditor = null;
+
 	beforeEach(() => {
-		waitsForPromise(() => atom.packages.activatePackage('editorconfig'));
+		waitsForPromise(() => {
+			return Promise.all([
+				atom.packages.activatePackage('editorconfig'),
+				atom.workspace.open(filePath)
+			]).then(results => {
+				textEditor = results[1];
+			});
+		});
 	});
 
-	describe('when opening any file', () => {
-		const filePath = path.join(projectRoot, 'iss69.txt');
-		let textEditor = null;
-
-		atom.workspace.open(filePath)
-			.then(newTextEditor => {
-				textEditor = newTextEditor;
-			});
-
-		it('shouldn\'t being changed without any action', () => {
-			expect(textEditor.isModified()).toBeFalsy();
-		});
+	it('shouldn\'t being changed without any action', () => {
+		expect(textEditor.isModified()).toBeFalsy();
 	});
 });
