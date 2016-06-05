@@ -79,7 +79,7 @@ function setWorkspaceConfig(editor) {
 		}
 
 		if (config.hasOwnProperty('insert_final_newline')) {
-			atom.config.set('whitespace.ensureSingleTrailingNewline', config.insert_final_newline)
+			atom.config.set('whitespace.ensureSingleTrailingNewline', config.insert_final_newline);
 		}
 	});
 }
