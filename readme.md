@@ -26,7 +26,8 @@ See the EditorConfig [documentation](http://editorconfig.org).
 - indent_size
 - charset *(supported values: `latin1`, `utf-8`, `utf-16be`, `utf-16le`)*
 - end_of_line *(supported values: `lf`, `crlf`)*
-
+- trim_trailing_whitespace
+- insert_final_newline
 
 ## Features
 
