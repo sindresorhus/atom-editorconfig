@@ -49,4 +49,12 @@ describe('editorconfig', () => {
 	it('should have set the charset of the document to "utf8"', () => {
 		expect(textEditor.getEncoding()).toMatch('utf8');
 	});
+
+	it('should have set Remove trailing whitespace setting for whitespace package', () => {
+		expect(atom.config.get('whitespace.removeTrailingWhitespace')).toBeTruthy();
+	});
+
+	it('should have set Ensure single trailing newline setting for whitespace package', () => {
+		expect(atom.config.get('whitespace.ensureSingleTrailingNewline')).toBeTruthy();
+	});
 });
