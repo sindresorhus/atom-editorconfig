@@ -1,7 +1,8 @@
 /** @babel */
 import generateConfig from './commands/generate';
 
-const lazyReq = require('lazy-req')(require); // eslint-disable-line
+const lazyReq = require('lazy-req')(require);
+
 const editorconfig = lazyReq('editorconfig');
 
 function init(editor) {
