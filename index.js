@@ -5,10 +5,10 @@ const lazyReq = require('lazy-req')(require);
 
 const editorconfig = lazyReq('editorconfig');
 
-function init(editor) {
+function setEditorConfig(editor) {
 	generateConfig();
 
-	if (!editor) {
+	if (!editor || editor.constructor.name !== 'TextEditor') {
 		return;
 	}
 
@@ -57,6 +57,34 @@ function init(editor) {
 	});
 }
 
+function setWorkspaceConfig(editor) {
+	generateConfig();
+
+	if (!editor || editor.constructor.name !== 'TextEditor') {
+		return;
+	}
+
+	const file = editor.getURI();
+
+	if (!file) {
+		return;
+	}
+
+	editorconfig().parse(file).then(config => {
+		if (Object.keys(config).length === 0) {
+			return;
+		}
+
+		if (config.hasOwnProperty('trim_trailing_whitespace')) {
+			atom.config.set('whitespace.removeTrailingWhitespace', config.trim_trailing_whitespace);
+		}
+
+		if (config.hasOwnProperty('insert_final_newline')) {
+			atom.config.set('whitespace.ensureSingleTrailingNewline', config.insert_final_newline);
+		}
+	});
+}
 export const activate = () => {
-	atom.workspace.observeTextEditors(init);
+	atom.workspace.observeTextEditors(setEditorConfig);
+	atom.workspace.onDidChangeActivePaneItem(setWorkspaceConfig);
 };
