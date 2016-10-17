@@ -3,7 +3,7 @@
 
 /*
   This file contains verifying specs for:
-  https://github.com/sindresorhus/atom-editorconfig/issues/69
+  https://github.com/sindresorhus/atom-editorconfig/issues/4
 */
 
 import fs from 'fs';
@@ -12,8 +12,8 @@ import path from 'path';
 const projectRoot = path.join(__dirname, 'fixtures');
 const filePath = path.join(projectRoot, 'test.iss3');
 
-describe('when saving a file with trailing whitespaces', () => {
-	let textEditor = null;
+describe('editorconfig', () => {
+	let textEditor;
 	const textWithFinalNewline = 'I am Providence.\n';
 	const textWithoutFinalNewline = 'I am Providence.';
 

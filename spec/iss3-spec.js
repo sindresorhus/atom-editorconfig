@@ -3,7 +3,7 @@
 
 /*
   This file contains verifying specs for:
-  https://github.com/sindresorhus/atom-editorconfig/issues/69
+  https://github.com/sindresorhus/atom-editorconfig/issues/3
 */
 
 import fs from 'fs';
@@ -13,7 +13,7 @@ const projectRoot = path.join(__dirname, 'fixtures');
 const filePath = path.join(projectRoot, 'test.iss3');
 
 describe('when saving a file with trailing whitespaces', () => {
-	let textEditor = null;
+	let textEditor;
 	const textWithTrailingWhitespaces = 'I am Providence. \t\t  \n';
 	const textWithoutTraillingWhitespaces = 'I am Providence.\n';
 
@@ -49,7 +49,7 @@ describe('when saving a file with trailing whitespaces', () => {
 
 	describe('Atom being set to leave trailing whitespaces', () => {
 		beforeEach(() => {
-			textEditor.getBuffer().editorconfig.trimTrailingWhitespaces = false;
+			textEditor.getBuffer().editorconfig.trimTrailingWhitespace = false;
 		});
 
 		it('should leave the trailing whitespaces.', () => {
@@ -61,7 +61,7 @@ describe('when saving a file with trailing whitespaces', () => {
 
 	describe('Atom being set to strip trailing whitespaces', () => {
 		beforeEach(() => {
-			textEditor.getBuffer().editorconfig.trimTrailingWhitespaces = true;
+			textEditor.getBuffer().editorconfig.trimTrailingWhitespace = true;
 		});
 
 		it('should remove the trailing whitespaces.', () => {

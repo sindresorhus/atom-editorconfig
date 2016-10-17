@@ -3,7 +3,7 @@
 
 /*
   This file contains verifying specs for:
-  https://github.com/sindresorhus/atom-editorconfig/issues/69
+  https://github.com/sindresorhus/atom-editorconfig/issues/47
 */
 
 import {init as generateConfig} from '../commands/generate';
