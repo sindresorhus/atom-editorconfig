@@ -1,7 +1,8 @@
 /** @babel */
 import generateConfig from './commands/generate';
 
-const lazyReq = require('lazy-req')(require); // eslint-disable-line
+const lazyReq = require('lazy-req')(require);
+
 const editorconfig = lazyReq('editorconfig');
 
 function observeTextEditor(editor) {
@@ -13,7 +14,7 @@ function observeTextEditor(editor) {
 
 			// onWillSave-Handler, is currently used to trim whitespaces before buffer is written
 			// to disk
-			onWillSave: function() {
+			onWillSave() {
 				if (this.trimTrailingWhitespaces) {
 					const buffer = this.buffer;
 					const currentText = buffer.getText();
@@ -29,10 +30,9 @@ function observeTextEditor(editor) {
 					}
 				}
 			}
-		}
+		};
 
 		buffer.onWillSave(buffer.editorconfig.onWillSave.bind(buffer.editorconfig));
-		console.log('Initialized atom-editorconfig-plugin.');
 	}
 }
 

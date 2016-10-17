@@ -15,9 +15,9 @@ describe('editorconfig', () => {
 		const pack = atom.packages.getLoadedPackage('editorconfig');
 
 		expect(pack).not.toBeUndefined();
+
 		if (typeof pack !== 'undefined') {
-			console.info(`The package took ${pack.loadTime}ms to load \
-and ${pack.activateTime}ms to activate.`);
+			console.info(`The package took ${pack.loadTime}ms to load and ${pack.activateTime}ms to activate.`);
 		}
 	});
 });

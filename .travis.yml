@@ -1,9 +1,3 @@
-notifications:
-  email:
-    on_success: never
-    on_failure: never
-git:
-  depth: 1
 matrix:
   include:
     - os: linux
@@ -29,4 +23,4 @@ addons:
     - git
     - libgnome-keyring-dev
     - fakeroot
-script: 'curl -s https://raw.githubusercontent.com/atom/ci/master/build-package.sh | sh && node node_modules/xo/cli.js'
+script: 'curl -s https://raw.githubusercontent.com/atom/ci/master/build-package.sh | sh && ./node_modules/.bin/xo'

@@ -43,7 +43,7 @@ describe('editorconfig', () => {
 	});
 
 	it('should have set the end_of_line-character to "lf"', () => {
-		expect(textEditor.getBuffer().getPreferredLineEnding()).toMatch("\n");
+		expect(textEditor.getBuffer().getPreferredLineEnding()).toMatch('\n');
 	});
 
 	it('should have set the charset of the document to "utf8"', () => {

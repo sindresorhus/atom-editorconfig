@@ -14,8 +14,8 @@ const filePath = path.join(projectRoot, 'test.iss3');
 
 describe('when saving a file with trailing whitespaces', () => {
 	let textEditor = null;
-	const textWithTrailingWhitespaces = "I am Providence. \t\t  \n";
-	const textWithoutTraillingWhitespaces = "I am Providence.\n";
+	const textWithTrailingWhitespaces = 'I am Providence. \t\t  \n';
+	const textWithoutTraillingWhitespaces = 'I am Providence.\n';
 
 	beforeEach(() => {
 		waitsForPromise(() =>
@@ -48,7 +48,9 @@ describe('when saving a file with trailing whitespaces', () => {
 	});
 
 	describe('Atom being set to leave trailing whitespaces', () => {
-		beforeEach(() => textEditor.getBuffer().editorconfig.trimTrailingWhitespaces = false);
+		beforeEach(() => {
+			textEditor.getBuffer().editorconfig.trimTrailingWhitespaces = false;
+		});
 
 		it('should leave the trailing whitespaces.', () => {
 			textEditor.setText(textWithTrailingWhitespaces);
@@ -58,7 +60,9 @@ describe('when saving a file with trailing whitespaces', () => {
 	});
 
 	describe('Atom being set to strip trailing whitespaces', () => {
-		beforeEach(() => textEditor.getBuffer().editorconfig.trimTrailingWhitespaces = true);
+		beforeEach(() => {
+			textEditor.getBuffer().editorconfig.trimTrailingWhitespaces = true;
+		});
 
 		it('should remove the trailing whitespaces.', () => {
 			textEditor.setText(textWithTrailingWhitespaces);

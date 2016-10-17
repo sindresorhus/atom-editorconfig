@@ -4,6 +4,8 @@
 
 ![](https://f.cloud.github.com/assets/170270/2327994/dfe40cb4-a3f6-11e3-862f-894999973373.png)
 
+> :warning: Please assure your Atom's config setting `Tab Type` is set to `auto`, otherwise this plugin may not work as expected.
+
 
 ## Install
 
