@@ -4,12 +4,43 @@ import generateConfig from './commands/generate';
 const lazyReq = require('lazy-req')(require); // eslint-disable-line
 const editorconfig = lazyReq('editorconfig');
 
-function init(editor) {
-	generateConfig();
+function observeTextEditor(editor) {
+	const buffer = editor.getBuffer();
+	if ('editorconfig' in buffer === false) {
+		buffer.editorconfig = {
+			buffer,
+			trimTrailingWhitespaces: false,
 
+			// onWillSave-Handler, is currently used to trim whitespaces before buffer is written
+			// to disk
+			onWillSave: function() {
+				if (this.trimTrailingWhitespaces) {
+					const buffer = this.buffer;
+					const currentText = buffer.getText();
+					const trimmedText = currentText.replace(/([ \t]+)$/gm, '');
+
+					if (currentText.length > trimmedText.length) {
+						const activeTextEditor = atom.workspace.getActiveTextEditor();
+						const currentCursorPosition = activeTextEditor.getCursorBufferPosition();
+						buffer.setText(trimmedText);
+						if (activeTextEditor.getBuffer() === buffer) {
+							activeTextEditor.setCursorBufferPosition(currentCursorPosition);
+						}
+					}
+				}
+			}
+		}
+
+		buffer.onWillSave(buffer.editorconfig.onWillSave.bind(buffer.editorconfig));
+		console.log('Initialized atom-editorconfig-plugin.');
+	}
+}
+
+function init(editor) {
 	if (!editor) {
 		return;
 	}
+	observeTextEditor(editor);
 
 	const file = editor.getURI();
 
@@ -28,6 +59,8 @@ function init(editor) {
 		}
 
 		const indentStyle = config.indent_style || (editor.getSoftTabs() ? 'space' : 'tab');
+
+		editor.getBuffer().editorconfig.trimTrailingWhitespaces = config.trim_trailing_whitespaces || false;
 
 		if (indentStyle === 'tab') {
 			editor.setSoftTabs(false);
@@ -57,5 +90,6 @@ function init(editor) {
 }
 
 export const activate = () => {
+	generateConfig();
 	atom.workspace.observeTextEditors(init);
 };
