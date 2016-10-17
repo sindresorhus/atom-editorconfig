@@ -1,13 +1,14 @@
 /** @babel */
 import fs from 'fs';
 import path from 'path';
+import pify from 'pify';
 
 const init = () => {
 	let basePath = '';
 
 	if (atom.project.getPaths().length > 0) {
 		basePath = atom.project.getPaths()[0];
-	} else if (typeof atom.workspace.getActiveTextEditor() !== 'undefined' &&
+	} else if (atom.workspace.getActiveTextEditor() &&
 		atom.workspace.getActiveTextEditor().getPath()) {
 		basePath = path.dirname(atom.workspace.getActiveTextEditor().getPath());
 	} else {
@@ -44,20 +45,15 @@ insert_final_newline = ${conf.whitespace.ensureSingleTrailingNewline}
 trim_trailing_whitespace = false
 `;
 
-	fs.access(configFile, err => {
-		if (err) {
-			fs.writeFile(configFile, ret, err => {
-				if (err) {
-					atom.notifications.addError(err.message, {detail: err.stack});
-					return;
-				}
-
-				atom.notifications.addSuccess('.editorconfig file successfully generated', {
-					detail: 'An .editorconfig file was successfully generated in your project based on your current settings.'
-				});
-			});
-		} else {
+	pify(fs.writeFile)(configFile, ret, {flag: 'wx'}).then(() => {
+		atom.notifications.addSuccess('.editorconfig file successfully generated', {
+			detail: 'An .editorconfig file was successfully generated in your project based on your current settings.'
+		});
+	}).catch(err => {
+		if (err.code === 'EEXIST') {
 			atom.notifications.addError('An .editorconfig file already exists in your project root.');
+		} else {
+			atom.notifications.addError(err.message, {detail: err.stack});
 		}
 	});
 };

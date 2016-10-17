@@ -4,12 +4,12 @@
   "description": "Helps developers maintain consistent coding styles between different editors",
   "license": "MIT",
   "repository": "sindresorhus/atom-editorconfig",
-  "private": true,
   "author": {
     "name": "Sindre Sorhus",
     "email": "sindresorhus@gmail.com",
     "url": "sindresorhus.com"
   },
+  "private": true,
   "engines": {
     "atom": ">=1.0.11"
   },
@@ -24,9 +24,9 @@
     "code-style"
   ],
   "dependencies": {
+    "editorconfig": "^0.13.2",
     "lazy-req": "^1.1.0",
-    "atom-set-text": "^1.1.0",
-    "editorconfig": "^0.13.2"
+    "pify": "^2.3.0"
   },
   "devDependencies": {
     "xo": "*"
@@ -38,6 +38,9 @@
     ],
     "ignores": [
       "atom/**"
-    ]
+    ],
+    "rules": {
+      "import/prefer-default-export": "off"
+    }
   }
 }
