@@ -20,18 +20,27 @@ function observeTextEditor(editor) {
 			// onWillSave-Handler, is currently used to trim whitespaces before buffer is written
 			// to disk
 			onWillSave() {
-				if (this.trimTrailingWhitespaces) {
-					const buffer = this.buffer;
-					const currentText = buffer.getText();
-					const trimmedText = currentText.replace(/([ \t]+)$/gm, '');
+				let finalText;
+				// Fetch the text-buffer lazily
+				const getText = () => {
+					return finalText || this.buffer.getText();
+				};
 
-					if (currentText.length > trimmedText.length) {
-						const activeTextEditor = atom.workspace.getActiveTextEditor();
-						const currentCursorPosition = activeTextEditor.getCursorBufferPosition();
-						buffer.setText(trimmedText);
-						if (activeTextEditor.getBuffer() === buffer) {
-							activeTextEditor.setCursorBufferPosition(currentCursorPosition);
-						}
+				if (this.trimTrailingWhitespaces) {
+					finalText = getText().replace(/([ \t]+)$/gm, '');
+				}
+
+				if (this.insertFinalNewline && !getText().endsWith(this.preferredLineEnding)) {
+					finalText = getText().concat(this.preferredLineEnding);
+				}
+
+				if (finalText !== undefined) {
+					// Preserve cursor-position of active editor
+					const activeTextEditor = atom.workspace.getActiveTextEditor();
+					const currentCursorPosition = activeTextEditor.getCursorBufferPosition();
+					buffer.setText(finalText);
+					if (activeTextEditor.getBuffer() === buffer) {
+						activeTextEditor.setCursorBufferPosition(currentCursorPosition);
 					}
 				}
 			}
