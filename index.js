@@ -3,13 +3,27 @@ import generateConfig from './commands/generate';
 
 const lazyReq = require('lazy-req')(require);
 
+const StatusTile = lazyReq('./lib/statustile-view');
 const editorconfig = lazyReq('editorconfig');
 
-function observeTextEditor(editor) {
+const statusTile = StatusTile().create({status: 'subtle'});
+
+function observeActivePaneItem(editor) {
+	if (editor &&
+		editor.constructor &&
+		editor.constructor.name == 'TextEditor') {
+		if (editor.getBuffer().editorconfig) {
+			editor.getBuffer().editorconfig.applySettings();
+		}
+	}
+}
+
+function initializeTextEditor(editor) {
 	const buffer = editor.getBuffer();
 	if ('editorconfig' in buffer === false) {
 		buffer.editorconfig = {
 			buffer,
+			state: 'subtle',
 			trimTrailingWhitespace: 'auto',
 			insertFinalNewline: 'auto',
 			preferredLineEnding: 'auto',
@@ -17,6 +31,24 @@ function observeTextEditor(editor) {
 			tabLength: 'auto',
 			encoding: 'auto',
 
+			applySettings() {
+				const editor = atom.workspace.getActiveTextEditor();
+
+				if (editor && editor.getBuffer() === this.buffer) {
+					if (this.indentStyle !== 'auto') {
+						editor.setSoftTabs(this.indentStyle === 'space');
+					}
+					if (this.tabLength !== 'auto') {
+						editor.setTabLength(this.tabLength);
+					}
+					if (this.preferredLineEnding !== 'auto') {
+						this.buffer.setPreferredLineEnding(this.preferredLineEnding);
+					}
+					if (this.encoding !== 'auto') {
+						this.buffer.setEncoding(this.encoding);
+					}
+				}
+			},
 			// onWillSave-Handler, is currently used to trim whitespaces before buffer is written
 			// to disk
 			onWillSave() {
@@ -52,7 +84,6 @@ function observeTextEditor(editor) {
 						preservedPosition = activeTextEditor.getCursorBufferPosition();
 					}
 
-					console.log('Tracked lengths:', originalLength, finalText.length);
 					buffer.setText(finalText);
 
 					if (preservedPosition &&
@@ -70,11 +101,11 @@ function observeTextEditor(editor) {
 	}
 }
 
-function init(editor) {
+function observeTextEditors(editor) {
 	if (!editor) {
 		return;
 	}
-	observeTextEditor(editor);
+	initializeTextEditor(editor);
 
 	const file = editor.getURI();
 
@@ -119,23 +150,22 @@ function init(editor) {
 			config.charset.replace(/-/g, '').toLowerCase() :
 			'auto';
 
-		// Apply explicit settings
-		if (bufferConfig.indentStyle !== 'auto') {
-			editor.setSoftTabs(bufferConfig.indentStyle === 'space');
-		}
-		if (bufferConfig.tabLength !== 'auto') {
-			editor.setTabLength(bufferConfig.tabLength);
-		}
-		if (bufferConfig.preferredLineEnding !== 'auto') {
-			editor.getBuffer().setPreferredLineEnding(bufferConfig.preferredLineEnding);
-		}
-		if (bufferConfig.encoding !== 'auto') {
-			editor.getBuffer().setEncoding(bufferConfig.encoding);
-		}
+		// Apply initially
+		bufferConfig.applySettings();
 	});
 }
 
-export const activate = () => {
+const activate = () => {
 	generateConfig();
-	atom.workspace.observeTextEditors(init);
-};
+	atom.workspace.observeTextEditors(observeTextEditors);
+	atom.workspace.observeActivePaneItem(observeActivePaneItem);
+}
+
+const consumeStatusBar = statusBar => {
+	statusBar.addRightTile({
+		item: statusTile,
+		priority: 999
+	});
+}
+
+export default {activate, consumeStatusBar};
