@@ -10,7 +10,7 @@ import fs from 'fs';
 import path from 'path';
 
 const projectRoot = path.join(__dirname, 'fixtures');
-const filePath = path.join(projectRoot, 'test.iss3');
+const filePath = path.join(projectRoot, 'test.iss4');
 
 describe('editorconfig', () => {
 	let textEditor;
@@ -49,7 +49,8 @@ describe('editorconfig', () => {
 
 	describe('Atom being set to insert **no** final newline', () => {
 		beforeEach(() => {
-			textEditor.getBuffer().editorconfig.insertFinalNewline = false;
+			// eslint-disable-next-line camelcase
+			textEditor.getBuffer().editorconfig.settings.insert_final_newline = false;
 		});
 
 		it('should leave the missing newline.', () => {
@@ -61,8 +62,10 @@ describe('editorconfig', () => {
 
 	describe('Atom being set to insert final newline', () => {
 		beforeEach(() => {
-			textEditor.getBuffer().editorconfig.insertFinalNewline = true;
-			textEditor.getBuffer().editorconfig.preferredLineEnding = '\n';
+			// eslint-disable-next-line camelcase
+			textEditor.getBuffer().editorconfig.settings.insert_final_newline = true;
+			// eslint-disable-next-line camelcase
+			textEditor.getBuffer().editorconfig.settings.end_of_line = '\n';
 		});
 
 		it('should insert a final newline.', () => {

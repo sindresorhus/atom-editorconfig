@@ -49,7 +49,8 @@ describe('when saving a file with trailing whitespaces', () => {
 
 	describe('Atom being set to leave trailing whitespaces', () => {
 		beforeEach(() => {
-			textEditor.getBuffer().editorconfig.trimTrailingWhitespace = false;
+			// eslint-disable-next-line camelcase
+			textEditor.getBuffer().editorconfig.settings.trim_trailing_whitespace = false;
 		});
 
 		it('should leave the trailing whitespaces.', () => {
@@ -61,7 +62,8 @@ describe('when saving a file with trailing whitespaces', () => {
 
 	describe('Atom being set to strip trailing whitespaces', () => {
 		beforeEach(() => {
-			textEditor.getBuffer().editorconfig.trimTrailingWhitespace = true;
+			// eslint-disable-next-line camelcase
+			textEditor.getBuffer().editorconfig.settings.trim_trailing_whitespace = true;
 		});
 
 		it('should remove the trailing whitespaces.', () => {
