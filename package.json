@@ -34,7 +34,8 @@
   "xo": {
     "esnext": true,
     "globals": [
-      "atom"
+      "atom",
+      "document"
     ],
     "ignores": [
       "atom/**"
