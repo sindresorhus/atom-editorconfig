@@ -3,14 +3,20 @@ import generateConfig from './commands/generate';
 
 const lazyReq = require('lazy-req')(require);
 
+const {File} = lazyReq('atom')('File');
 const statusTile = lazyReq('./lib/statustile-view');
 const editorconfig = lazyReq('editorconfig');
+const fs = lazyReq('fs-plus');
 
 const STATES = ['subtle', 'success', 'info', 'warning', 'error'];
 const BLACKLISTED_PACKAGES = {
 	whitespace: ['insert_final_newline', 'trim_trailing_whitespace']
 };
 
+const observedEditorconfigs = {};
+
+// Sets the state of the embedded editorconfig
+// This includes the severity (info, warning..) as well as the notification-messages for users
 function setState(ecfg) {
 	const messages = [];
 	let statcon = 0;
@@ -64,6 +70,13 @@ function setState(ecfg) {
 	ecfg.messages = messages;
 	ecfg.state = STATES[statcon];
 	statusTile().update(ecfg.state);
+}
+
+function reapplyEditorconfig() {
+	const textEditors = atom.workspace.getTextEditors();
+	for (const index in textEditors) {
+		observeTextEditor(textEditors[index]);
+	}
 }
 
 function observeActivePaneItem(editor) {
@@ -157,10 +170,13 @@ function initializeTextBuffer(buffer) {
 		};
 
 		buffer.onWillSave(buffer.editorconfig.onWillSave.bind(buffer.editorconfig));
+		if (buffer.getUri().match(/[\\|\/]\.editorconfig$/g) !== null) {
+			buffer.onDidSave(reapplyEditorconfig);
+		}
 	}
 }
 
-function observeTextEditors(editor) {
+function observeTextEditor(editor) {
 	if (!editor) {
 		return;
 	}
@@ -223,8 +239,11 @@ function observeTextEditors(editor) {
 
 const activate = () => {
 	generateConfig();
-	atom.workspace.observeTextEditors(observeTextEditors);
+	atom.workspace.observeTextEditors(observeTextEditor);
 	atom.workspace.observeActivePaneItem(observeActivePaneItem);
+
+	//atom.project.onDidChangePaths(observePaths);
+	//observePaths();
 };
 
 const consumeStatusBar = statusBar => {
