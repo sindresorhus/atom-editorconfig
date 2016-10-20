@@ -159,9 +159,7 @@ function initializeTextBuffer(buffer) {
 						if (settings.end_of_line !== 'auto') {
 							eol = settings.end_of_line;
 						}
-						if (getText().endsWith(eol) === false) {
-							finalText = getText().concat(eol);
-						}
+						finalText = getText().replace(/[\n\r]+$/g, '').concat(eol);
 					} else {
 						while (getText().length > 0 &&
 								getText().charAt(getText().length - 1).search(/\r|\n/) > -1) {
