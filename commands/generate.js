@@ -31,6 +31,15 @@ const init = () => {
 	const endOfLine = process.platform === 'win32' ? 'crlf' : 'lf';
 	const charset = conf.core.fileEncoding.replace('utf8', 'utf-8') || 'utf-8';
 
+	const removeTrailingWhitespace = (
+		(atom.config.get('whitespace.removeTrailingWhitespace') && 'true') ||
+		'false'
+	);
+	const ensureFinalNewline = (
+		(atom.config.get('whitespace.ensureSingleTrailingNewline') && 'true') ||
+		'false'
+	);
+
 	const ret =
 `root = true
 
@@ -38,8 +47,8 @@ const init = () => {
 ${indent}
 end_of_line = ${endOfLine}
 charset = ${charset}
-trim_trailing_whitespace = ${conf.whitespace.removeTrailingWhitespace}
-insert_final_newline = ${conf.whitespace.ensureSingleTrailingNewline}
+trim_trailing_whitespace = ${removeTrailingWhitespace}
+insert_final_newline = ${ensureFinalNewline}
 
 [*.md]
 trim_trailing_whitespace = false
