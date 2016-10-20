@@ -100,6 +100,8 @@ function observeActivePaneItem(editor) {
 		if (editor.getBuffer().editorconfig) {
 			editor.getBuffer().editorconfig.applySettings();
 		}
+	} else {
+		statusTile().update('subtle');
 	}
 }
 
