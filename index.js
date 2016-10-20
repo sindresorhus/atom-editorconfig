@@ -3,17 +3,16 @@ import generateConfig from './commands/generate';
 
 const lazyReq = require('lazy-req')(require);
 
-const {File} = lazyReq('atom')('File');
 const statusTile = lazyReq('./lib/statustile-view');
 const editorconfig = lazyReq('editorconfig');
-const fs = lazyReq('fs-plus');
 
 const STATES = ['subtle', 'success', 'info', 'warning', 'error'];
+
+// Holds all **blacklisted** packages and the properties we assume are affected by them
+// 'packagename': [properties]
 const BLACKLISTED_PACKAGES = {
 	whitespace: ['insert_final_newline', 'trim_trailing_whitespace']
 };
-
-const observedEditorconfigs = {};
 
 // Sets the state of the embedded editorconfig
 // This includes the severity (info, warning..) as well as the notification-messages for users
@@ -21,6 +20,7 @@ function setState(ecfg) {
 	const messages = [];
 	let statcon = 0;
 
+	// Check if any editorconfig-setting is in use
 	if (Object.keys(ecfg.settings).reduce((prev, curr) => {
 		return ecfg.settings[curr] !== 'auto' || prev;
 	}, false)) {
@@ -67,18 +67,34 @@ function setState(ecfg) {
 		statcon = Math.max(statcon, 3);
 	}
 
+	switch (statcon) {
+		case 1:
+			messages.push(`The editorconfig was applied successfully and the editor for this file
+			should work as expected. If you face any unexpected behavior please report us the issue.
+			♥️`);
+			break;
+		case 0:
+			messages.push(`For this file were no editorconfig-settings applied.`);
+			break;
+		default:
+			break;
+	}
+
+	// Apply changes
 	ecfg.messages = messages;
 	ecfg.state = STATES[statcon];
 	statusTile().update(ecfg.state);
 }
 
+// Reapplies the whole editorconfig to **all** open TextEditor-instances
 function reapplyEditorconfig() {
 	const textEditors = atom.workspace.getTextEditors();
-	for (const index in textEditors) {
+	for (const index in textEditors) { // eslint-disable-line guard-for-in
 		observeTextEditor(textEditors[index]);
 	}
 }
 
+// Reapplies the settings immediately after changing the focus to a new pane
 function observeActivePaneItem(editor) {
 	if (editor && editor.constructor.name === 'TextEditor') {
 		if (editor.getBuffer().editorconfig) {
@@ -87,6 +103,7 @@ function observeActivePaneItem(editor) {
 	}
 }
 
+// Initializes the (into the TextBuffer-instance) embedded editorconfig-object
 function initializeTextBuffer(buffer) {
 	if ('editorconfig' in buffer === false) {
 		buffer.editorconfig = {
@@ -101,6 +118,7 @@ function initializeTextBuffer(buffer) {
 				charset: 'auto' // eslint-disable-line camelcase
 			},
 
+			// Applies the settings to the buffer and the corresponding editor
 			applySettings() {
 				const editor = atom.workspace.getActiveTextEditor();
 				const settings = this.settings;
@@ -122,8 +140,8 @@ function initializeTextBuffer(buffer) {
 				setState(this);
 			},
 
-			// onWillSave-Handler
-			// trims whitespaces and inserts/strips final newline before saving
+			// onWillSave-Event-Handler
+			// Trims whitespaces and inserts/strips final newline before saving
 			onWillSave() {
 				const settings = this.settings;
 				let finalText;
@@ -170,12 +188,13 @@ function initializeTextBuffer(buffer) {
 		};
 
 		buffer.onWillSave(buffer.editorconfig.onWillSave.bind(buffer.editorconfig));
-		if (buffer.getUri().match(/[\\|\/]\.editorconfig$/g) !== null) {
+		if (buffer.getUri() && buffer.getUri().match(/[\\|\/]\.editorconfig$/g) !== null) {
 			buffer.onDidSave(reapplyEditorconfig);
 		}
 	}
 }
 
+// Reveal and apply the editorconfig for the given TextEditor-instance
 function observeTextEditor(editor) {
 	if (!editor) {
 		return;
@@ -205,17 +224,20 @@ function observeTextEditor(editor) {
 
 		// Carefully normalize and initialize config-settings
 		// eslint-disable-next-line camelcase
-		settings.trim_trailing_whitespace = ('trim_trailing_whitespace' in config) ?
-			config.trim_trailing_whitespace :
+		settings.trim_trailing_whitespace = ('trim_trailing_whitespace' in config) &&
+			typeof config.trim_trailing_whitespace === 'boolean' ?
+			config.trim_trailing_whitespace === true :
 			'auto';
 
 		// eslint-disable-next-line camelcase
-		settings.insert_final_newline = ('insert_final_newline' in config) ?
-			config.insert_final_newline :
+		settings.insert_final_newline = ('insert_final_newline' in config) &&
+			typeof config.insert_final_newline === 'boolean' ?
+			config.insert_final_newline === true :
 			'auto';
 
 		// eslint-disable-next-line camelcase
-		settings.indent_style = config.indent_style.search(/^(space|tab)$/) > -1 ?
+		settings.indent_style = (('indent_style' in config) &&
+			config.indent_style.search(/^(space|tab)$/) > -1) ?
 			config.indent_style :
 			'auto';
 
@@ -234,18 +256,19 @@ function observeTextEditor(editor) {
 
 		// Apply initially
 		ecfg.applySettings();
+	}).catch(Error, e => {
+		console.warn(`atom-editorconfig: ${e}`);
 	});
 }
 
+// Hook into the events to recognize the user opening new editors or changing the pane
 const activate = () => {
 	generateConfig();
 	atom.workspace.observeTextEditors(observeTextEditor);
 	atom.workspace.observeActivePaneItem(observeActivePaneItem);
-
-	//atom.project.onDidChangePaths(observePaths);
-	//observePaths();
 };
 
+// Apply the statusbar icon
 const consumeStatusBar = statusBar => {
 	statusBar.addRightTile({
 		item: statusTile().create(),
