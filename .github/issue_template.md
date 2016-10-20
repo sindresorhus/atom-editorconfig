@@ -1,8 +1,20 @@
-I am a nice person filing an feedback, idea or issue! :heart:
+Thank you very much for contributing! :heart: Leave us any feedback, idea or issue -- we are trying hard to improve atom-editorconfig!
 
-Because I'd like you to take a look on the following unexpected behavior, I...
 
-- [ ] provide a list of installed packages (try `apm list`),
-- [ ] provide possibly involved `.editorconfig`-files,
-- [ ] described exactly which behavior was **expected** and **what happened** instead and
-- [ ] send you some virtual :candy: to make you happy.
+### Involved .editorconfig-files
+
+```
+Please replace this by the content of the involved .editorconfig/s
+```
+
+### Directory structure
+
+```
+Please replace this by the output of `tree -a .` or `tree . \f`
+```
+
+### Installed packages
+
+```
+Please replace this by the output of `apm list`
+```

@@ -2,7 +2,7 @@
 
 > [EditorConfig](http://editorconfig.org) helps developers maintaining consistent coding styles between different editors.
 
->> "My Fievel. I thought I would never see you again." -- Papa Mousekewitz
+> "My Fievel. I thought I would never see you again." -- Papa Mousekewitz
 
 ![](fievel-mousekewitz48.gif)
 
@@ -32,16 +32,16 @@ See the EditorConfig [documentation](http://editorconfig.org).
 - `trim_trailing_whitespace` *(supported values: `true`, `false`)*
 - `insert_final_newline` *(supported values: `true`, `false`; Setting this to `false` strips final newlines)*
 
->> Any malformed or missing property is set to `auto` which leaves the control to Atom.
+> :bulb: Any malformed or missing property is set to `auto` which leaves the control to Atom.
 
 ## Features
 
 - Applies the above settings from your `.editorconfig` file
 - Syntax highlights `.editorconfig` files
 - Ability to [generate](#generate-config) an `.editorconfig` file based on the current settings
-- Displays a nifty :mouse: in the statusBar whose color shows you if editorconfig takes action for tyour current editor-pane.
-- Clicking on the :mouse: displays a descriptive summary about the current state of editorconfig.
-- Recognizes if you save any `.editorconfig`-file and reapplies all settings to **all** opened editor-panes.
+- Displays a nifty :mouse: in the statusBar whose color shows you if editorconfig takes action for tyour current editor-pane
+- Clicking on the :mouse: displays a descriptive summary about the current state of editorconfig
+- Recognizes if you save any `.editorconfig`-file and reapplies all settings to **all** opened editor-panes
 
 
 ## Example file
@@ -75,10 +75,10 @@ You can generate an `.editorconfig` file based on the current setting by opening
 We're sorry to hear you have troubles using atom-editorconfig! However, we are aware of some caveats:
 
 - **Why isn't editorconfig applying the indentation character to my files?** Editorconfig is not intended to do so, it will apply the indentation-char only to *new* indentations.
-- **Why is the `indent_style` completely not working?** Your Atom's config setting "Tab Type" might be set either to `soft` or `hard`, this unfortunately prevents editorconfig from influencing the indentaion style. Set Atom's "Tab Type" to `auto` to fix that.
+- **Why is the `indent_style` completely not working?** Your Atom's config setting "Tab Type" might be set either to `soft` or `hard`, this unfortunately prevents editorconfig from influencing the indentation style. Set Atom's "Tab Type" to `auto` to fix that.
 - **Why is the feature _X_ not working?** Sometimes other packages (f.e. like the "whitespace"-package) override the editorconfig-settings. You might try to fix this by deactivating the package in your settings. We try to "warn" you about confirmed interferences caused by other packages. If you face any unknown troubles, please give us a hint.
 
->> You can check how editorconfig affects your current file by clicking the :mouse: in the statusbar!
+> :bulb: You can check how editorconfig affects your current file by clicking the :mouse: in the statusbar!
 
 ## Help us getting better
 
