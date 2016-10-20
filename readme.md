@@ -4,7 +4,7 @@
 
 > "My Fievel. I thought I would never see you again." -- Papa Mousekewitz
 
-![](https://github.com/sindresorhus/atom-editorconfig/blob/master/fievel-mousekewitz48.gif)
+![](https://raw.githubusercontent.com/sindresorhus/atom-editorconfig/master/fievel-mousekewitz48.gif)
 
 
 

@@ -155,8 +155,12 @@ function initializeTextBuffer(buffer) {
 
 				if (settings.insert_final_newline !== 'auto') {
 					if (settings.insert_final_newline) {
-						if (getText().endsWith(settings.end_of_line) === false) {
-							finalText = getText().concat(settings.end_of_line);
+						let eol = '\n';
+						if (settings.end_of_line !== 'auto') {
+							eol = settings.end_of_line;
+						}
+						if (getText().endsWith(eol) === false) {
+							finalText = getText().concat(eol);
 						}
 					} else {
 						while (getText().length > 0 &&
