@@ -178,7 +178,10 @@ function initializeTextBuffer(buffer) {
 						preservedPosition = activeTextEditor.getCursorBufferPosition();
 					}
 
-					buffer.setText(finalText);
+					buffer.setTextInRange(buffer.getRange(), finalText, {
+						normalizeLineEndings: false,
+						undo: 'skip'
+					});
 
 					if (preservedPosition &&
 						activeTextEditor &&
