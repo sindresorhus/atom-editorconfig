@@ -38,8 +38,8 @@ describe('editorconfig', () => {
 		expect(textEditor.getSoftTabs()).toBeTruthy();
 	});
 
-	it('should have set the indent_size to 4 characters', () => {
-		expect(textEditor.getTabLength()).toEqual(4);
+	it('should have set the indent_size to 2 characters', () => {
+		expect(textEditor.getTabLength()).toEqual(2);
 	});
 
 	it('should have set the end_of_line-character to "lf"', () => {
