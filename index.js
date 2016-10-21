@@ -146,49 +146,29 @@ function initializeTextBuffer(buffer) {
 			// Trims whitespaces and inserts/strips final newline before saving
 			onWillSave() {
 				const settings = this.settings;
-				let finalText;
-				const getText = () => {
-					return finalText || buffer.getText();
-				};
 
 				if (settings.trim_trailing_whitespace === true) {
-					finalText = getText().replace(/([ \t]+)$/gm, '');
+					// eslint-disable-next-line max-params
+					buffer.backwardsScan(/[ \t]+$/m, params => {
+						if (params.match[0].length > 0) {
+							params.replace('');
+						}
+					});
 				}
 
 				if (settings.insert_final_newline !== 'auto') {
-					if (settings.insert_final_newline) {
-						let eol = '\n';
-						if (settings.end_of_line !== 'auto') {
-							eol = settings.end_of_line;
-						}
-						finalText = getText().replace(/[\n\r]+$/g, '').concat(eol);
-					} else {
-						while (getText().length > 0 &&
-								getText().charAt(getText().length - 1).search(/\r|\n/) > -1) {
-							finalText = getText().slice(0, -1);
+					const lastRow = buffer.getLineCount() - 1;
+
+					if (buffer.isRowBlank(lastRow)) {
+						const previousNonBlankRow = buffer.previousNonBlankRow(lastRow);
+
+						// Strip empty lines from the end
+						if (previousNonBlankRow < lastRow) {
+							buffer.deleteRows(previousNonBlankRow + 1, lastRow);
 						}
 					}
-				}
-
-				if (finalText !== undefined) {
-					// Preserve cursor-position of active editor
-					let preservedPosition;
-					const activeTextEditor = atom.workspace.getActiveTextEditor();
-					if (activeTextEditor) {
-						preservedPosition = activeTextEditor.getCursorBufferPosition();
-					}
-
-					buffer.setTextInRange(buffer.getRange(), finalText, {
-						normalizeLineEndings: false,
-						undo: 'skip'
-					});
-
-					if (preservedPosition &&
-						activeTextEditor &&
-						activeTextEditor.getBuffer() === buffer) {
-						const row = Math.min(preservedPosition.row, buffer.getLineCount() - 1);
-						const column = Math.min(preservedPosition.column, buffer.lineLengthForRow(row));
-						activeTextEditor.setCursorBufferPosition([row, column]);
+					if (settings.insert_final_newline === true) {
+						buffer.append('\n');
 					}
 				}
 			}
