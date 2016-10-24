@@ -38,7 +38,7 @@
     ]
   }
   {
-    'match': '(indent_style)\\s*(=)\\s*(tab|space)\\b'
+    'match': '(indent_style)\\s*(=)\\s*([Tt][Aa][Bb]|[Ss][Pp][Aa][Cc][Ee])\\b'
     'captures':
       '1':
         'name': 'keyword.other.definition.indent_style.ini'
@@ -48,7 +48,7 @@
         'name': 'variable.parameter.indent_style.ini'
   }
   {
-    'match': '(indent_size)\\s*(=)\\s*(\\d+|tab)\\b'
+    'match': '(indent_size)\\s*(=)\\s*(\\d+|[Tt][Aa][Bb])\\b'
     'captures':
       '1':
         'name': 'keyword.other.definition.indent_size.ini'
@@ -68,7 +68,7 @@
         'name': 'variable.parameter.tab_width.ini'
   }
   {
-    'match': '(end_of_line)\\s*(=)\\s*(lf|cr|crlf)\\b'
+    'match': '(end_of_line)\\s*(=)\\s*([Ll][Ff]|[Cc][Rr]|[Cc][Rr][Ll][Ff])\\b'
     'captures':
       '1':
         'name': 'keyword.other.definition.end_of_line.ini'
@@ -78,7 +78,7 @@
         'name': 'variable.parameter.end_of_line.ini'
   }
   {
-    'match': '(charset)\\s*(=)\\s*(latin1|utf-8|utf-16[bl]e)\\b'
+    'match': '(charset)\\s*(=)\\s*([Ll][Aa][Tt][Ii][Nn]1|[Uu][Tt][Ff]-8|[Uu][Tt][Ff]-16[BLbl][Ee])\\b'
     'captures':
       '1':
         'name': 'keyword.other.definition.charset.ini'
@@ -88,7 +88,7 @@
         'name': 'variable.parameter.charset.ini'
   }
   {
-    'match': '(trim_trailing_whitespace)\\s*(=)\\s*(true|false)\\b'
+    'match': '(trim_trailing_whitespace)\\s*(=)\\s*([Tt][Rr][Uu][Ee]|[Ff][Aa][Ll][Ss][Ee])\\b'
     'captures':
       '1':
         'name': 'keyword.other.definition.trim_trailing_whitespace.ini'
@@ -98,7 +98,7 @@
         'name': 'variable.parameter.trim_trailing_whitespace.ini'
   }
   {
-    'match': '(insert_final_newline)\\s*(=)\\s*(true|false)\\b'
+    'match': '(insert_final_newline)\\s*(=)\\s*([Tt][Rr][Uu][Ee]|[Ff][Aa][Ll][Ss][Ee])\\b'
     'captures':
       '1':
         'name': 'keyword.other.definition.insert_final_newline.ini'
@@ -108,7 +108,7 @@
         'name': 'variable.parameter.insert_final_newline.ini'
   }
   {
-    'match': '(root)\\s*(=)\\s*(true|false)\\b'
+    'match': '(root)\\s*(=)\\s*([Tt][Rr][Uu][Ee]|[Ff][Aa][Ll][Ss][Ee])\\b'
     'captures':
       '1':
         'name': 'keyword.other.definition.root.ini'
