@@ -38,12 +38,84 @@
     ]
   }
   {
+    'match': '(indent_style)\\s*(=)\\s*([Tt][Aa][Bb]|[Ss][Pp][Aa][Cc][Ee])\\b'
     'captures':
       '1':
-        'name': 'keyword.other.definition.ini'
+        'name': 'keyword.other.definition.indent_style.ini'
       '2':
         'name': 'punctuation.separator.key-value.ini'
-    'match': '\\b([a-zA-Z0-9_.-]+)\\b\\s*(=)'
+      '3':
+        'name': 'variable.parameter.indent_style.ini'
+  }
+  {
+    'match': '(indent_size)\\s*(=)\\s*(\\d+|[Tt][Aa][Bb])\\b'
+    'captures':
+      '1':
+        'name': 'keyword.other.definition.indent_size.ini'
+      '2':
+        'name': 'punctuation.separator.key-value.ini'
+      '3':
+        'name': 'variable.parameter.indent_size.ini'
+  }
+  {
+    'match': '(tab_width)\\s*(=)\\s*(\\d+)\\b'
+    'captures':
+      '1':
+        'name': 'keyword.other.definition.tab_width.ini'
+      '2':
+        'name': 'punctuation.separator.key-value.ini'
+      '3':
+        'name': 'variable.parameter.tab_width.ini'
+  }
+  {
+    'match': '(end_of_line)\\s*(=)\\s*([Ll][Ff]|[Cc][Rr]|[Cc][Rr][Ll][Ff])\\b'
+    'captures':
+      '1':
+        'name': 'keyword.other.definition.end_of_line.ini'
+      '2':
+        'name': 'punctuation.separator.key-value.ini'
+      '3':
+        'name': 'variable.parameter.end_of_line.ini'
+  }
+  {
+    'match': '(charset)\\s*(=)\\s*([Ll][Aa][Tt][Ii][Nn]1|[Uu][Tt][Ff]-8|[Uu][Tt][Ff]-16[BLbl][Ee])\\b'
+    'captures':
+      '1':
+        'name': 'keyword.other.definition.charset.ini'
+      '2':
+        'name': 'punctuation.separator.key-value.ini'
+      '3':
+        'name': 'variable.parameter.charset.ini'
+  }
+  {
+    'match': '(trim_trailing_whitespace)\\s*(=)\\s*([Tt][Rr][Uu][Ee]|[Ff][Aa][Ll][Ss][Ee])\\b'
+    'captures':
+      '1':
+        'name': 'keyword.other.definition.trim_trailing_whitespace.ini'
+      '2':
+        'name': 'punctuation.separator.key-value.ini'
+      '3':
+        'name': 'variable.parameter.trim_trailing_whitespace.ini'
+  }
+  {
+    'match': '(insert_final_newline)\\s*(=)\\s*([Tt][Rr][Uu][Ee]|[Ff][Aa][Ll][Ss][Ee])\\b'
+    'captures':
+      '1':
+        'name': 'keyword.other.definition.insert_final_newline.ini'
+      '2':
+        'name': 'punctuation.separator.key-value.ini'
+      '3':
+        'name': 'variable.parameter.insert_final_newline.ini'
+  }
+  {
+    'match': '(root)\\s*(=)\\s*([Tt][Rr][Uu][Ee]|[Ff][Aa][Ll][Ss][Ee])\\b'
+    'captures':
+      '1':
+        'name': 'keyword.other.definition.root.ini'
+      '2':
+        'name': 'punctuation.separator.key-value.ini'
+      '3':
+        'name': 'variable.parameter.root.ini'
   }
   {
     'captures':
