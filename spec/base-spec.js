@@ -34,6 +34,17 @@ describe('editorconfig', () => {
 		expect(isAvailable).toBeTruthy();
 	});
 
+	it('should provide the EditorConfig:show-state command', () => {
+		let isAvailable = false;
+		atom.commands.findCommands({target: atom.views.getView(atom.workspace)})
+			.forEach(command => {
+				if (command.name === 'EditorConfig:show-state') {
+					isAvailable = true;
+				}
+			});
+		expect(isAvailable).toBeTruthy();
+	});
+
 	it('should have set the indent_style to "space"', () => {
 		expect(textEditor.getSoftTabs()).toBeTruthy();
 	});

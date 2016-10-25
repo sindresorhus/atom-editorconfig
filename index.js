@@ -1,7 +1,10 @@
 /** @babel */
 import generateConfig from './commands/generate';
+import showState from './commands/show';
 
 const lazyReq = require('lazy-req')(require);
+
+const atm = lazyReq('atom');
 
 const statusTile = lazyReq('./lib/statustile-view');
 const editorconfig = lazyReq('editorconfig');
@@ -83,15 +86,15 @@ function setState(ecfg) {
 	// Apply changes
 	ecfg.messages = messages;
 	ecfg.state = STATES[statcon];
-	statusTile().update(ecfg.state);
+	statusTile().updateIcon(ecfg.state);
 }
 
 // Reapplies the whole editorconfig to **all** open TextEditor-instances
 function reapplyEditorconfig() {
 	const textEditors = atom.workspace.getTextEditors();
-	for (const index in textEditors) { // eslint-disable-line guard-for-in
-		observeTextEditor(textEditors[index]);
-	}
+	textEditors.forEach(editor => {
+		observeTextEditor(editor);
+	});
 }
 
 // Reapplies the settings immediately after changing the focus to a new pane
@@ -101,7 +104,7 @@ function observeActivePaneItem(editor) {
 			editor.getBuffer().editorconfig.applySettings();
 		}
 	} else {
-		statusTile().update('subtle');
+		statusTile().removeIcon();
 	}
 }
 
@@ -110,6 +113,7 @@ function initializeTextBuffer(buffer) {
 	if ('editorconfig' in buffer === false) {
 		buffer.editorconfig = {
 			buffer, // preserving a reference to the parent TextBuffer
+			disposables: new (atm().CompositeDisposable)(),
 			state: 'subtle',
 			settings: {
 				trim_trailing_whitespace: 'auto', // eslint-disable-line camelcase
@@ -174,9 +178,13 @@ function initializeTextBuffer(buffer) {
 			}
 		};
 
-		buffer.onWillSave(buffer.editorconfig.onWillSave.bind(buffer.editorconfig));
+		buffer.editorconfig.disposables.add(
+			buffer.onWillSave(buffer.editorconfig.onWillSave.bind(buffer.editorconfig))
+		);
 		if (buffer.getUri() && buffer.getUri().match(/[\\|\/]\.editorconfig$/g) !== null) {
-			buffer.onDidSave(reapplyEditorconfig);
+			buffer.editorconfig.disposables.add(
+				buffer.onDidSave(reapplyEditorconfig)
+			);
 		}
 	}
 }
@@ -254,16 +262,29 @@ function observeTextEditor(editor) {
 // Hook into the events to recognize the user opening new editors or changing the pane
 const activate = () => {
 	generateConfig();
+	showState();
 	atom.workspace.observeTextEditors(observeTextEditor);
 	atom.workspace.observeActivePaneItem(observeActivePaneItem);
 };
 
-// Apply the statusbar icon
-const consumeStatusBar = statusBar => {
-	statusBar.addRightTile({
-		item: statusTile().create(),
-		priority: 999
+// Clean the status-icon up, remove all embedded editorconfig-objects
+const deactivate = () => {
+	const textEditors = atom.workspace.getTextEditors();
+	textEditors.forEach(editor => {
+		editor.getBuffer().editorconfig.disposables.dispose();
 	});
+	statusTile().removeIcon();
 };
 
-export default {activate, consumeStatusBar};
+// Apply the statusbar icon-container
+// The icon will be applied if needed
+const consumeStatusBar = statusBar => {
+	if (statusTile().containerExists() === false) {
+		statusBar.addRightTile({
+			item: statusTile().createContainer(),
+			priority: 999
+		});
+	}
+};
+
+export default {activate, deactivate, consumeStatusBar};
