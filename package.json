@@ -1,6 +1,6 @@
 {
   "name": "editorconfig",
-  "version": "1.5.4",
+  "version": "1.6.0",
   "description": "Helps developers maintain consistent coding styles between different editors",
   "license": "MIT",
   "repository": "sindresorhus/atom-editorconfig",
