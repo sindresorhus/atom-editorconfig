@@ -41,120 +41,100 @@
       "name": "comment.line.semicolon.editorconfig"
     }]
   }, {
-    "match": "(indent_style)\\s*(=)\\s*([Tt][Aa][Bb]|[Ss][Pp][Aa][Cc][Ee])\\b",
+    "match": "(?i)(indent_style)\\s*(=)\\s*(tab|space)\\b",
     "captures": {
       "1": {
-        "name": "keyword.other.definition.indent_style.editorconfig"
+        "name": "keyword.other.definition.$1.editorconfig"
       },
       "2": {
         "name": "punctuation.separator.key-value.editorconfig"
       },
       "3": {
-        "name": "variable.parameter.indent_style.editorconfig"
+        "name": "constant.language.$1.editorconfig"
       }
     }
   }, {
-    "match": "(indent_size)\\s*(=)\\s*(\\d+|[Tt][Aa][Bb])\\b",
+    "match": "(?i)(indent_size)\\s*(=)\\s*(?:(\\d+)|(tab))\\b",
     "captures": {
       "1": {
-        "name": "keyword.other.definition.indent_size.editorconfig"
+        "name": "keyword.other.definition.$1.editorconfig"
       },
       "2": {
         "name": "punctuation.separator.key-value.editorconfig"
       },
       "3": {
-        "name": "variable.parameter.indent_size.editorconfig"
+        "name": "constant.numeric.$1.editorconfig"
+      },
+      "4": {
+        "name": "constant.language.$1.editorconfig"
       }
     }
   }, {
-    "match": "(tab_width)\\s*(=)\\s*(\\d+)\\b",
+    "match": "(?i)(tab_width)\\s*(=)\\s*(\\d+)\\b",
     "captures": {
       "1": {
-        "name": "keyword.other.definition.tab_width.editorconfig"
+        "name": "keyword.other.definition.$1.editorconfig"
       },
       "2": {
         "name": "punctuation.separator.key-value.editorconfig"
       },
       "3": {
-        "name": "variable.parameter.tab_width.editorconfig"
+        "name": "constant.numeric.$1.editorconfig"
       }
     }
   }, {
-    "match": "(max_line_length)\\s*(=)\\s*(\\d+|[Oo][Ff][Ff])\\b",
+    "match": "(?i)(max_line_length)\\s*(=)\\s*(?:(\\d+)|(Off))\\b",
     "captures": {
       "1": {
-        "name": "keyword.other.definition.tab_width.editorconfig"
+        "name": "keyword.other.definition.$1.editorconfig"
       },
       "2": {
         "name": "punctuation.separator.key-value.editorconfig"
       },
       "3": {
-        "name": "variable.parameter.tab_width.editorconfig"
+        "name": "constant.numeric.$1.editorconfig"
+      },
+      "4": {
+        "name": "constant.language.boolean.false.editorconfig"
       }
     }
   }, {
-    "match": "(end_of_line)\\s*(=)\\s*([Ll][Ff]|[Cc][Rr]|[Cc][Rr][Ll][Ff])\\b",
+    "match": "(?i)(end_of_line)\\s*(=)\\s*(LF|CR|CRLF)\\b",
     "captures": {
       "1": {
-        "name": "keyword.other.definition.end_of_line.editorconfig"
+        "name": "keyword.other.definition.$1.editorconfig"
       },
       "2": {
         "name": "punctuation.separator.key-value.editorconfig"
       },
       "3": {
-        "name": "variable.parameter.end_of_line.editorconfig"
+        "name": "constant.language.$1.editorconfig"
       }
     }
   }, {
-    "match": "(charset)\\s*(=)\\s*([Ll][Aa][Tt][Ii][Nn]1|[Uu][Tt][Ff]-8|[Uu][Tt][Ff]-16[BLbl][Ee])\\b",
+    "match": "(?i)(charset)\\s*(=)\\s*(Latin1|UTF-8|UTF-16[BL]E)\\b",
     "captures": {
       "1": {
-        "name": "keyword.other.definition.charset.editorconfig"
+        "name": "keyword.other.definition.$1.editorconfig"
       },
       "2": {
         "name": "punctuation.separator.key-value.editorconfig"
       },
       "3": {
-        "name": "variable.parameter.charset.editorconfig"
+        "name": "constant.language.$1.editorconfig"
       }
     }
   }, {
-    "match": "(trim_trailing_whitespace)\\s*(=)\\s*([Tt][Rr][Uu][Ee]|[Ff][Aa][Ll][Ss][Ee])\\b",
+    "match": "(?i)(insert_final_newline|root|trim_trailing_whitespace)\\s*(=)\\s*(true|false)\\b",
     "captures": {
       "1": {
-        "name": "keyword.other.definition.trim_trailing_whitespace.editorconfig"
+        "name": "keyword.other.definition.$1.editorconfig"
       },
       "2": {
         "name": "punctuation.separator.key-value.editorconfig"
       },
       "3": {
-        "name": "variable.parameter.trim_trailing_whitespace.editorconfig"
-      }
-    }
-  }, {
-    "match": "(insert_final_newline)\\s*(=)\\s*([Tt][Rr][Uu][Ee]|[Ff][Aa][Ll][Ss][Ee])\\b",
-    "captures": {
-      "1": {
-        "name": "keyword.other.definition.insert_final_newline.editorconfig"
-      },
-      "2": {
-        "name": "punctuation.separator.key-value.editorconfig"
-      },
-      "3": {
-        "name": "variable.parameter.insert_final_newline.editorconfig"
-      }
-    }
-  }, {
-    "match": "(root)\\s*(=)\\s*([Tt][Rr][Uu][Ee]|[Ff][Aa][Ll][Ss][Ee])\\b",
-    "captures": {
-      "1": {
-        "name": "keyword.other.definition.root.editorconfig"
-      },
-      "2": {
-        "name": "punctuation.separator.key-value.editorconfig"
-      },
-      "3": {
-        "name": "variable.parameter.root.editorconfig"
+        "name": "constant.language.boolean.${3:/downcase}.editorconfig"
       }
     }
   }, {
