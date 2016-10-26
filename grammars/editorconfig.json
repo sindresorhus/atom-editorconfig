@@ -41,7 +41,7 @@
       "name": "comment.line.semicolon.editorconfig"
     }]
   }, {
-    "match": "(indent_style)\\s*(=)\\s*((?i)tab|space)\\b",
+    "match": "(?i)(indent_style)\\s*(=)\\s*(tab|space)\\b",
     "captures": {
       "1": {
         "name": "keyword.other.definition.$1.editorconfig"
@@ -54,7 +54,7 @@
       }
     }
   }, {
-    "match": "(indent_size)\\s*(=)\\s*(?i:(\\d+)|(tab))\\b",
+    "match": "(?i)(indent_size)\\s*(=)\\s*(?:(\\d+)|(tab))\\b",
     "captures": {
       "1": {
         "name": "keyword.other.definition.$1.editorconfig"
@@ -70,7 +70,7 @@
       }
     }
   }, {
-    "match": "(tab_width)\\s*(=)\\s*(\\d+)\\b",
+    "match": "(?i)(tab_width)\\s*(=)\\s*(\\d+)\\b",
     "captures": {
       "1": {
         "name": "keyword.other.definition.$1.editorconfig"
@@ -83,7 +83,7 @@
       }
     }
   }, {
-    "match": "(max_line_length)\\s*(=)\\s*(?i:(\\d+)|(Off))\\b",
+    "match": "(?i)(max_line_length)\\s*(=)\\s*(?:(\\d+)|(Off))\\b",
     "captures": {
       "1": {
         "name": "keyword.other.definition.$1.editorconfig"
@@ -99,7 +99,7 @@
       }
     }
   }, {
-    "match": "(end_of_line)\\s*(=)\\s*((?i)LF|CR|CRLF)\\b",
+    "match": "(?i)(end_of_line)\\s*(=)\\s*(LF|CR|CRLF)\\b",
     "captures": {
       "1": {
         "name": "keyword.other.definition.$1.editorconfig"
@@ -112,7 +112,7 @@
       }
     }
   }, {
-    "match": "(charset)\\s*(=)\\s*((?i)Latin1|UTF-8|UTF-16[BL]E)\\b",
+    "match": "(?i)(charset)\\s*(=)\\s*(Latin1|UTF-8|UTF-16[BL]E)\\b",
     "captures": {
       "1": {
         "name": "keyword.other.definition.$1.editorconfig"
@@ -125,7 +125,7 @@
       }
     }
   }, {
-    "match": "(insert_final_newline|root|trim_trailing_whitespace)\\s*(=)\\s*((?i)true|false)\\b",
+    "match": "(?i)(insert_final_newline|root|trim_trailing_whitespace)\\s*(=)\\s*(true|false)\\b",
     "captures": {
       "1": {
         "name": "keyword.other.definition.$1.editorconfig"
