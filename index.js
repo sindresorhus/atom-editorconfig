@@ -7,6 +7,7 @@ const lazyReq = require('lazy-req')(require);
 const atm = lazyReq('atom');
 
 const statusTile = lazyReq('./lib/statustile-view');
+const wrapGuide = lazyReq('./lib/wrapguide-view');
 const editorconfig = lazyReq('editorconfig');
 
 const STATES = ['subtle', 'success', 'info', 'warning', 'error'];
@@ -118,29 +119,81 @@ function initializeTextBuffer(buffer) {
 			settings: {
 				trim_trailing_whitespace: 'auto', // eslint-disable-line camelcase
 				insert_final_newline: 'auto', // eslint-disable-line camelcase
+				max_line_length: 'auto', // eslint-disable-line camelcase
 				end_of_line: 'auto', // eslint-disable-line camelcase
 				indent_style: 'auto', // eslint-disable-line camelcase
 				tab_width: 'auto', // eslint-disable-line camelcase
 				charset: 'auto' // eslint-disable-line camelcase
 			},
 
+			// Sets the given package active or inactive
+			setPackageState(name, active) {
+				if (atom.packages.isPackageActive(name) !== active) {
+					if (active === true) {
+						atom.packages.activatePackage(name);
+					} else {
+						atom.packages.deactivatePackage(name);
+					}
+				}
+			},
+
 			// Applies the settings to the buffer and the corresponding editor
 			applySettings() {
 				const editor = atom.workspace.getActiveTextEditor();
+				const configOptions = {scope: editor.getRootScopeDescriptor()};
 				const settings = this.settings;
 
 				if (editor && editor.getBuffer() === buffer) {
-					if (settings.indent_style !== 'auto') {
-						editor.setSoftTabs(settings.indent_style === 'space');
+					const editorParams = {};
+
+					if (settings.indent_style === 'auto') {
+						editorParams.softTabs = atom.config.get('editor.softTabs', configOptions);
+					} else {
+						editorParams.softTabs = settings.indent_style === 'space';
 					}
-					if (settings.tab_width !== 'auto') {
-						editor.setTabLength(settings.tab_width);
+
+					if (settings.tab_width === 'auto') {
+						editorParams.tabLength = atom.config.get('editor.tabLength', configOptions);
+					} else {
+						editorParams.softTabs = settings.tab_width;
 					}
+
+					if (settings.charset === 'auto') {
+						buffer.setEncoding(atom.config.get('core.fileEncoding', configOptions));
+					} else {
+						buffer.setEncoding(settings.charset);
+					}
+
+					// max_line_length-settings
+					if (settings.max_line_length === 'auto') {
+						editorParams.softWrapped = atom.config.get('editor.softWrap', configOptions);
+						editorParams.softWrapAtPreferredLineLength =
+							atom.config.get('editor.softWrapAtPreferredLineLength', configOptions);
+						editorParams.preferredLineLength =
+							atom.config.get('editor.preferredLineLength', configOptions);
+					} else {
+						editorParams.softWrapped = true;
+						editorParams.softWrapAtPreferredLineLength = true;
+						editorParams.preferredLineLength = settings.max_line_length;
+					}
+
+					// Update the editor-properties
+					editor.update(editorParams);
+
+					// Ensure the wrap-guide is set properly
+					if (this.wrapGuide === undefined) {
+						this.wrapGuide = new (wrapGuide())();
+						this.wrapGuide.initialize(
+							editor,
+							atom.views.getView(editor)
+						);
+					}
+					this.wrapGuide.update();
+					// Toggle the wrap-guide package if necessary
+					this.setPackageState('wrap-guide', this.wrapGuide.isVisible() === false);
+
 					if (settings.end_of_line !== 'auto') {
 						buffer.setPreferredLineEnding(settings.end_of_line);
-					}
-					if (settings.charset !== 'auto') {
-						buffer.setEncoding(settings.charset);
 					}
 				}
 				setState(this);
@@ -246,6 +299,12 @@ function observeTextEditor(editor) {
 		settings.tab_width = parseInt(config.indent_size || config.tab_width, 10);
 		if (isNaN(settings.tab_width)) {
 			settings.tab_width = 'auto'; // eslint-disable-line camelcase
+		}
+
+		// eslint-disable-next-line camelcase
+		settings.max_line_length = parseInt(config.max_line_length, 10);
+		if (isNaN(settings.max_line_length)) {
+			settings.max_line_length = 'auto'; // eslint-disable-line camelcase
 		}
 
 		settings.charset = ('charset' in config) ?

@@ -15,6 +15,7 @@ ${props.messages.reduce((prev, curr) => {
 |\`indent_size\`/ \`tab_width\`|\`${props.tab_width}\`|
 |\`insert_final_newline\`|\`${props.insert_final_newline}\`|
 |\`trim_trailing_whitespace\`|\`${props.trim_trailing_whitespace}\`|
+|\`max_line_length\` *(experimental)*|\`${props.max_line_length}\`|
 
 _(auto: atom-editorconfig is not influencing that behavior. A full description of the properties can be found on editorconfig.org.)_
 
@@ -45,7 +46,9 @@ const init = () => {
 			// eslint-disable-next-line camelcase
 			insert_final_newline: settings.insert_final_newline,
 			// eslint-disable-next-line camelcase
-			trim_trailing_whitespace: settings.trim_trailing_whitespace
+			trim_trailing_whitespace: settings.trim_trailing_whitespace,
+			// eslint-disable-next-line camelcase
+			max_line_length: settings.max_line_length
 		};
 
 		const notificationOptions = {

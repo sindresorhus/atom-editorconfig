@@ -13,7 +13,7 @@ Every issue assigned is being worked on, seriously. Issues may be dedicated to m
 
 Let us know that you'd like to contribute in an issue - we will then assign you to it, to show everybody involved that this issue is being worked on.
 
-We're also happy to help you taking the first hurdles on your way to a successful contributor! So if you have any questions on how to help - get in touch! :checkered_flag:
+We're also happy to help you taking the first hurdles on your way to a successful contributor! So if you have any questions on how to help - get in touch!
 
 ### :sparkles: Fork it
 

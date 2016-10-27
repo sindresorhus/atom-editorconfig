@@ -1,8 +1,19 @@
 @import "ui-variables";
+@import "syntax-variables";
 
 #aec-status-bar-tile {
 	cursor: pointer;
 	box-sizing: border-box;
+}
+
+atom-text-editor::shadow .ecfg-wrap-guide {
+	height: 100%;
+	width: 1px;
+	z-index: 3;
+	position: absolute;
+	top: 0;
+	background-color: @syntax-wrap-guide-color;
+	-webkit-transform: translateZ(0);
 }
 
 @font-face {
