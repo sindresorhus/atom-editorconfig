@@ -164,14 +164,16 @@ function initializeTextBuffer(buffer) {
 					const lastRow = buffer.getLineCount() - 1;
 
 					if (buffer.isRowBlank(lastRow)) {
-						const previousNonBlankRow = buffer.previousNonBlankRow(lastRow);
+						let stripStart = buffer.previousNonBlankRow(lastRow);
 
-						// Strip empty lines from the end
-						if (previousNonBlankRow < lastRow) {
-							buffer.deleteRows(previousNonBlankRow + 1, lastRow);
+						if (settings.insert_final_newline === true) {
+							stripStart += 1;
 						}
-					}
-					if (settings.insert_final_newline === true) {
+						// Strip empty lines from the end
+						if (stripStart < lastRow) {
+							buffer.deleteRows(stripStart + 1, lastRow);
+						}
+					} else if (settings.insert_final_newline === true) {
 						buffer.append('\n');
 					}
 				}
