@@ -155,7 +155,7 @@ function initializeTextBuffer(buffer) {
 					if (settings.tab_width === 'auto') {
 						editorParams.tabLength = atom.config.get('editor.tabLength', configOptions);
 					} else {
-						editorParams.softTabs = settings.tab_width;
+						editorParams.tabLength = settings.tab_width;
 					}
 
 					if (settings.charset === 'auto') {
