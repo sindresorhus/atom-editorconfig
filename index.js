@@ -1,6 +1,7 @@
 /** @babel */
 import generateConfig from './commands/generate';
 import showState from './commands/show';
+import fixFile from './commands/fix';
 
 const lazyReq = require('lazy-req')(require);
 
@@ -324,6 +325,7 @@ function observeTextEditor(editor) {
 const activate = () => {
 	generateConfig();
 	showState();
+	fixFile();
 	atom.workspace.observeTextEditors(observeTextEditor);
 	atom.workspace.observeActivePaneItem(observeActivePaneItem);
 };
