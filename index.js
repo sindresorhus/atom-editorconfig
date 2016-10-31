@@ -1,6 +1,7 @@
 /** @babel */
 import generateConfig from './commands/generate';
 import showState from './commands/show';
+import fixFile from './commands/fix';
 
 const lazyReq = require('lazy-req')(require);
 
@@ -236,7 +237,7 @@ function initializeTextBuffer(buffer) {
 		buffer.editorconfig.disposables.add(
 			buffer.onWillSave(buffer.editorconfig.onWillSave.bind(buffer.editorconfig))
 		);
-		if (buffer.getUri() && buffer.getUri().match(/[\\|\/]\.editorconfig$/g) !== null) {
+		if (buffer.getUri() && buffer.getUri().match(/[\\|/]\.editorconfig$/g) !== null) {
 			buffer.editorconfig.disposables.add(
 				buffer.onDidSave(reapplyEditorconfig)
 			);
@@ -324,6 +325,7 @@ function observeTextEditor(editor) {
 const activate = () => {
 	generateConfig();
 	showState();
+	fixFile();
 	atom.workspace.observeTextEditors(observeTextEditor);
 	atom.workspace.observeActivePaneItem(observeActivePaneItem);
 };
