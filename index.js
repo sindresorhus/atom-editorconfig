@@ -145,18 +145,16 @@ function initializeTextBuffer(buffer) {
 				const settings = this.settings;
 
 				if (editor && editor.getBuffer() === buffer) {
-					const editorParams = {};
-
 					if (settings.indent_style === 'auto') {
-						editorParams.softTabs = atom.config.get('editor.softTabs', configOptions);
+						editor.setSoftTabs(atom.config.get('editor.softTabs', configOptions));
 					} else {
-						editorParams.softTabs = settings.indent_style === 'space';
+						editor.setSoftTabs(settings.indent_style === 'space');
 					}
 
 					if (settings.tab_width === 'auto') {
-						editorParams.tabLength = atom.config.get('editor.tabLength', configOptions);
+						editor.setTabLength(atom.config.get('editor.tabLength', configOptions));
 					} else {
-						editorParams.tabLength = settings.tab_width;
+						editor.setTabLength(settings.tab_width);
 					}
 
 					if (settings.charset === 'auto') {
@@ -166,6 +164,7 @@ function initializeTextBuffer(buffer) {
 					}
 
 					// max_line_length-settings
+					const editorParams = {};
 					if (settings.max_line_length === 'auto') {
 						editorParams.softWrapped = atom.config.get('editor.softWrap', configOptions);
 						editorParams.softWrapAtPreferredLineLength =
