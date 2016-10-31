@@ -223,7 +223,7 @@ function initializeTextBuffer(buffer) {
 		buffer.editorconfig.disposables.add(
 			buffer.onWillSave(buffer.editorconfig.onWillSave.bind(buffer.editorconfig))
 		);
-		if (buffer.getUri() && buffer.getUri().match(/[\\|\/]\.editorconfig$/g) !== null) {
+		if (buffer.getUri() && buffer.getUri().match(/[\\|/]\.editorconfig$/g) !== null) {
 			buffer.editorconfig.disposables.add(
 				buffer.onDidSave(reapplyEditorconfig)
 			);
