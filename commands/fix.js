@@ -44,11 +44,11 @@ const init = () => {
 
 		if (tabLength > 0) {
 			buffer.backwardsScan(new RegExp(searchPattern, 'gm'), scan => {
-				const displaySize = scan.matchText.split('').reduce((prev, curr) => {
+				const displaySize = scan.matchText.split('').reduce((prev, curr, index) => {
 					if (curr === ' ') {
 						return prev + 1;
 					}
-					return prev + tabLength;
+					return prev + tabLength - (index % tabLength);
 				}, 0);
 
 				fixedProperties.indent_style += Math.max(
