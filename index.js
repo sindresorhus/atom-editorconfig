@@ -91,25 +91,6 @@ function setState(ecfg) {
 	statusTile().updateIcon(ecfg.state);
 }
 
-// Reapplies the whole editorconfig to **all** open TextEditor-instances
-function reapplyEditorconfig() {
-	const textEditors = atom.workspace.getTextEditors();
-	textEditors.forEach(editor => {
-		observeTextEditor(editor);
-	});
-}
-
-// Reapplies the settings immediately after changing the focus to a new pane
-function observeActivePaneItem(editor) {
-	if (editor && editor.constructor.name === 'TextEditor') {
-		if (editor.getBuffer().editorconfig) {
-			editor.getBuffer().editorconfig.applySettings();
-		}
-	} else {
-		statusTile().removeIcon();
-	}
-}
-
 // Initializes the (into the TextBuffer-instance) embedded editorconfig-object
 function initializeTextBuffer(buffer) {
 	if ('editorconfig' in buffer === false) {
@@ -140,7 +121,13 @@ function initializeTextBuffer(buffer) {
 
 			// Applies the settings to the buffer and the corresponding editor
 			applySettings() {
-				const editor = atom.workspace.getActiveTextEditor();
+				const editor = atom.workspace.getTextEditors().reduce((prev, curr) => {
+					return (curr.getBuffer() === buffer && curr) || prev;
+				}, undefined);
+				if (!editor) {
+					return;
+				}
+
 				const configOptions = {scope: editor.getRootScopeDescriptor()};
 				const settings = this.settings;
 
@@ -313,11 +300,29 @@ function observeTextEditor(editor) {
 			config.charset.replace(/-/g, '').toLowerCase() :
 			'auto';
 
-		// Apply initially
 		ecfg.applySettings();
 	}).catch(Error, e => {
 		console.warn(`atom-editorconfig: ${e}`);
 	});
+}
+
+// Reapplies the whole editorconfig to **all** open TextEditor-instances
+function reapplyEditorconfig() {
+	const textEditors = atom.workspace.getTextEditors();
+	textEditors.forEach(editor => {
+		observeTextEditor(editor);
+	});
+}
+
+// Reapplies the settings immediately after changing the focus to a new pane
+function observeActivePaneItem(editor) {
+	if (editor && editor.constructor.name === 'TextEditor') {
+		if (editor.getBuffer().editorconfig) {
+			editor.getBuffer().editorconfig.applySettings();
+		}
+	} else {
+		statusTile().removeIcon();
+	}
 }
 
 // Hook into the events to recognize the user opening new editors or changing the pane
