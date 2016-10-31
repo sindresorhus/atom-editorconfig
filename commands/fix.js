@@ -2,7 +2,7 @@
 
 const init = () => {
 	const editor = atom.workspace.getActiveTextEditor();
-	if (!editor){
+	if (!editor) {
 		return;
 	}
 	const buffer = editor.getBuffer();
@@ -13,9 +13,9 @@ const init = () => {
 	const settings = buffer.editorconfig.settings;
 	const checkpoint = buffer.createCheckpoint();
 	const fixedProperties = {
-		end_of_line: 0,
-		indent_style: 0
-	}
+		end_of_line: 0, // eslint-disable-line camelcase
+		indent_style: 0 // eslint-disable-line camelcase
+	};
 
 	// fix end_of_line, if necessary
 	if (settings.end_of_line !== 'auto') {
@@ -23,7 +23,8 @@ const init = () => {
 		for (let i = 0; i < lastRow; i++) {
 			if (buffer.lineEndingForRow(i) !== settings.end_of_line &&
 				buffer.lineEndingForRow(i) !== '') {
-				buffer.setTextInRange([
+				buffer.setTextInRange(
+					[
 						[i, buffer.lineLengthForRow(i)],
 						[i + 1, 0]
 					],
@@ -51,6 +52,7 @@ const init = () => {
 					return prev + tabLength - (index % tabLength);
 				}, 0);
 
+				// eslint-disable-next-line camelcase
 				fixedProperties.indent_style += Math.max(
 					displaySize, Math.floor(displaySize / tabLength)
 				);
@@ -66,14 +68,15 @@ const init = () => {
 	// Sum changes up
 	let changesInTotal = 0;
 	for (const property in fixedProperties) {
-		changesInTotal += fixedProperties[property];
+		if ({}.hasOwnProperty.call(fixedProperties, property)) {
+			changesInTotal += fixedProperties[property];
+		}
 	}
 
 	// Prepare notification & save changes
 	const notificationOptions = {dismissable: true};
 	if (changesInTotal > 0) {
 		buffer.groupChangesSinceCheckpoint(checkpoint);
-		//buffer.save();
 		notificationOptions.description = `
 |Fixed EditorConfig-Properties||
 |--------|------:|
@@ -88,7 +91,7 @@ No changes were applied.
 `;
 	}
 	atom.notifications.addSuccess(editor.getTitle(), notificationOptions);
-}
+};
 
 const subscriber = () => {
 	atom.commands.add('atom-workspace', 'EditorConfig:fix-file', init);
