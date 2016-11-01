@@ -110,7 +110,8 @@ function initializeTextBuffer(buffer) {
 
 			// Sets the given package active or inactive
 			setPackageState(name, active) {
-				if (atom.packages.isPackageActive(name) !== active) {
+				if (atom.packages.isPackageDisabled(name) === false &&
+					atom.packages.isPackageActive(name) !== active) {
 					if (active === true) {
 						atom.packages.activatePackage(name);
 					} else {
