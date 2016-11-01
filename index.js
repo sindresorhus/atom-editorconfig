@@ -1,6 +1,7 @@
 /** @babel */
 import generateConfig from './commands/generate';
 import showState from './commands/show';
+import fixFile from './commands/fix';
 
 const lazyReq = require('lazy-req')(require);
 
@@ -90,25 +91,6 @@ function setState(ecfg) {
 	statusTile().updateIcon(ecfg.state);
 }
 
-// Reapplies the whole editorconfig to **all** open TextEditor-instances
-function reapplyEditorconfig() {
-	const textEditors = atom.workspace.getTextEditors();
-	textEditors.forEach(editor => {
-		observeTextEditor(editor);
-	});
-}
-
-// Reapplies the settings immediately after changing the focus to a new pane
-function observeActivePaneItem(editor) {
-	if (editor && editor.constructor.name === 'TextEditor') {
-		if (editor.getBuffer().editorconfig) {
-			editor.getBuffer().editorconfig.applySettings();
-		}
-	} else {
-		statusTile().removeIcon();
-	}
-}
-
 // Initializes the (into the TextBuffer-instance) embedded editorconfig-object
 function initializeTextBuffer(buffer) {
 	if ('editorconfig' in buffer === false) {
@@ -139,23 +121,27 @@ function initializeTextBuffer(buffer) {
 
 			// Applies the settings to the buffer and the corresponding editor
 			applySettings() {
-				const editor = atom.workspace.getActiveTextEditor();
+				const editor = atom.workspace.getTextEditors().reduce((prev, curr) => {
+					return (curr.getBuffer() === buffer && curr) || prev;
+				}, undefined);
+				if (!editor) {
+					return;
+				}
+
 				const configOptions = {scope: editor.getRootScopeDescriptor()};
 				const settings = this.settings;
 
 				if (editor && editor.getBuffer() === buffer) {
-					const editorParams = {};
-
 					if (settings.indent_style === 'auto') {
-						editorParams.softTabs = atom.config.get('editor.softTabs', configOptions);
+						editor.setSoftTabs(atom.config.get('editor.softTabs', configOptions));
 					} else {
-						editorParams.softTabs = settings.indent_style === 'space';
+						editor.setSoftTabs(settings.indent_style === 'space');
 					}
 
 					if (settings.tab_width === 'auto') {
-						editorParams.tabLength = atom.config.get('editor.tabLength', configOptions);
+						editor.setTabLength(atom.config.get('editor.tabLength', configOptions));
 					} else {
-						editorParams.tabLength = settings.tab_width;
+						editor.setTabLength(settings.tab_width);
 					}
 
 					if (settings.charset === 'auto') {
@@ -165,6 +151,7 @@ function initializeTextBuffer(buffer) {
 					}
 
 					// max_line_length-settings
+					const editorParams = {};
 					if (settings.max_line_length === 'auto') {
 						editorParams.softWrapped = atom.config.get('editor.softWrap', configOptions);
 						editorParams.softWrapAtPreferredLineLength =
@@ -313,17 +300,36 @@ function observeTextEditor(editor) {
 			config.charset.replace(/-/g, '').toLowerCase() :
 			'auto';
 
-		// Apply initially
 		ecfg.applySettings();
 	}).catch(Error, e => {
 		console.warn(`atom-editorconfig: ${e}`);
 	});
 }
 
+// Reapplies the whole editorconfig to **all** open TextEditor-instances
+function reapplyEditorconfig() {
+	const textEditors = atom.workspace.getTextEditors();
+	textEditors.forEach(editor => {
+		observeTextEditor(editor);
+	});
+}
+
+// Reapplies the settings immediately after changing the focus to a new pane
+function observeActivePaneItem(editor) {
+	if (editor && editor.constructor.name === 'TextEditor') {
+		if (editor.getBuffer().editorconfig) {
+			editor.getBuffer().editorconfig.applySettings();
+		}
+	} else {
+		statusTile().removeIcon();
+	}
+}
+
 // Hook into the events to recognize the user opening new editors or changing the pane
 const activate = () => {
 	generateConfig();
 	showState();
+	fixFile();
 	atom.workspace.observeTextEditors(observeTextEditor);
 	atom.workspace.observeActivePaneItem(observeActivePaneItem);
 };
