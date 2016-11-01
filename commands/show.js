@@ -15,7 +15,7 @@ ${props.messages.reduce((prev, curr) => {
 |\`indent_size\`/ \`tab_width\`|\`${props.tab_width}\`|
 |\`insert_final_newline\`|\`${props.insert_final_newline}\`|
 |\`trim_trailing_whitespace\`|\`${props.trim_trailing_whitespace}\`|
-|\`max_line_length\` *(experimental)*|\`${props.max_line_length}\`|
+|\`max_line_length\`|\`${props.max_line_length}\`|
 
 _(auto: atom-editorconfig is not influencing that behavior. A full description of the properties can be found on editorconfig.org.)_
 
