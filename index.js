@@ -194,7 +194,7 @@ function initializeTextBuffer(buffer) {
 
 				if (settings.trim_trailing_whitespace === true) {
 					// eslint-disable-next-line max-params
-					buffer.backwardsScan(/[ \t]+$/m, params => {
+					buffer.backwardsScan(/[ \t]+$/gm, params => {
 						if (params.match[0].length > 0) {
 							params.replace('');
 						}
