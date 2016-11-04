@@ -287,7 +287,7 @@ function observeTextEditor(editor) {
 
 		// eslint-disable-next-line camelcase
 		settings.tab_width = parseInt(config.indent_size || config.tab_width, 10);
-		if (isNaN(settings.tab_width)) {
+		if (isNaN(settings.tab_width) || settings.tab_width <= 0) {
 			settings.tab_width = 'auto'; // eslint-disable-line camelcase
 		}
 

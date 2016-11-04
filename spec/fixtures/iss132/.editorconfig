@@ -1,0 +1,6 @@
+root = true
+
+[*.iss132a]
+indent_size = 0
+[*.iss132b]
+tab_width = 0
