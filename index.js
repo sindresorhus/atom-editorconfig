@@ -293,7 +293,7 @@ function observeTextEditor(editor) {
 
 		// eslint-disable-next-line camelcase
 		settings.max_line_length = parseInt(config.max_line_length, 10);
-		if (isNaN(settings.max_line_length)) {
+		if (isNaN(settings.max_line_length) || settings.max_line_length <= 0) {
 			settings.max_line_length = 'auto'; // eslint-disable-line camelcase
 		}
 

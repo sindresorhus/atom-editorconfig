@@ -1,0 +1,4 @@
+root = true
+
+[*.iss139]
+max_line_length = 0
