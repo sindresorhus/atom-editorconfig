@@ -6,14 +6,16 @@
 	box-sizing: border-box;
 }
 
-atom-text-editor.editor .ecfg-wrap-guide {
-	height: 100%;
-	width: 1px;
-	z-index: 3;
-	position: absolute;
-	top: 0;
-	background-color: @syntax-wrap-guide-color;
-	-webkit-transform: translateZ(0);
+atom-text-editor, atom-text-editor::shadow {
+	.ecfg-wrap-guide {
+		height: 100%;
+		width: 1px;
+		z-index: 3;
+		position: absolute;
+		top: 0;
+		background-color: @syntax-wrap-guide-color;
+		-webkit-transform: translateZ(0);
+	}
 }
 
 @font-face {
