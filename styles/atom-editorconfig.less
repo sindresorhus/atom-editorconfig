@@ -6,7 +6,7 @@
 	box-sizing: border-box;
 }
 
-atom-text-editor::shadow .ecfg-wrap-guide {
+atom-text-editor.editor .ecfg-wrap-guide {
 	height: 100%;
 	width: 1px;
 	z-index: 3;
@@ -22,6 +22,7 @@ atom-text-editor::shadow .ecfg-wrap-guide {
 	font-weight: normal;
 	font-style: normal;
 }
+
 [class*='aec-icon'] {
 	font-family: 'Editorconfig';
 	font-style: normal;
@@ -29,4 +30,5 @@ atom-text-editor::shadow .ecfg-wrap-guide {
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 }
-.aec-icon-mouse:before{content:'\0041';}
+
+.aec-icon-mouse:before { content:'\0041'; }
