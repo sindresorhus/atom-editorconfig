@@ -4,7 +4,7 @@
 
 > "I will take a peanut butter sandwich on white bread" -- [Ralph S. Mouse](https://www.youtube.com/watch?v=3funeDWFr9g)
 
-![](https://raw.githubusercontent.com/sindresorhus/atom-editorconfig/master/fievel-mousekewitz48.gif)
+![](https://raw.githubusercontent.com/sindresorhus/atom-editorconfig/7cf30508b87970cf45402612f20188b3fb3f0d74/fievel-mousekewitz48.gif)
 
 
 ## Install
