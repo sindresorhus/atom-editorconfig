@@ -2,4 +2,4 @@
 *.js text eol=lf
 /.github/ export-ignore
 /yarn.lock export-ignore
-/fievel-mousekewitz48.gif export-ignore
+/*.gif export-ignore
