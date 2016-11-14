@@ -37,8 +37,8 @@ function setState(ecfg) {
 		atom.config.get('editor.tabType') !== 'auto') {
 		const tabType = atom.config.get('editor.tabType');
 
-		messages.push(`**Tab Type:** You editor's configuration setting "Tab Type"
-		(currently "${tabType}" prevents the editorconfig-property \`indent_style\` from working.
+		messages.push(`**Tab Type:** Your editor's configuration setting "Tab Type"
+		(currently "${tabType}") prevents the editorconfig-property \`indent_style\` from working.
 		@"Tab Type" **must** be set to "auto" to fix this issue.`);
 
 		statcon = Math.max(statcon, 4);
@@ -75,11 +75,11 @@ function setState(ecfg) {
 	switch (statcon) {
 		case 1:
 			messages.push(`The editorconfig was applied successfully and the editor for this file
-			should work as expected. If you face any unexpected behavior please report us the issue.
+			should work as expected. If you face any unexpected behavior please report the issue to us.
 			♥️`);
 			break;
 		case 0:
-			messages.push(`For this file were no editorconfig-settings applied.`);
+			messages.push(`No editorconfig-settings were applied for this file.`);
 			break;
 		default:
 			break;
