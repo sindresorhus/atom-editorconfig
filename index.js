@@ -65,7 +65,7 @@ function setState(ecfg) {
 				messages.push(`**${packageName}:** It is likely that the
 				${packageName}-package prevents the following
 				propert${properties.length > 1 ? 'ies' : 'y'} from working reliably:
-				\`${properties.join('`, `')}\`.@You may deactivate or disable the ${packageName}-package
+				\`${properties.join('`, `')}\`.@You may disable the ${packageName}-package
 				to fix that issue.`);
 			}
 		}

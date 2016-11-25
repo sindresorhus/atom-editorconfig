@@ -1,6 +1,6 @@
 # EditorConfig [![Build Status](https://travis-ci.org/sindresorhus/atom-editorconfig.svg?branch=master)](https://travis-ci.org/sindresorhus/atom-editorconfig)
 
-> [EditorConfig](http://editorconfig.org) helps developers maintaining consistent coding styles between different editors.
+[EditorConfig](http://editorconfig.org) helps developers maintaining consistent coding styles between different editors.
 
 > "I will take a peanut butter sandwich on white bread" -- [Ralph S. Mouse](https://www.youtube.com/watch?v=3funeDWFr9g)
 
@@ -22,10 +22,10 @@ See the EditorConfig [documentation](http://editorconfig.org) for detailed descr
 
 1. Open a project which contains an `.editorconfig`-file.
 2. Whenever you open a file in the project (or change any `.editorconfig`-file from within Atom), EditorConfig evaluates the editorconfig-settings for the current file.
-3. EditorConfig then applies these settings to your current editor-pane. Any change you're doing from **now on** will be according to the editorconfig provided.
+3. EditorConfig then applies these settings to your current editor-pane. Any change you're doing from **now on** will be according to the editorconfig provided. Previously malformed files (according to the editorconfig) won't be fixed automatically.
 4. You can always prove the currently applied settings by invoking the `EditorConfig: Show State`-command. You might try to fix malformed files with `EditorConfig: Fix File`.
 
-> :bulb: If EditorConfig can detects any troubles which may prevent it from working properly a  :mouse: will be shown in the status bar, click on it to open the state-notification.
+> :bulb: If EditorConfig detects any troubles which may prevent it from working properly a  :mouse: will be shown in the status bar, click on it to open the state-notification.
 
 > :warning: EditorConfig will not fix malformed files (f.e. change all soft-tabs to hard-tabs) this must be done by explicitly invoking f.e. `EditorConfig: Fix File`. Keep in mind that malformed files (especially mixed tab-characters) may lead to unexpected behaviour.
 
@@ -84,6 +84,7 @@ trim_trailing_whitespace = false
 
 ## Changelog
 
+- 2.1: Supporting Atom's upcoming Shadow-DOM transition; [optimizing package size](https://github.com/sindresorhus/atom-editorconfig/pull/153)
 - 2.0: We finally support all editorconfig-properties (with the lately added `max_line_length`); introducing `EditorConfig: Fix File`; fixing editorconig's onSave handling
 - 1.7: Showing the StatusBar-icon only on troubles; introducing `EditorConfig: Show State`; optimizing grammar
 
@@ -96,7 +97,7 @@ We're sorry to hear you have troubles using atom-editorconfig! However, we are a
 - **Why is the `indent_style` completely not working?** Your Atom's config setting "Tab Type" might be set either to `soft` or `hard`, this unfortunately prevents editorconfig from influencing the indentation style. Set Atom's "Tab Type" to `auto` to fix that.
 - **Why is the feature _X_ not working?** Sometimes other packages (f.e. like the "whitespace"-package) override the editorconfig-settings. You might try to fix this by deactivating the package in your settings. We try to "warn" you about confirmed interferences caused by other packages. If you face any unknown troubles, please give us a hint.
 
-> :bulb: You can check how editorconfig affects your current file by invoking the `EditorConfig: Show State`-command. If EditorConfig can detects any troubles which may prevent it from working properly a  :mouse: will be shown in the status bar, clicking on it also lets you open the state-notification.
+> :bulb: You can check how editorconfig affects your current file by invoking the `EditorConfig: Show State`-command. If EditorConfig detects any troubles which may prevent it from working properly a  :mouse: will be shown in the status bar, clicking on it also opens the state-notification.
 
 
 ## Help us getting better
