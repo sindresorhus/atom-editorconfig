@@ -23,11 +23,11 @@ See the EditorConfig [documentation](http://editorconfig.org) for a detailed des
 1. Open a project containing an `.editorconfig` file.
 2. Whenever you open a file in the project (or change any `.editorconfig` file from within Atom), EditorConfig evaluates the editorconfig settings for the current file.
 3. EditorConfig then applies these settings to your current editor pane. Any change you make from **now on** will follow the editorconfig provided. EditorConfig won't automatically fix older files that it considers to be malformed.
-4. You can always check your EditorConfig settings against the current file by invoking the `EditorConfig: Show State` command. You can try to fix malformed files with `EditorConfig: Fix File`.
+4. You can always check your EditorConfig settings against the current file by invoking the `EditorConfig: Show State` command. You can try to fix malformed files using the command `EditorConfig: Fix File`.
 
 > :bulb: If EditorConfig detects any issues which may prevent it from working properly a :mouse: will appear in the status bar; click on it to open the state notification.
 
-> :warning: EditorConfig will not fix malformed files (e.g. change all soft-tabs to hard-tabs) this must be done by explicitly invoking e.g. `EditorConfig: Fix File`. Keep in mind that malformed files (especially mixed tab-characters) may lead to unexpected behaviour.
+> :warning: EditorConfig will not fix malformed files (e.g. change all soft tabs to hard tabs) this must be done by explicitly invoking e.g. `EditorConfig: Fix File`. Keep in mind that malformed files (especially mixed tab characters) may lead to unexpected behaviour.
 
 
 ## Supported properties
@@ -85,7 +85,7 @@ trim_trailing_whitespace = false
 ## Changelog
 
 - 2.1: Supporting Atom's upcoming Shadow-DOM transition; [optimizing package size](https://github.com/sindresorhus/atom-editorconfig/pull/153)
-- 2.0: We finally support all editorconfig properties (with the lately added `max_line_length`); introducing `EditorConfig: Fix File`; fixing editorconig's onSave handling
+- 2.0: We finally support all editorconfig properties (with the recently added `max_line_length`); introducing `EditorConfig: Fix File`; fixing editorconig's onSave handling
 - 1.7: Showing the StatusBar icon only on problems; introducing `EditorConfig: Show State`; optimizing grammar
 
 
@@ -100,7 +100,7 @@ We're sorry to hear you have trouble using atom-editorconfig! However, please be
 > :bulb: You can check how editorconfig affects your current file by invoking the `EditorConfig: Show State` command. If EditorConfig detects any issues which may prevent it from working properly a  :mouse: will be shown in the status bar, clicking on it also opens the state notification.
 
 
-## Help us getting better
+## Help us get better
 
 We would be happy to hear from you -- [please report any feedback, issues or ideas](https://github.com/sindresorhus/atom-editorconfig/issues/new). Thank you! :gift_heart:
 
