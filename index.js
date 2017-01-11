@@ -146,14 +146,9 @@ function initializeTextBuffer(buffer) {
 					// max_line_length-settings
 					const editorParams = {};
 					if (settings.max_line_length === 'auto') {
-						editorParams.softWrapped = atom.config.get('editor.softWrap', configOptions);
-						editorParams.softWrapAtPreferredLineLength =
-							atom.config.get('editor.softWrapAtPreferredLineLength', configOptions);
 						editorParams.preferredLineLength =
 							atom.config.get('editor.preferredLineLength', configOptions);
 					} else {
-						editorParams.softWrapped = true;
-						editorParams.softWrapAtPreferredLineLength = true;
 						editorParams.preferredLineLength = settings.max_line_length;
 					}
 
