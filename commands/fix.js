@@ -11,10 +11,11 @@ const init = () => {
 	}
 
 	const settings = buffer.editorconfig.settings;
+	const softTabs = settings.indent_style === 'space';
 	const checkpoint = buffer.createCheckpoint();
 	const fixedProperties = {
-		end_of_line: 0, // eslint-disable-line camelcase
-		indent_style: 0 // eslint-disable-line camelcase
+		endOfLine: 0,
+		indentStyle: 0
 	};
 
 	// fix end_of_line, if necessary
@@ -31,57 +32,64 @@ const init = () => {
 					settings.end_of_line,
 					{normalizeLineEndings: false}
 				);
-				fixedProperties.end_of_line++;
+				fixedProperties.endOfLine++;
 			}
 		}
 	}
 
 	// fix indent_style, if necessary
 	if (settings.indent_style !== 'auto') {
-		const softTabs = settings.indent_style === 'space';
 		const spaceChar = {true: ' ', false: '\\t'};
 		const tabLength = editor.getTabLength();
+		// Match only malformed (containing at least one wrong tab-char) lines
 		const searchPattern = `^([${spaceChar[softTabs]}]*[${spaceChar[!softTabs]}]\\s*)`;
 
 		if (tabLength > 0) {
 			buffer.backwardsScan(new RegExp(searchPattern, 'gm'), scan => {
-				const displaySize = scan.matchText.split('').reduce((prev, curr, index) => {
+				const columns = scan.matchText.split('').reduce((prev, curr) => {
+					fixedProperties.indentStyle += 1;
+
 					if (curr === ' ') {
 						return prev + 1;
 					}
-					return prev + tabLength - (index % tabLength);
+					return prev + tabLength - (prev % tabLength);
 				}, 0);
 
-				// eslint-disable-next-line camelcase
-				fixedProperties.indent_style += Math.max(
-					displaySize, Math.floor(displaySize / tabLength)
+				Math.max(
+					columns, Math.floor(columns / tabLength)
 				);
-				if (softTabs) {
-					scan.replace(' '.repeat(displaySize));
+				if (softTabs === true) {
+					scan.replace(' '.repeat(columns));
 				} else {
-					scan.replace('\t'.repeat(Math.floor(displaySize / tabLength)));
+					const tabString = '\t'.repeat(Math.floor(columns / tabLength));
+					const remainingSpaces = ' '.repeat(columns % tabLength);
+					scan.replace(tabString.concat(remainingSpaces));
 				}
 			});
 		}
 	}
 
-	// Sum changes up
-	let changesInTotal = 0;
-	for (const property in fixedProperties) {
-		if ({}.hasOwnProperty.call(fixedProperties, property)) {
-			changesInTotal += fixedProperties[property];
-		}
+	if (softTabs) {
+		fixedProperties.indentStyle = Math.floor(
+			fixedProperties.indentStyle / editor.getTabLength()
+		);
 	}
+	let changesInTotal = 0;
+	Object.keys(fixedProperties).forEach(k => {
+		changesInTotal += fixedProperties[k];
+	});
 
 	// Prepare notification & save changes
 	const notificationOptions = {dismissable: true};
 	if (changesInTotal > 0) {
+		const styleName = softTabs === true ? 'Tab(s)' : 'Space(s)';
+
 		buffer.groupChangesSinceCheckpoint(checkpoint);
 		notificationOptions.description = `
 |Fixed EditorConfig-Properties||
 |--------|------:|
-|\`end_of_line\`|${fixedProperties.end_of_line}|
-|\`indent_style\`|${fixedProperties.indent_style}|
+|\`end_of_line\`|${fixedProperties.endOfLine}|
+|\`indent_style\`|${fixedProperties.indentStyle} ${styleName}|
 |Changes in total|**${changesInTotal}**|
 `;
 	} else {
