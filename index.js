@@ -7,87 +7,15 @@ const lazyReq = require('lazy-req')(require);
 
 const atm = lazyReq('atom');
 
+const checklist = lazyReq('./lib/checklist');
 const wrapGuideInterceptor = lazyReq('./lib/wrapguide-interceptor');
 const statusTile = lazyReq('./lib/statustile-view');
 const editorconfig = lazyReq('editorconfig');
 
-const STATES = ['subtle', 'success', 'info', 'warning', 'error'];
-
-// Holds all **blacklisted** packages and the properties we assume are affected by them
-// 'packagename': [properties]
-const BLACKLISTED_PACKAGES = {
-	whitespace: ['insert_final_newline', 'trim_trailing_whitespace']
-};
-
 // Sets the state of the embedded editorconfig
 // This includes the severity (info, warning..) as well as the notification-messages for users
 function setState(ecfg) {
-	const messages = [];
-	let statcon = 0;
-
-	// Check if any editorconfig-setting is in use
-	if (Object.keys(ecfg.settings).reduce((prev, curr) => {
-		return ecfg.settings[curr] !== 'auto' || prev;
-	}, false)) {
-		statcon = Math.max(statcon, 1);
-	}
-
-	// Check the 'Tab Type'-setting
-	if (ecfg.settings.indent_style !== 'auto' &&
-		atom.config.get('editor.tabType') !== 'auto') {
-		const tabType = atom.config.get('editor.tabType');
-
-		messages.push(`**Tab Type:** Your editor's configuration setting "Tab Type"
-		(currently "${tabType}") prevents the editorconfig-property \`indent_style\` from working.
-		@"Tab Type" **must** be set to "auto" to fix this issue.`);
-
-		statcon = Math.max(statcon, 4);
-	}
-
-	// Check for BLACKLISTED packages
-	const suspiciuousPackages = {};
-	let affectedProperties;
-	for (const packageName in BLACKLISTED_PACKAGES) {
-		if ({}.hasOwnProperty.call(BLACKLISTED_PACKAGES, packageName)) {
-			affectedProperties = BLACKLISTED_PACKAGES[packageName].filter(prop => {
-				return ecfg.settings[prop] !== 'auto';
-			});
-			if (affectedProperties.length > 0 &&
-				atom.packages.isPackageActive(packageName)) {
-				suspiciuousPackages[packageName] = affectedProperties;
-			}
-		}
-	}
-	if (Object.keys(suspiciuousPackages).length > 0) {
-		for (const packageName in suspiciuousPackages) {
-			if ({}.hasOwnProperty.call(suspiciuousPackages, packageName)) {
-				const properties = suspiciuousPackages[packageName];
-				messages.push(`**${packageName}:** It is likely that the
-				${packageName}-package prevents the following
-				propert${properties.length > 1 ? 'ies' : 'y'} from working reliably:
-				\`${properties.join('`, `')}\`.@You may disable the ${packageName}-package
-				to fix that issue.`);
-			}
-		}
-		statcon = Math.max(statcon, 3);
-	}
-
-	switch (statcon) {
-		case 1:
-			messages.push(`The editorconfig was applied successfully and the editor for this file
-			should work as expected. If you face any unexpected behavior please report the issue to us.
-			♥️`);
-			break;
-		case 0:
-			messages.push(`No editorconfig-settings were applied for this file.`);
-			break;
-		default:
-			break;
-	}
-
-	// Apply changes
-	ecfg.messages = messages;
-	ecfg.state = STATES[statcon];
+	checklist()(ecfg);
 	statusTile().updateIcon(ecfg.state);
 }
 
