@@ -84,6 +84,7 @@ trim_trailing_whitespace = false
 
 ## Changelog
 
+- 2.2: Respecting Atom's `SoftWrap` && `SoftWrapAtPreferredLineLength`-setting; Drops custom WrapGuide-implementation and sane intercepts the core wrap-guide; Fix mouse-icon-precedence (thanks to [gorriecoe](https://github.com/gorriecoe))
 - 2.1: Supporting Atom's upcoming Shadow-DOM transition; [optimizing package size](https://github.com/sindresorhus/atom-editorconfig/pull/153)
 - 2.0: We finally support all EditorConfig properties (with the recently added `max_line_length`); introducing `EditorConfig: Fix File`; fixing EditorConfig's onSave handling
 - 1.7: Showing the StatusBar icon only on problems; introducing `EditorConfig: Show State`; optimizing grammar
