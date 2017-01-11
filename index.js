@@ -327,6 +327,7 @@ const activate = () => {
 	fixFile();
 	atom.workspace.observeTextEditors(observeTextEditor);
 	atom.workspace.observeActivePaneItem(observeActivePaneItem);
+	reapplyEditorconfig();
 };
 
 // Clean the status-icon up, remove all embedded editorconfig-objects
