@@ -7,8 +7,8 @@ const lazyReq = require('lazy-req')(require);
 
 const atm = lazyReq('atom');
 
+const wrapGuideInterceptor = lazyReq('./lib/wrapguide-interceptor');
 const statusTile = lazyReq('./lib/statustile-view');
-const wrapGuide = lazyReq('./lib/wrapguide-view');
 const editorconfig = lazyReq('editorconfig');
 
 const STATES = ['subtle', 'success', 'info', 'warning', 'error'];
@@ -108,27 +108,19 @@ function initializeTextBuffer(buffer) {
 				charset: 'auto' // eslint-disable-line camelcase
 			},
 
-			// Sets the given package active or inactive
-			setPackageState(name, active) {
-				if (atom.packages.isPackageDisabled(name) === false &&
-					atom.packages.isPackageActive(name) !== active) {
-					if (active === true) {
-						atom.packages.activatePackage(name);
-					} else {
-						atom.packages.deactivatePackage(name);
-					}
-				}
+			// Get the current Editor for this.buffer
+			getCurrentEditor() {
+				return atom.workspace.getTextEditors().reduce((prev, curr) => {
+					return (curr.getBuffer() === this.buffer && curr) || prev;
+				}, undefined);
 			},
 
 			// Applies the settings to the buffer and the corresponding editor
 			applySettings() {
-				const editor = atom.workspace.getTextEditors().reduce((prev, curr) => {
-					return (curr.getBuffer() === buffer && curr) || prev;
-				}, undefined);
+				const editor = this.getCurrentEditor();
 				if (!editor) {
 					return;
 				}
-
 				const configOptions = {scope: editor.getRootScopeDescriptor()};
 				const settings = this.settings;
 
@@ -168,17 +160,19 @@ function initializeTextBuffer(buffer) {
 					// Update the editor-properties
 					editor.update(editorParams);
 
-					// Ensure the wrap-guide is set properly
-					if (this.wrapGuide === undefined) {
-						this.wrapGuide = new (wrapGuide())();
-						this.wrapGuide.initialize(
-							editor,
-							atom.views.getView(editor)
-						);
+					// Ensure the wrap-guide is being intercepted
+					const bufferDom = atom.views.getView(editor);
+					const wrapGuide = bufferDom.querySelector('* /deep/ .wrap-guide');
+					if (wrapGuide !== null) {
+						if (wrapGuide.editorconfig === undefined) {
+							wrapGuide.editorconfig = this;
+							wrapGuide.getNativeGuideColumn = wrapGuide.getGuideColumn;
+							wrapGuide.getGuideColumn = wrapGuideInterceptor()
+																	.getGuideColumn
+																	.bind(wrapGuide);
+						}
+						wrapGuide.updateGuide();
 					}
-					this.wrapGuide.update();
-					// Toggle the wrap-guide package if necessary
-					this.setPackageState('wrap-guide', this.wrapGuide.isVisible() === false);
 
 					if (settings.end_of_line !== 'auto') {
 						buffer.setPreferredLineEnding(settings.end_of_line);
