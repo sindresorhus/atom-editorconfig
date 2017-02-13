@@ -105,6 +105,7 @@ We're sorry to hear you're having trouble using atom-editorconfig! However, plea
 
 We would be happy to hear from you -- [please report any feedback, issues or ideas](https://github.com/sindresorhus/atom-editorconfig/issues/new). Thank you! :gift_heart:
 
+> :gift_heart: We thank our [contributors](https://github.com/sindresorhus/atom-editorconfig/graphs/contributors) for their amazing work to make Atom support editorconfig!
 
 ## License
 
