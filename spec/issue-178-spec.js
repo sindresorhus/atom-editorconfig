@@ -16,7 +16,7 @@ describe('editorconfig with disabled status-bar package', () => {
 			]));
 	});
 
-	describe('when opening a file', () => {
+	describe('when updating the status bar icon', () => {
 		it('shouldn\'t throw an exception', () => {
 			expect(() => updateIcon('warning')).not.toThrow();
 		});
