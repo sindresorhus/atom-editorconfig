@@ -54,7 +54,12 @@ function initializeTextBuffer(buffer) {
 
 				if (editor && editor.getBuffer() === buffer) {
 					if (settings.indent_style === 'auto') {
-						editor.setSoftTabs(atom.config.get('editor.softTabs', configOptions));
+						const usesSoftTabs = editor.usesSoftTabs();
+						if (usesSoftTabs === undefined) {
+							editor.setSoftTabs(atom.config.get('editor.softTabs', configOptions));
+						} else {
+							editor.setSoftTabs(usesSoftTabs);
+						}
 					} else {
 						editor.setSoftTabs(settings.indent_style === 'space');
 					}
