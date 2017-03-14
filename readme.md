@@ -107,6 +107,12 @@ We would be happy to hear from you -- [please report any feedback, issues or ide
 
 > :gift_heart: We thank our [contributors](https://github.com/sindresorhus/atom-editorconfig/graphs/contributors) for their amazing work to make Atom support editorconfig!
 
+
+## Maintainer
+
+- [Florian Breisch](https://github.com/florianb)
+
+
 ## License
 
 MIT © [Sindre Sorhus](https://sindresorhus.com)
