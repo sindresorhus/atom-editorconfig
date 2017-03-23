@@ -98,6 +98,10 @@ function initializeTextBuffer(buffer) {
 							wrapGuide.getGuideColumn = wrapGuideInterceptor()
 																	.getGuideColumn
 																	.bind(wrapGuide);
+							wrapGuide.getNativeGuidesColumns = wrapGuide.getGuidesColumns;
+							wrapGuide.getGuidesColumns = wrapGuideInterceptor()
+																	.getGuidesColumns
+																	.bind(wrapGuide);
 						}
 						wrapGuide.updateGuide();
 					}
