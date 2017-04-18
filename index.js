@@ -3,7 +3,7 @@ import generateConfig from './commands/generate';
 import showState from './commands/show';
 import fixFile from './commands/fix';
 
-const lazyReq = require('lazy-req')(require);
+const lazyReq = require('lazy-req').proxy(require);
 
 const atm = lazyReq('atom');
 
@@ -15,8 +15,8 @@ const editorconfig = lazyReq('editorconfig');
 // Sets the state of the embedded editorconfig
 // This includes the severity (info, warning..) as well as the notification-messages for users
 function setState(ecfg) {
-	checklist()(ecfg);
-	statusTile().updateIcon(ecfg.state);
+	checklist(ecfg);
+	statusTile.updateIcon(ecfg.state);
 }
 
 // Initializes the (into the TextBuffer-instance) embedded editorconfig-object
@@ -24,7 +24,7 @@ function initializeTextBuffer(buffer) {
 	if ('editorconfig' in buffer === false) {
 		buffer.editorconfig = {
 			buffer, // Preserving a reference to the parent TextBuffer
-			disposables: new (atm().CompositeDisposable)(),
+			disposables: new (atm.CompositeDisposable)(),
 			state: 'subtle',
 			settings: {
 				trim_trailing_whitespace: 'auto', // eslint-disable-line camelcase
@@ -95,11 +95,11 @@ function initializeTextBuffer(buffer) {
 						if (wrapGuide.editorconfig === undefined) {
 							wrapGuide.editorconfig = this;
 							wrapGuide.getNativeGuideColumn = wrapGuide.getGuideColumn;
-							wrapGuide.getGuideColumn = wrapGuideInterceptor()
+							wrapGuide.getGuideColumn = wrapGuideInterceptor
 																	.getGuideColumn
 																	.bind(wrapGuide);
 							wrapGuide.getNativeGuidesColumns = wrapGuide.getGuidesColumns;
-							wrapGuide.getGuidesColumns = wrapGuideInterceptor()
+							wrapGuide.getGuidesColumns = wrapGuideInterceptor
 																	.getGuidesColumns
 																	.bind(wrapGuide);
 						}
@@ -173,7 +173,7 @@ function observeTextEditor(editor) {
 		return;
 	}
 
-	editorconfig().parse(file).then(config => {
+	editorconfig.parse(file).then(config => {
 		if (Object.keys(config).length === 0) {
 			return;
 		}
@@ -248,7 +248,7 @@ function observeActivePaneItem(editor) {
 			editor.getBuffer().editorconfig.applySettings();
 		}
 	} else {
-		statusTile().removeIcon();
+		statusTile.removeIcon();
 	}
 }
 
@@ -268,15 +268,15 @@ const deactivate = () => {
 	textEditors.forEach(editor => {
 		editor.getBuffer().editorconfig.disposables.dispose();
 	});
-	statusTile().removeIcon();
+	statusTile.removeIcon();
 };
 
 // Apply the statusbar icon-container
 // The icon will be applied if needed
 const consumeStatusBar = statusBar => {
-	if (statusTile().containerExists() === false) {
+	if (statusTile.containerExists() === false) {
 		statusBar.addRightTile({
-			item: statusTile().createContainer(),
+			item: statusTile.createContainer(),
 			priority: 999
 		});
 	}
