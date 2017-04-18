@@ -23,17 +23,19 @@ function setState(ecfg) {
 function initializeTextBuffer(buffer) {
 	if ('editorconfig' in buffer === false) {
 		buffer.editorconfig = {
-			buffer, // Preserving a reference to the parent TextBuffer
+			buffer, // Preserving a reference to the parent `TextBuffer`
 			disposables: new (atm.CompositeDisposable)(),
 			state: 'subtle',
 			settings: {
-				trim_trailing_whitespace: 'auto', // eslint-disable-line camelcase
-				insert_final_newline: 'auto', // eslint-disable-line camelcase
-				max_line_length: 'auto', // eslint-disable-line camelcase
-				end_of_line: 'auto', // eslint-disable-line camelcase
-				indent_style: 'auto', // eslint-disable-line camelcase
-				tab_width: 'auto', // eslint-disable-line camelcase
-				charset: 'auto' // eslint-disable-line camelcase
+				/* eslint-disable camelcase */
+				trim_trailing_whitespace: 'auto',
+				insert_final_newline: 'auto',
+				max_line_length: 'auto',
+				end_of_line: 'auto',
+				indent_style: 'auto',
+				tab_width: 'auto',
+				charset: 'auto'
+				/* eslint-enable camelcase */
 			},
 
 			// Get the current Editor for this.buffer
@@ -49,6 +51,7 @@ function initializeTextBuffer(buffer) {
 				if (!editor) {
 					return;
 				}
+
 				const configOptions = {scope: editor.getRootScopeDescriptor()};
 				const settings = this.settings;
 
@@ -113,13 +116,12 @@ function initializeTextBuffer(buffer) {
 				setState(this);
 			},
 
-			// OnWillSave-Event-Handler
+			// `onWillSave` event handler
 			// Trims whitespaces and inserts/strips final newline before saving
 			onWillSave() {
 				const settings = this.settings;
 
 				if (settings.trim_trailing_whitespace === true) {
-					// eslint-disable-next-line max-params
 					buffer.backwardsScan(/[ \t]+$/gm, params => {
 						if (params.match[0].length > 0) {
 							params.replace('');
@@ -136,6 +138,7 @@ function initializeTextBuffer(buffer) {
 						if (settings.insert_final_newline === true) {
 							stripStart += 1;
 						}
+
 						// Strip empty lines from the end
 						if (stripStart < lastRow) {
 							buffer.deleteRows(stripStart + 1, lastRow);
@@ -150,6 +153,7 @@ function initializeTextBuffer(buffer) {
 		buffer.editorconfig.disposables.add(
 			buffer.onWillSave(buffer.editorconfig.onWillSave.bind(buffer.editorconfig))
 		);
+
 		if (buffer.getUri() && buffer.getUri().match(/[\\|/]\.editorconfig$/g) !== null) {
 			buffer.editorconfig.disposables.add(
 				buffer.onDidSave(reapplyEditorconfig)
@@ -163,6 +167,7 @@ function observeTextEditor(editor) {
 	if (!editor) {
 		return;
 	}
+
 	initializeTextBuffer(editor.getBuffer());
 
 	const file = editor.getURI();
@@ -189,43 +194,41 @@ function observeTextEditor(editor) {
 		// Preserve evaluated Editorconfig
 		ecfg.config = config;
 
+		/* eslint-disable camelcase */
+
 		// Carefully normalize and initialize config-settings
-		// eslint-disable-next-line camelcase
 		settings.trim_trailing_whitespace = ('trim_trailing_whitespace' in config) &&
 			typeof config.trim_trailing_whitespace === 'boolean' ?
 			config.trim_trailing_whitespace === true :
 			'auto';
 
-		// eslint-disable-next-line camelcase
 		settings.insert_final_newline = ('insert_final_newline' in config) &&
 			typeof config.insert_final_newline === 'boolean' ?
 			config.insert_final_newline === true :
 			'auto';
 
-		// eslint-disable-next-line camelcase
 		settings.indent_style = (('indent_style' in config) &&
 			config.indent_style.search(/^(space|tab)$/) > -1) ?
 			config.indent_style :
 			'auto';
 
-		// eslint-disable-next-line camelcase
 		settings.end_of_line = lineEndings[config.end_of_line] || 'auto';
 
-		// eslint-disable-next-line camelcase
 		settings.tab_width = parseInt(config.indent_size || config.tab_width, 10);
 		if (isNaN(settings.tab_width) || settings.tab_width <= 0) {
-			settings.tab_width = 'auto'; // eslint-disable-line camelcase
+			settings.tab_width = 'auto';
 		}
 
-		// eslint-disable-next-line camelcase
 		settings.max_line_length = parseInt(config.max_line_length, 10);
 		if (isNaN(settings.max_line_length) || settings.max_line_length <= 0) {
-			settings.max_line_length = 'auto'; // eslint-disable-line camelcase
+			settings.max_line_length = 'auto';
 		}
 
 		settings.charset = ('charset' in config) ?
 			config.charset.replace(/-/g, '').toLowerCase() :
 			'auto';
+
+		/* eslint-enable camelcase */
 
 		ecfg.applySettings();
 	}).catch(Error, e => {

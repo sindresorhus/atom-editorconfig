@@ -32,7 +32,6 @@
     "xo": "*"
   },
   "xo": {
-    "esnext": true,
     "globals": [
       "atom",
       "document"
