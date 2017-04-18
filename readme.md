@@ -22,7 +22,7 @@ See the EditorConfig [documentation](http://editorconfig.org) for a detailed des
 
 1. Open a project containing an `.editorconfig` file.
 2. Whenever you open a file in the project (or change any `.editorconfig` file from within Atom), EditorConfig evaluates the EditorConfig settings for the current file.
-3. EditorConfig then applies these settings to your current editor pane. Any change you make **from now on** will follow the EditorConfig settings. EditorConfig won't automatically fix older files that it considers to be malformed.
+3. EditorConfig then applies these settings to your current editor pane. Any change you make **from now on** will follow the EditorConfig settings. EditorConfig does not automatically fix older files it considers as malformed.
 4. You can always check your EditorConfig settings against the current file using the `EditorConfig: Show State` command. You can try to fix malformed files using the command `EditorConfig: Fix File`.
 
 > :bulb: If EditorConfig detects any issues which may prevent it from working properly a :mouse: will appear in the status bar; click on it to open the state notification.
@@ -41,7 +41,7 @@ See the EditorConfig [documentation](http://editorconfig.org) for a detailed des
 - `insert_final_newline` *(supported values: `true`, `false`; Setting this to `false` strips final newlines)*
 - `max_line_length`
 
-> :bulb: Any malformed or missing property is set to `auto` which leaves the control to Atom.
+> :bulb: Any malformed or missing property falls back to `auto` which leaves the control to Atom.
 
 ## EditorConfig commands
 
@@ -84,6 +84,7 @@ trim_trailing_whitespace = false
 
 ## Changelog
 
+- 2.3: Add support for upcoming multiple Wrapguides
 - 2.2: Respecting Atom's `SoftWrap` && `SoftWrapAtPreferredLineLength`-setting; Drops custom WrapGuide-implementation and sane intercepts the core wrap-guide; Fix mouse-icon-precedence (thanks to [gorriecoe](https://github.com/gorriecoe)); Preserves additional spaces on `Fix File`; Added warning  for interfering 'tabs-to-spaces'-configuration
 - 2.1: Supporting Atom's upcoming Shadow-DOM transition; [optimizing package size](https://github.com/sindresorhus/atom-editorconfig/pull/153)
 - 2.0: We finally support all EditorConfig properties (with the recently added `max_line_length`); introducing `EditorConfig: Fix File`; fixing EditorConfig's onSave handling
@@ -92,13 +93,13 @@ trim_trailing_whitespace = false
 
 ## Troubleshooting
 
-We're sorry to hear you're having trouble using atom-editorconfig! However, please bear some caveats in mind:
+We're sorry to hear you're having trouble using atom-editorconfig! Please bear some caveats in mind:
 
-- **Why isn't EditorConfig applying the indentation character to my files?** EditorConfig is not intended to do so; it will apply the indentation char only to *new* indentations. However, you may try to fix indentation issues with the `EditorConfig: Fix File` command.
-- **Why is `indent_style` not working?** Your Atom's config setting "Tab Type" might be set to either `soft` or `hard`, this unfortunately prevents EditorConfig from influencing the indentation style. Set Atom's "Tab Type" to `auto` to fix that.
+- **Why isn't EditorConfig applying the indentation character to my files?** EditorConfig is not intended to do so; it will apply the indentation char only to *new* indentations. You may try to fix indentation issues with the `EditorConfig: Fix File` command.
+- **Why is `indent_style` not working?** You can set Atom's config setting "Tab Type" to either `soft` or `hard`, this prevents EditorConfig from influencing the indentation style. Set Atom's "Tab Type" to `auto` to allow EditorConfig taking control over the indentation characters.
 - **Why is _feature X_ not working?** Some other packages (e.g. the "whitespace" package) override the EditorConfig settings. In these cases, we try to alert you about confirmed interferences and suggest that you try disabling the other package. If you face any unreported issues, please [let us know](https://github.com/sindresorhus/atom-editorconfig/issues/new).
 
-> :bulb: You can check how EditorConfig affects your current file by invoking the `EditorConfig: Show State` command. If EditorConfig detects any issues which may prevent it from working properly a  :mouse: will be shown in the status bar; clicking on it also opens the state notification.
+> :bulb: You can check how EditorConfig affects your current file by invoking the `EditorConfig: Show State` command. If EditorConfig detects any issues which may prevent it from working properly it displays a :mouse: in the status bar; clicking on it opens the state notification (like the `Show State` command).
 
 
 ## Help us get better

@@ -23,7 +23,7 @@ function setState(ecfg) {
 function initializeTextBuffer(buffer) {
 	if ('editorconfig' in buffer === false) {
 		buffer.editorconfig = {
-			buffer, // preserving a reference to the parent TextBuffer
+			buffer, // Preserving a reference to the parent TextBuffer
 			disposables: new (atm().CompositeDisposable)(),
 			state: 'subtle',
 			settings: {
@@ -76,7 +76,7 @@ function initializeTextBuffer(buffer) {
 						buffer.setEncoding(settings.charset);
 					}
 
-					// max_line_length-settings
+					// Max_line_length-settings
 					const editorParams = {};
 					if (settings.max_line_length === 'auto') {
 						editorParams.preferredLineLength =
@@ -98,6 +98,10 @@ function initializeTextBuffer(buffer) {
 							wrapGuide.getGuideColumn = wrapGuideInterceptor()
 																	.getGuideColumn
 																	.bind(wrapGuide);
+							wrapGuide.getNativeGuidesColumns = wrapGuide.getGuidesColumns;
+							wrapGuide.getGuidesColumns = wrapGuideInterceptor()
+																	.getGuidesColumns
+																	.bind(wrapGuide);
 						}
 						wrapGuide.updateGuide();
 					}
@@ -109,7 +113,7 @@ function initializeTextBuffer(buffer) {
 				setState(this);
 			},
 
-			// onWillSave-Event-Handler
+			// OnWillSave-Event-Handler
 			// Trims whitespaces and inserts/strips final newline before saving
 			onWillSave() {
 				const settings = this.settings;

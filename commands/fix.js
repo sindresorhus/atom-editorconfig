@@ -18,7 +18,7 @@ const init = () => {
 		indentStyle: 0
 	};
 
-	// fix end_of_line, if necessary
+	// Fix end_of_line, if necessary
 	if (settings.end_of_line !== 'auto') {
 		const lastRow = buffer.getLastRow();
 		for (let i = 0; i < lastRow; i++) {
@@ -37,7 +37,7 @@ const init = () => {
 		}
 	}
 
-	// fix indent_style, if necessary
+	// Fix indent_style, if necessary
 	if (settings.indent_style !== 'auto') {
 		const spaceChar = {true: ' ', false: '\\t'};
 		const tabLength = editor.getTabLength();

@@ -29,7 +29,7 @@ describe('editorconfig', () => {
 	});
 
 	afterEach(() => {
-		// remove the created fixture, if it exists
+		// Remove the created fixture, if it exists
 		runs(() => {
 			fs.stat(filePath, (err, stats) => {
 				if (!err && stats.isFile()) {
