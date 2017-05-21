@@ -25,7 +25,7 @@
   ],
   "dependencies": {
     "editorconfig": "^0.13.2",
-    "lazy-req": "^2.0.0",
+    "import-lazy": "^2.1.0",
     "pify": "^2.3.0"
   },
   "devDependencies": {

@@ -3,14 +3,14 @@ import generateConfig from './commands/generate';
 import showState from './commands/show';
 import fixFile from './commands/fix';
 
-const lazyReq = require('lazy-req').proxy(require);
+const importLazy = require('import-lazy').proxy(require);
 
-const atm = lazyReq('atom');
+const atm = importLazy('atom');
 
-const checklist = lazyReq('./lib/checklist');
-const wrapGuideInterceptor = lazyReq('./lib/wrapguide-interceptor');
-const statusTile = lazyReq('./lib/statustile-view');
-const editorconfig = lazyReq('editorconfig');
+const checklist = importLazy('./lib/checklist');
+const wrapGuideInterceptor = importLazy('./lib/wrapguide-interceptor');
+const statusTile = importLazy('./lib/statustile-view');
+const editorconfig = importLazy('editorconfig');
 
 // Sets the state of the embedded editorconfig
 // This includes the severity (info, warning..) as well as the notification-messages for users
