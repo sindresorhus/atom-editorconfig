@@ -63,9 +63,9 @@ describe('editorconfig', () => {
 	});
 
 	describe('EditorConfig', () => {
-		it('should default zero indent_size and tab_width to auto', () => {
-			expect(textEditors[0].getBuffer().editorconfig.settings.tab_width).toEqual('auto');
-			expect(textEditors[1].getBuffer().editorconfig.settings.tab_width).toEqual('auto');
+		it('should default zero indent_size and tab_width to unset', () => {
+			expect(textEditors[0].getBuffer().editorconfig.settings.tab_width).toEqual('unset');
+			expect(textEditors[1].getBuffer().editorconfig.settings.tab_width).toEqual('unset');
 		});
 	});
 });

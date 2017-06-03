@@ -41,7 +41,7 @@
       "name": "comment.line.semicolon.editorconfig"
     }]
   }, {
-    "match": "(?i)(indent_style)\\s*(=)\\s*(tab|space)\\b",
+    "match": "(?i)(indent_style)\\s*(=)\\s*(tab|space|unset)\\b",
     "captures": {
       "1": {
         "name": "keyword.other.definition.$1.editorconfig"
@@ -54,7 +54,7 @@
       }
     }
   }, {
-    "match": "(?i)(indent_size)\\s*(=)\\s*(?:(\\d+)|(tab))\\b",
+    "match": "(?i)(indent_size)\\s*(=)\\s*(?:(\\d+)|(tab|unset))\\b",
     "captures": {
       "1": {
         "name": "keyword.other.definition.$1.editorconfig"
@@ -70,7 +70,7 @@
       }
     }
   }, {
-    "match": "(?i)(tab_width)\\s*(=)\\s*(\\d+)\\b",
+    "match": "(?i)(tab_width)\\s*(=)\\s*(?:(\\d+)|(unset))\\b",
     "captures": {
       "1": {
         "name": "keyword.other.definition.$1.editorconfig"
@@ -80,10 +80,13 @@
       },
       "3": {
         "name": "constant.numeric.$1.editorconfig"
+      },
+      "4": {
+        "name": "constant.language.$1.editorconfig"
       }
     }
   }, {
-    "match": "(?i)(max_line_length)\\s*(=)\\s*(?:(\\d+)|(Off))\\b",
+    "match": "(?i)(max_line_length)\\s*(=)\\s*(?:(\\d+)|(off)|(unset))\\b",
     "captures": {
       "1": {
         "name": "keyword.other.definition.$1.editorconfig"
@@ -96,10 +99,13 @@
       },
       "4": {
         "name": "constant.language.boolean.false.editorconfig"
+      },
+      "5": {
+        "name": "constant.language.$1.editorconfig"
       }
     }
   }, {
-    "match": "(?i)(end_of_line)\\s*(=)\\s*(LF|CR|CRLF)\\b",
+    "match": "(?i)(end_of_line)\\s*(=)\\s*(LF|CR|CRLF|unset)\\b",
     "captures": {
       "1": {
         "name": "keyword.other.definition.$1.editorconfig"
@@ -112,7 +118,7 @@
       }
     }
   }, {
-    "match": "(?i)(charset)\\s*(=)\\s*(Latin1|UTF-8|UTF-16[BL]E)\\b",
+    "match": "(?i)(charset)\\s*(=)\\s*(Latin1|UTF-8|UTF-16[BL]E|unset)\\b",
     "captures": {
       "1": {
         "name": "keyword.other.definition.$1.editorconfig"
@@ -125,7 +131,23 @@
       }
     }
   }, {
-    "match": "(?i)(insert_final_newline|root|trim_trailing_whitespace)\\s*(=)\\s*(true|false)\\b",
+    "match": "(?i)(insert_final_newline|trim_trailing_whitespace)\\s*(=)\\s*(?:(true|false)|(unset))\\b",
+    "captures": {
+      "1": {
+        "name": "keyword.other.definition.$1.editorconfig"
+      },
+      "2": {
+        "name": "punctuation.separator.key-value.editorconfig"
+      },
+      "3": {
+        "name": "constant.language.boolean.${3:/downcase}.editorconfig"
+      },
+      "4": {
+        "name": "constant.language.$1.editorconfig"
+      }
+    }
+  }, {
+    "match": "(?i)(root)\\s*(=)\\s*(true|false)\\b",
     "captures": {
       "1": {
         "name": "keyword.other.definition.$1.editorconfig"

@@ -28,13 +28,13 @@ function initializeTextBuffer(buffer) {
 			state: 'subtle',
 			settings: {
 				/* eslint-disable camelcase */
-				trim_trailing_whitespace: 'auto',
-				insert_final_newline: 'auto',
-				max_line_length: 'auto',
-				end_of_line: 'auto',
-				indent_style: 'auto',
-				tab_width: 'auto',
-				charset: 'auto'
+				trim_trailing_whitespace: 'unset',
+				insert_final_newline: 'unset',
+				max_line_length: 'unset',
+				end_of_line: 'unset',
+				indent_style: 'unset',
+				tab_width: 'unset',
+				charset: 'unset'
 				/* eslint-enable camelcase */
 			},
 
@@ -56,7 +56,7 @@ function initializeTextBuffer(buffer) {
 				const settings = this.settings;
 
 				if (editor && editor.getBuffer() === buffer) {
-					if (settings.indent_style === 'auto') {
+					if (settings.indent_style === 'unset') {
 						const usesSoftTabs = editor.usesSoftTabs();
 						if (usesSoftTabs === undefined) {
 							editor.setSoftTabs(atom.config.get('editor.softTabs', configOptions));
@@ -67,13 +67,13 @@ function initializeTextBuffer(buffer) {
 						editor.setSoftTabs(settings.indent_style === 'space');
 					}
 
-					if (settings.tab_width === 'auto') {
+					if (settings.tab_width === 'unset') {
 						editor.setTabLength(atom.config.get('editor.tabLength', configOptions));
 					} else {
 						editor.setTabLength(settings.tab_width);
 					}
 
-					if (settings.charset === 'auto') {
+					if (settings.charset === 'unset') {
 						buffer.setEncoding(atom.config.get('core.fileEncoding', configOptions));
 					} else {
 						buffer.setEncoding(settings.charset);
@@ -81,7 +81,7 @@ function initializeTextBuffer(buffer) {
 
 					// Max_line_length-settings
 					const editorParams = {};
-					if (settings.max_line_length === 'auto') {
+					if (settings.max_line_length === 'unset') {
 						editorParams.preferredLineLength =
 							atom.config.get('editor.preferredLineLength', configOptions);
 					} else {
@@ -109,7 +109,7 @@ function initializeTextBuffer(buffer) {
 						wrapGuide.updateGuide();
 					}
 
-					if (settings.end_of_line !== 'auto') {
+					if (settings.end_of_line !== 'unset') {
 						buffer.setPreferredLineEnding(settings.end_of_line);
 					}
 				}
@@ -129,7 +129,7 @@ function initializeTextBuffer(buffer) {
 					});
 				}
 
-				if (settings.insert_final_newline !== 'auto') {
+				if (settings.insert_final_newline !== 'unset') {
 					const lastRow = buffer.getLineCount() - 1;
 
 					if (buffer.isRowBlank(lastRow)) {
@@ -200,33 +200,33 @@ function observeTextEditor(editor) {
 		settings.trim_trailing_whitespace = ('trim_trailing_whitespace' in config) &&
 			typeof config.trim_trailing_whitespace === 'boolean' ?
 			config.trim_trailing_whitespace === true :
-			'auto';
+			'unset';
 
 		settings.insert_final_newline = ('insert_final_newline' in config) &&
 			typeof config.insert_final_newline === 'boolean' ?
 			config.insert_final_newline === true :
-			'auto';
+			'unset';
 
 		settings.indent_style = (('indent_style' in config) &&
 			config.indent_style.search(/^(space|tab)$/) > -1) ?
 			config.indent_style :
-			'auto';
+			'unset';
 
-		settings.end_of_line = lineEndings[config.end_of_line] || 'auto';
+		settings.end_of_line = lineEndings[config.end_of_line] || 'unset';
 
 		settings.tab_width = parseInt(config.indent_size || config.tab_width, 10);
 		if (isNaN(settings.tab_width) || settings.tab_width <= 0) {
-			settings.tab_width = 'auto';
+			settings.tab_width = 'unset';
 		}
 
 		settings.max_line_length = parseInt(config.max_line_length, 10);
 		if (isNaN(settings.max_line_length) || settings.max_line_length <= 0) {
-			settings.max_line_length = 'auto';
+			settings.max_line_length = 'unset';
 		}
 
 		settings.charset = ('charset' in config) ?
 			config.charset.replace(/-/g, '').toLowerCase() :
-			'auto';
+			'unset';
 
 		/* eslint-enable camelcase */
 
