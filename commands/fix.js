@@ -19,7 +19,7 @@ const init = () => {
 	};
 
 	// Fix end_of_line, if necessary
-	if (settings.end_of_line !== 'auto') {
+	if (settings.end_of_line !== 'unset') {
 		const lastRow = buffer.getLastRow();
 		for (let i = 0; i < lastRow; i++) {
 			if (buffer.lineEndingForRow(i) !== settings.end_of_line &&
@@ -38,7 +38,7 @@ const init = () => {
 	}
 
 	// Fix indent_style, if necessary
-	if (settings.indent_style !== 'auto') {
+	if (settings.indent_style !== 'unset') {
 		const spaceChar = {true: ' ', false: '\\t'};
 		const tabLength = editor.getTabLength();
 		// Match only malformed (containing at least one wrong tab-char) lines

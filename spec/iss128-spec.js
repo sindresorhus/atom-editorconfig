@@ -57,7 +57,7 @@ describe('editorconfig', () => {
 	describe('Atom with disabled wrap-guide', () => {
 		beforeEach(() => {
 			Object.assign(textEditor.getBuffer().editorconfig.settings, {
-				max_line_length: 'auto' // eslint-disable-line camelcase
+				max_line_length: 'unset' // eslint-disable-line camelcase
 			});
 		});
 

@@ -17,7 +17,7 @@ ${props.messages.reduce((prev, curr) => {
 |\`trim_trailing_whitespace\`|\`${props.trim_trailing_whitespace}\`|
 |\`max_line_length\`|\`${props.max_line_length}\`|
 
-_(auto: atom-editorconfig is not influencing its behavior. A full description of all properties can be found on editorconfig.org.)_
+_(unset: atom-editorconfig is not influencing its behavior. A full description of all properties can be found on editorconfig.org.)_
 
 ${(props.filename !== undefined && props.filename) || ''}
 `;

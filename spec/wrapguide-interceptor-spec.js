@@ -11,7 +11,7 @@ const editorStub = {
 	nativeGuidesColumns: [30, 60, 90, 120],
 	editorconfig: {
 		settings: {
-			max_line_length: 'auto' // eslint-disable-line camelcase
+			max_line_length: 'unset' // eslint-disable-line camelcase
 		}
 	},
 	getNativeGuidesColumns() {
@@ -33,7 +33,7 @@ describe('wrapGuideInterceptor.getNativeGuidesColumns()', () => {
 		editor = Object.assign({}, editorStub);
 	});
 
-	it('should pass guidesColums if `max_line_length` is `auto`', () => {
+	it('should pass guidesColums if `max_line_length` is `unset`', () => {
 		expect(editor.getGuidesColumns()).toEqual(editor.nativeGuidesColumns);
 	});
 

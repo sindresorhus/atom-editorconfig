@@ -1,0 +1,8 @@
+root = true
+end_of_line = unset
+charset = unset
+indent_style = unset
+indent_size = unset
+insert_final_newline = unset
+trim_trailing_whitespace = unset
+max_line_length = unset

@@ -41,7 +41,7 @@ See the EditorConfig [documentation](http://editorconfig.org) for a detailed des
 - `insert_final_newline` *(supported values: `true`, `false`; Setting this to `false` strips final newlines)*
 - `max_line_length`
 
-> :bulb: Any malformed or missing property falls back to `auto` which leaves the control to Atom.
+> :bulb: Any malformed or missing property falls back to `unset` which leaves the control to Atom.
 
 ## EditorConfig commands
 

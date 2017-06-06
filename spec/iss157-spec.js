@@ -54,12 +54,12 @@ describe('editorconfig', () => {
 	});
 
 	describe('EditorConfig', () => {
-		it('should consult editor.usesSoftTabs in case tabType is set to auto', () => {
+		it('should consult editor.usesSoftTabs in case tabType\'s value is `unset`', () => {
 			const configOptions = {scope: textEditor.getRootScopeDescriptor()};
 			const ecfg = textEditor.getBuffer().editorconfig;
 
 			// eslint-disable-next-line camelcase
-			ecfg.settings.indent_style = 'auto';
+			ecfg.settings.indent_style = 'unset';
 
 			atom.config.set('editor.softTabs', true, configOptions);
 			textEditor.setText(snippetWithHardTabs);

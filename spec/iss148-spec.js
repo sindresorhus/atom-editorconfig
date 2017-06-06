@@ -67,7 +67,7 @@ describe('editorconfig', () => {
 			ecfg.applySettings();
 			expect(wgCount()).toBe(1);
 			// eslint-disable-next-line camelcase
-			ecfg.settings.max_line_length = 'auto';
+			ecfg.settings.max_line_length = 'unset';
 			ecfg.applySettings();
 			expect(wgCount()).toBe(1);
 			// eslint-disable-next-line camelcase
@@ -75,7 +75,7 @@ describe('editorconfig', () => {
 			ecfg.applySettings();
 			expect(wgCount()).toBe(1);
 			// eslint-disable-next-line camelcase
-			ecfg.settings.max_line_length = 'auto';
+			ecfg.settings.max_line_length = 'unset';
 			ecfg.applySettings();
 			expect(wgCount()).toBe(1);
 		});

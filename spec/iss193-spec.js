@@ -3,9 +3,10 @@
 
 /*
   This file contains verifying specs for:
-  https://github.com/sindresorhus/atom-editorconfig/issues/139
+  https://github.com/sindresorhus/atom-editorconfig/issues/193
 
-  If the max_line_length is set to 0 tha wrapGuide is set to 1.
+  If any property values are the string 'unset', they the resulting settings
+	should also be the value 'unset'.
 */
 
 import fs from 'fs';
@@ -49,8 +50,16 @@ describe('editorconfig', () => {
 	});
 
 	describe('EditorConfig', () => {
-		it('should default zero max_line_length to unset', () => {
-			expect(textEditors[0].getBuffer().editorconfig.settings.max_line_length).toEqual('unset');
+		it('unset properties should remain unset, since it is the fallback', () => {
+			const settings = textEditors[0].getBuffer().editorconfig.settings;
+
+			expect(settings.end_of_line).toEqual('unset');
+			expect(settings.charset).toEqual('unset');
+			expect(settings.indent_style).toEqual('unset');
+			expect(settings.tab_width).toEqual('unset');
+			expect(settings.insert_final_newline).toEqual('unset');
+			expect(settings.trim_trailing_whitespace).toEqual('unset');
+			expect(settings.max_line_length).toEqual('unset');
 		});
 	});
 });
