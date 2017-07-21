@@ -43,6 +43,13 @@
       "import/prefer-default-export": "off"
     }
   },
+  "providedServices": {
+    "whitespace.suppressor": {
+      "versions": {
+        "1.0.0": "provideWhitespaceSuppressor"
+      }
+    }
+  },
   "consumedServices": {
     "status-bar": {
       "versions": {

@@ -274,6 +274,20 @@ const deactivate = () => {
 	statusTile.removeIcon();
 };
 
+const provideWhitespaceSuppressor = () => {
+	return {
+		shouldSuppressRemoveTrailingWhitespace(editor) {
+			const settings = editor.getBuffer().editorconfig.settings;
+			return settings.trim_trailing_whitespace !== 'unset';
+		},
+
+		shouldSuppressEnsureSingleTrailingNewline(editor) {
+			const settings = editor.getBuffer().editorconfig.settings;
+			return settings.insert_final_newline !== 'unset';
+		}
+	};
+};
+
 // Apply the statusbar icon-container
 // The icon will be applied if needed
 const consumeStatusBar = statusBar => {
@@ -285,4 +299,4 @@ const consumeStatusBar = statusBar => {
 	}
 };
 
-export default {activate, deactivate, consumeStatusBar};
+export default {activate, deactivate, provideWhitespaceSuppressor, consumeStatusBar};
