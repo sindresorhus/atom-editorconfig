@@ -285,4 +285,15 @@ const consumeStatusBar = statusBar => {
 	}
 };
 
-export default {activate, deactivate, consumeStatusBar};
+const config = {
+	disableNotifications: {
+		type: 'boolean',
+		default: false
+	},
+	persistNotifications: {
+		type: 'boolean',
+		default: true
+	}
+};
+
+export default {activate, deactivate, consumeStatusBar, config};

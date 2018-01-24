@@ -79,8 +79,12 @@ const init = () => {
 		changesInTotal += fixedProperties[k];
 	});
 
+	if (atom.config.get('editorconfig.disableNotifications')) {
+		return;
+	}
+
 	// Prepare notification & save changes
-	const notificationOptions = {dismissable: true};
+	const notificationOptions = {dismissable: atom.config.get('editorconfig.persistNotifications')};
 	if (changesInTotal > 0) {
 		const styleName = softTabs === true ? 'Tab(s)' : 'Space(s)';
 

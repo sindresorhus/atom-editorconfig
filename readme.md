@@ -61,6 +61,11 @@ See the EditorConfig [documentation](http://editorconfig.org) for a detailed des
 - Recognizes if you save any `.editorconfig` file and reapplies all settings to **all** opened editor-panes
 
 
+## Settings
+
+- editorconfig.disableNotifications (default: `false`) disables notifications
+- editorconfig.persistNotifications (default: `true`) persists the notifications
+
 ## Example file
 
 ```ini
