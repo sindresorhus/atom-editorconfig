@@ -247,8 +247,8 @@ function reapplyEditorconfig() {
 // Reapplies the settings immediately after changing the focus to a new pane
 function observeActivePaneItem(editor) {
 	if (editor && editor.constructor.name === 'TextEditor') {
-		if (editor.getBuffer().editorconfig) {
-			editor.getBuffer().editorconfig.applySettings();
+		if (editor.buffer && editor.buffer.editorconfig) {
+			editor.buffer.editorconfig.applySettings();
 		}
 	} else {
 		statusTile.removeIcon();
