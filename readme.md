@@ -1,4 +1,6 @@
-# EditorConfig [![Build Status](https://travis-ci.org/sindresorhus/atom-editorconfig.svg?branch=master)](https://travis-ci.org/sindresorhus/atom-editorconfig)
+# EditorConfig (UNMAINTAINED) [![Build Status](https://travis-ci.org/sindresorhus/atom-editorconfig.svg?branch=master)](https://travis-ci.org/sindresorhus/atom-editorconfig)
+
+> :bell: This package is currently not maintained. Get involved and help fixing it! See [this issue](https://github.com/sindresorhus/atom-editorconfig/issues/231) for further details.
 
 [EditorConfig](http://editorconfig.org) helps developers maintain consistent coding styles between different editors.
 
@@ -110,7 +112,10 @@ We would be happy to hear from you -- [please report any feedback, issues or ide
 
 
 ## Maintainer
+- YOU!
 
+
+## Alumni
 - [Florian Breisch](https://github.com/florianb)
 
 
