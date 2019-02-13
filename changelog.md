@@ -3,11 +3,12 @@ Change Log
 
 This project honours [Semantic Versioning](http://semver.org/).
 
-[Staged]: ../../compare/v2.2.0...HEAD
+[Staged]: ../../compare/v2.3.0...HEAD
 
 
-[Staged]
+[v2.3.0]
 --------------------------------------------------------------------------------
+**February 14th, 2019**  
 * Fixed [`#220`][]: Editors not retaining correct settings at startup
 * Fixed [`#222`][]: Check `editor.buffer` property before using it
 * Fixed [`#227`][]: Missing support for `latin1` as a `charset` value
@@ -17,6 +18,7 @@ This project honours [Semantic Versioning](http://semver.org/).
 * Replaced `auto` with `unset` as per new spec ([`#194`][])
 * Replaced highlighting grammar with a refactored and better structured one
 
+[v2.3.0]: https://github.com/sindresorhus/atom-editorconfig/releases/tag/v2.3.0
 [`atom-mocha`]: https://www.npmjs.com/package/atom-mocha
 [`#194`]: https://github.com/sindresorhus/atom-editorconfig/pull/194
 [`#215`]: https://github.com/sindresorhus/atom-editorconfig/pull/215
