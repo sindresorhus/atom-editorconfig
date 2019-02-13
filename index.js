@@ -106,7 +106,18 @@ function initializeTextBuffer(buffer) {
 																	.getGuidesColumns
 																	.bind(wrapGuide);
 						}
-						wrapGuide.updateGuide();
+						if (typeof wrapGuide.updateGuide === 'function') {
+							wrapGuide.updateGuide();
+						} else {
+							// FIXME: This won't work with multiple wrap-guides
+							const columnWidth = bufferDom.getDefaultCharacterWidth() * editorParams.preferredLineLength;
+							if (columnWidth > 0) {
+								wrapGuide.style.left = Math.round(columnWidth) + 'px';
+								wrapGuide.style.display = 'block';
+							} else {
+								wrapGuide.style.display = 'none';
+							}
+						}
 					}
 
 					if (settings.end_of_line !== 'unset') {
