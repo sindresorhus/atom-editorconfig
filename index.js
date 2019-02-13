@@ -277,6 +277,22 @@ const activate = () => {
 	atom.workspace.observeTextEditors(observeTextEditor);
 	atom.workspace.observeActivePaneItem(observeActivePaneItem);
 	reapplyEditorconfig();
+
+	// #220: Fix spurious "thrashing" in open editors at startup
+	if (!atom.packages.hasActivatedInitialPackages()) {
+		const disposables = new (atm.CompositeDisposable)();
+		disposables.add(
+			atom.packages.onDidActivatePackage(pkg => {
+				if (pkg.name === 'whitespace' || pkg.name === 'wrap-guide') {
+					reapplyEditorconfig();
+				}
+			}),
+			atom.packages.onDidActivateInitialPackages(() => {
+				disposables.dispose();
+				reapplyEditorconfig();
+			})
+		);
+	}
 };
 
 // Clean the status-icon up, remove all embedded editorconfig-objects
