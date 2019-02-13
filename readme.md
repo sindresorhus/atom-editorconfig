@@ -1,6 +1,4 @@
-# EditorConfig (UNMAINTAINED) [![Build Status](https://travis-ci.org/sindresorhus/atom-editorconfig.svg?branch=master)](https://travis-ci.org/sindresorhus/atom-editorconfig)
-
-> :bell: This package is currently not maintained. Get involved and help fixing it! See [this issue](https://github.com/sindresorhus/atom-editorconfig/issues/231) for further details.
+# EditorConfig [![Build Status](https://travis-ci.org/sindresorhus/atom-editorconfig.svg?branch=master)](https://travis-ci.org/sindresorhus/atom-editorconfig)
 
 [EditorConfig](http://editorconfig.org) helps developers maintain consistent coding styles between different editors.
 
@@ -11,7 +9,7 @@
 
 ## Install
 
-```
+```console
 $ apm install editorconfig
 ```
 
@@ -22,10 +20,14 @@ Or, Settings → Install → Search for `editorconfig`
 
 See the EditorConfig [documentation](http://editorconfig.org) for a detailed description of the `.editorconfig` file format.
 
-1. Open a project containing an `.editorconfig` file.
-2. Whenever you open a file in the project (or change any `.editorconfig` file from within Atom), EditorConfig evaluates the EditorConfig settings for the current file.
-3. EditorConfig then applies these settings to your current editor pane. Any change you make **from now on** will follow the EditorConfig settings. EditorConfig does not automatically fix older files it considers as malformed.
-4. You can always check your EditorConfig settings against the current file using the `EditorConfig: Show State` command. You can try to fix malformed files using the command `EditorConfig: Fix File`.
+1.	Open a project containing an `.editorconfig` file.
+2.	Whenever you open a file in the project (or change any `.editorconfig` file from within Atom),
+	EditorConfig evaluates the EditorConfig settings for the current file.
+3.	EditorConfig then applies these settings to your current editor pane.
+	Any change you make **from now on** will follow the EditorConfig settings.
+	EditorConfig does not automatically fix older files it considers as malformed.
+4.	You can always check your EditorConfig settings against the current file using the `EditorConfig: Show State` command.
+	You can try to fix malformed files using the command `EditorConfig: Fix File`.
 
 > :bulb: If EditorConfig detects any issues which may prevent it from working properly a :mouse: will appear in the status bar; click on it to open the state notification.
 
@@ -34,16 +36,18 @@ See the EditorConfig [documentation](http://editorconfig.org) for a detailed des
 
 ## Supported properties
 
-- `root`
-- `indent_style`
-- `indent_size` / `tab_width` *(`indent_size` takes precedence over `tab_width`)*
-- `charset` *(supported values: `latin1`, `utf-8`, `utf-16be`, `utf-16le`)*
-- `end_of_line` *(supported values: `lf`, `crlf`)*
-- `trim_trailing_whitespace` *(supported values: `true`, `false`)*
-- `insert_final_newline` *(supported values: `true`, `false`; Setting this to `false` strips final newlines)*
-- `max_line_length`
+-	[`root`](https://editorconfig.org/#supported-properties)
+-	[`indent_style`](https://github.com/editorconfig/editorconfig/wiki/EditorConfig-Properties#indent_style)
+-	[`indent_size`](https://github.com/editorconfig/editorconfig/wiki/EditorConfig-Properties#indent_size) /
+	[`tab_width`](https://github.com/editorconfig/editorconfig/wiki/EditorConfig-Properties#tab_width) *(`indent_size` takes precedence over `tab_width`)*
+-	[`charset`](https://github.com/editorconfig/editorconfig/wiki/EditorConfig-Properties#charset) *(supported values: `latin1`, `utf-8`, `utf-16be`, `utf-16le`)*
+-	[`end_of_line`](https://github.com/editorconfig/editorconfig/wiki/EditorConfig-Properties#end_of_line) *(supported values: `lf`, `crlf`)*
+-	[`trim_trailing_whitespace`](https://github.com/editorconfig/editorconfig/wiki/EditorConfig-Properties#trim_trailing_whitespace) *(supported values: `true`, `false`)*
+-	[`insert_final_newline`](https://github.com/editorconfig/editorconfig/wiki/EditorConfig-Properties#insert_final_newline) *(supported values: `true`, `false`; Setting this to `false` strips final newlines)*
+-	[`max_line_length`](https://github.com/editorconfig/editorconfig/wiki/EditorConfig-Properties#max_line_length)
 
 > :bulb: Any malformed or missing property falls back to `unset` which leaves the control to Atom.
+
 
 ## EditorConfig commands
 
@@ -95,24 +99,33 @@ trim_trailing_whitespace = false
 
 ## Troubleshooting
 
-We're sorry to hear you're having trouble using atom-editorconfig! Please bear some caveats in mind:
+We're sorry to hear you're having trouble using `atom-editorconfig`!
+Please bear some caveats in mind:
 
-- **Why isn't EditorConfig applying the indentation character to my files?** EditorConfig is not intended to do so; it will apply the indentation char only to *new* indentations. You may try to fix indentation issues with the `EditorConfig: Fix File` command.
-- **Why is `indent_style` not working?** You can set Atom's config setting "Tab Type" to either `soft` or `hard`, this prevents EditorConfig from influencing the indentation style. Set Atom's "Tab Type" to `auto` to allow EditorConfig taking control over the indentation characters.
-- **Why is _feature X_ not working?** Some other packages (e.g. the "whitespace" package) override the EditorConfig settings. In these cases, we try to alert you about confirmed interferences and suggest that you try disabling the other package. If you face any unreported issues, please [let us know](https://github.com/sindresorhus/atom-editorconfig/issues/new).
+-	**Why isn't EditorConfig applying the indentation character to my files?**  
+	EditorConfig is not intended to do so; it will apply the indentation char only to *new* indentations.
+	You may try to fix indentation issues with the `EditorConfig: Fix File` command.
+-	**Why is `indent_style` not working?**  
+	You can set Atom's config setting "Tab Type" to either `soft` or `hard`, this prevents EditorConfig from influencing the indentation style.
+	Set Atom's "Tab Type" to `auto` to allow EditorConfig taking control over the indentation characters.
+-	**Why is _feature X_ not working?**  
+	Some other packages (e.g. the [`whitespace`](https://atom.io/packages/whitespace) package) override the EditorConfig settings.
+	In these cases, we try to alert you about confirmed interferences and suggest that you try disabling the other package.
+	If you face any unreported issues, please [let us know][issues].
 
 > :bulb: You can check how EditorConfig affects your current file by invoking the `EditorConfig: Show State` command. If EditorConfig detects any issues which may prevent it from working properly it displays a :mouse: in the status bar; clicking on it opens the state notification (like the `Show State` command).
 
 
 ## Help us get better
 
-We would be happy to hear from you -- [please report any feedback, issues or ideas](https://github.com/sindresorhus/atom-editorconfig/issues/new). Thank you! :gift_heart:
+We would be happy to hear from you -- [please report any feedback, issues or ideas][issues].
+Thank you! :gift_heart:
 
-> :gift_heart: We thank our [contributors](https://github.com/sindresorhus/atom-editorconfig/graphs/contributors) for their amazing work to make Atom support editorconfig!
+> :gift_heart: We thank our [contributors][] for their amazing work to make Atom support editorconfig!
 
 
 ## Maintainer
-- YOU!
+- [Alhadis](https://github.com/Alhadis)
 
 
 ## Alumni
@@ -122,3 +135,8 @@ We would be happy to hear from you -- [please report any feedback, issues or ide
 ## License
 
 MIT © [Sindre Sorhus](https://sindresorhus.com)
+
+
+<!-- Referenced links -->
+[issues]: https://github.com/sindresorhus/atom-editorconfig/issues/new
+[contributors]: https://github.com/sindresorhus/atom-editorconfig/graphs/contributors
