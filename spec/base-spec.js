@@ -11,8 +11,7 @@ const filePath = path.join(projectRoot, 'base.txt');
 describe('Base functionality', () => {
 	let textEditor = null;
 
-	beforeEach('Activating package', async function () {
-		this.timeout(15000); // Give ample time for AppVeyor
+	beforeEach('Activating package', async () => {
 		attachToDOM(atom.views.getView(atom.workspace));
 		await atom.packages.activatePackage(path.join(__dirname, '..'));
 		textEditor = await atom.workspace.open(filePath);

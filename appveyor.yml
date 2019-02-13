@@ -15,6 +15,7 @@ skip_tags: true
 
 environment:
   APM_TEST_PACKAGES:
+  ATOM_LINT_WITH_BUNDLED_NODE: "true"
 
   matrix:
     - ATOM_CHANNEL: stable

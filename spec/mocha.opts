@@ -1,3 +1,4 @@
 --auto-it
 --slow 1500
 --spec-pattern /[\\\/].+-spec\.js$/
+--timeout 60000
