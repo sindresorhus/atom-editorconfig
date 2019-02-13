@@ -1,0 +1,72 @@
+Change Log
+==========
+
+This project honours [Semantic Versioning](http://semver.org/).
+
+[Staged]: ../../compare/v2.2.0...HEAD
+
+
+[Staged]
+--------------------------------------------------------------------------------
+* Fixed [`#220`][]: Editors not retaining correct settings at startup
+* Fixed [`#222`][]: Check `editor.buffer` property before using it
+* Fixed [`#227`][]: Missing support for `latin1` as a `charset` value
+* Fixed [`#232`][]: Missing `wrapGuide.updateGuide` breaking in nightly builds
+* Fixed failing tests and switched to [`atom-mocha`][] for running specs
+* Removed `cursor: pointer` from status-bar tile's styling ([`#215`][])
+* Replaced `auto` with `unset` as per new spec ([`#194`][])
+* Replaced highlighting grammar with a refactored and better structured one
+
+[`atom-mocha`]: https://www.npmjs.com/package/atom-mocha
+[`#194`]: https://github.com/sindresorhus/atom-editorconfig/pull/194
+[`#215`]: https://github.com/sindresorhus/atom-editorconfig/pull/215
+[`#220`]: https://github.com/sindresorhus/atom-editorconfig/issues/220
+[`#222`]: https://github.com/sindresorhus/atom-editorconfig/issues/222
+[`#227`]: https://github.com/sindresorhus/atom-editorconfig/issues/227
+[`#232`]: https://github.com/sindresorhus/atom-editorconfig/issues/232
+
+
+
+[v2.2.0]
+--------------------------------------------------------------------------------
+**January 12th, 2017**  
+* Added respect for Atom's `SoftWrap`/`SoftWrapAtPreferredLineLength` settings
+* Added sane interception of the core `wrap-guide`
+* Added warning for conflicting `tabs-to-spaces` configurations
+* Fixed mouse-icon precedence ([`#165`][])
+* Fixed spaces not preserved when running `FixFile` command
+* Removed custom `WrapGuide` implementation
+
+[v2.2.0]: https://github.com/sindresorhus/atom-editorconfig/releases/tag/v2.2.0
+[`#165`]: https://github.com/sindresorhus/atom-editorconfig/pull/165
+
+
+[v2.1.0]
+--------------------------------------------------------------------------------
+**November 28th, 2016**  
+* Added support for Atom's transition away from shadow DOM
+* Optimised package size ([`#153`][])
+
+[v2.1.0]: https://github.com/sindresorhus/atom-editorconfig/releases/tag/v2.1.0
+[`#153`]: https://github.com/sindresorhus/atom-editorconfig/pull/153
+
+
+[v2.0.0]
+--------------------------------------------------------------------------------
+**November 1st, 2016**  
+* Added support for all EditorConfig properties
+* Added support for recently-added `max_line_length` property
+* Added `EditorConfig:FixFile` command
+* Fixed bugs with package's `onSave` handling
+
+[v2.0.0]: https://github.com/sindresorhus/atom-editorconfig/releases/tag/v2.0.0
+
+
+[v1.7.0]
+--------------------------------------------------------------------------------
+**October 26th, 2016**  
+* Added `EditorConfig:ShowState` command
+* Changed status-bar icon to only show when problems are detected
+* Optimised syntax highlighting grammar
+
+[v1.7.0]: https://github.com/sindresorhus/atom-editorconfig/releases/tag/v1.7.0
