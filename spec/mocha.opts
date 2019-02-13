@@ -1,2 +1,3 @@
 --auto-it
+--bail
 --spec-pattern /[\\\/].+-spec\.js$/

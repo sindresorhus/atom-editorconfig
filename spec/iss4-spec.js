@@ -34,10 +34,10 @@ describe('Issue #4', () => {
 			textEditor.getBuffer().editorconfig.settings.insert_final_newline = false;
 		});
 
-		it('leaves the missing newline', () => {
+		it('leaves the missing newline', async () => {
 			textEditor.setText(textWithoutFinalNewline);
-			textEditor.save();
-			expect(textEditor.getText().length).to.equal(textWithoutFinalNewline.length);
+			await textEditor.save();
+			expect(textEditor.getText()).to.equal(textWithoutFinalNewline);
 		});
 	});
 
@@ -49,10 +49,10 @@ describe('Issue #4', () => {
 			textEditor.getBuffer().editorconfig.settings.end_of_line = '\n';
 		});
 
-		it('inserts a final newline', () => {
+		it('inserts a final newline', async () => {
 			textEditor.setText(textWithoutFinalNewline);
-			textEditor.save();
-			expect(textEditor.getText().length).to.equal(textWithFinalNewline.length);
+			await textEditor.save();
+			expect(textEditor.getText()).to.equal(textWithFinalNewline);
 		});
 	});
 });

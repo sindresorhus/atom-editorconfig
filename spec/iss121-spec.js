@@ -46,13 +46,13 @@ trailing spaces.\n`;
 			});
 		});
 
-		it('doesn\'t extend undo-history if a final newline already exists', () => {
+		it('doesn\'t extend undo-history if a final newline already exists', async () => {
 			const buffer = textEditor.getBuffer();
 
 			textEditor.setText(textWithOneFinalNewline);
 
 			const checkpoint = buffer.createCheckpoint();
-			textEditor.save();
+			await textEditor.save();
 			expect(buffer.getChangesSinceCheckpoint(checkpoint).length).to.equal(0);
 		});
 	});

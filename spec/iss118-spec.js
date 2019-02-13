@@ -37,10 +37,10 @@ describe('Issue #118', () => {
 			textEditor.getBuffer().editorconfig.settings.insert_final_newline = false;
 		});
 
-		it('strips trailing whitespaces on save', () => {
+		it('strips trailing whitespaces on save', async () => {
 			textEditor.setText(textWithManyTrailingWhitespaces);
-			textEditor.save();
-			expect(textEditor.getText().length).to.equal(textWithoutTrailingWhitespaces.length);
+			await textEditor.save();
+			expect(textEditor.getText()).to.equal(textWithoutTrailingWhitespaces);
 		});
 	});
 });

@@ -37,19 +37,19 @@ describe('Issue #108', () => {
 			textEditor.getBuffer().editorconfig.settings.insert_final_newline = false;
 		});
 
-		it('retains missing newlines', () => {
+		it('retains missing newlines', async () => {
 			textEditor.setText(textWithoutFinalNewline);
-			textEditor.save();
+			await textEditor.save();
 			expect(textEditor.getText()).to.equal(textWithoutFinalNewline);
 		});
-		it('strips a single odd newline', () => {
+		it('strips a single odd newline', async () => {
 			textEditor.setText(textWithOneFinalNewline);
-			textEditor.save();
+			await textEditor.save();
 			expect(textEditor.getText()).to.equal(textWithoutFinalNewline);
 		});
-		it('strips multiple odd newlines', () => {
+		it('strips multiple odd newlines', async () => {
 			textEditor.setText(textWithManyFinalNewlines);
-			textEditor.save();
+			await textEditor.save();
 			expect(textEditor.getText()).to.equal(textWithoutFinalNewline);
 		});
 	});
@@ -62,19 +62,19 @@ describe('Issue #108', () => {
 			textEditor.getBuffer().editorconfig.settings.end_of_line = '\n';
 		});
 
-		it('inserts a final newline.', () => {
+		it('inserts a final newline.', async () => {
 			textEditor.setText(textWithoutFinalNewline);
-			textEditor.save();
+			await textEditor.save();
 			expect(textEditor.getText()).to.equal(textWithOneFinalNewline);
 		});
-		it('retains one final newline', () => {
+		it('retains one final newline', async () => {
 			textEditor.setText(textWithOneFinalNewline);
-			textEditor.save();
+			await textEditor.save();
 			expect(textEditor.getText()).to.equal(textWithOneFinalNewline);
 		});
-		it('strips multiple odd final newlines', () => {
+		it('strips multiple odd final newlines', async () => {
 			textEditor.setText(textWithManyFinalNewlines);
-			textEditor.save();
+			await textEditor.save();
 			expect(textEditor.getText()).to.equal(textWithOneFinalNewline);
 		});
 	});

@@ -36,7 +36,10 @@ describe('Issue #67', () => {
 
 			it('doesn\'t throw an exception', async () => {
 				if (typeof atom.workspace.getActivePaneItem() !== 'undefined') {
-					await atom.workspace.destroyActivePaneItem();
+					for (const editor of atom.workspace.getPaneItems()) {
+						editor.shouldPromptToSave = () => false;
+						editor.destroy();
+					}
 				}
 
 				await poll(() => {
