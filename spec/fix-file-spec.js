@@ -58,7 +58,7 @@ describe('EditorConfig:FixFile', () => {
 
 	beforeEach('Activating package', async () => {
 		attachToDOM(atom.views.getView(atom.workspace));
-		await atom.packages.activatePackage('editorconfig');
+		await atom.packages.activatePackage(path.join(__dirname, '..'));
 		textEditor = await atom.workspace.open(filePath);
 	});
 

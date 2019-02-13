@@ -5,13 +5,14 @@
 	https://github.com/sindresorhus/atom-editorconfig/issues/94
 */
 
+const path = require('path');
 const {init:generateConfig} = require('../commands/generate');
 
 describe('Issue #94', () => {
 	when('the `whitespace` package has been disabled', () => {
 		beforeEach('Activating package', () => {
 			attachToDOM(atom.views.getView(atom.workspace));
-			return atom.packages.activatePackage('editorconfig');
+			return atom.packages.activatePackage(path.join(__dirname, '..'));
 		});
 
 		when('generating an `.editorconfig` file', () => {

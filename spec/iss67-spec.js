@@ -5,6 +5,7 @@
 	https://github.com/sindresorhus/atom-editorconfig/issues/67
 */
 
+const path = require('path');
 const {init:generateConfig} = require('../commands/generate');
 const {poll, punch} = require('./utils.js');
 
@@ -12,7 +13,7 @@ describe('Issue #67', () => {
 	when('generating an .editorconfig file', () => {
 		beforeEach('Activating package', () => {
 			attachToDOM(atom.views.getView(atom.workspace));
-			return atom.packages.activatePackage('editorconfig');
+			return atom.packages.activatePackage(path.join(__dirname, '..'));
 		});
 
 		when('there is no project and no file open', () => {

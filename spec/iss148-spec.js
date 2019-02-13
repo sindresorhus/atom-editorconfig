@@ -21,7 +21,7 @@ describe('Issue #148', () => {
 
 	beforeEach('Activating packages', async () => {
 		attachToDOM(atom.views.getView(atom.workspace));
-		await atom.packages.activatePackage('editorconfig');
+		await atom.packages.activatePackage(path.join(__dirname, '..'));
 		await atom.packages.activatePackage('wrap-guide');
 		textEditor = await atom.workspace.open(filePath);
 		editorDom = atom.views.getView(textEditor);

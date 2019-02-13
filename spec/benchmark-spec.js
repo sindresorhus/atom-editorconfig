@@ -5,12 +5,13 @@
 	performance-awareness.
 */
 
+const path = require('path');
 const {log} = require('./utils.js');
 
 describe('Activation benchmark', () => {
 	beforeEach('Activating package', () => {
 		attachToDOM(atom.views.getView(atom.workspace));
-		return atom.packages.activatePackage('editorconfig');
+		return atom.packages.activatePackage(path.join(__dirname, '..'));
 	});
 
 	it('should have loaded fine', () => {

@@ -26,7 +26,7 @@ describe('Issue #132', () => {
 
 	beforeEach('Activating package', async () => {
 		attachToDOM(atom.views.getView(atom.workspace));
-		await atom.packages.activatePackage('editorconfig');
+		await atom.packages.activatePackage(path.join(__dirname, '..'));
 		textEditors[0] = await atom.workspace.open(filePath);
 		textEditors[1] = await atom.workspace.open(filePath2);
 	});
