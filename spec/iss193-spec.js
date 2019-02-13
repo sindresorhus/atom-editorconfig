@@ -1,65 +1,44 @@
-/** @babel */
-/* eslint-env jasmine, atomtest */
+'use strict';
 
 /*
-  This file contains verifying specs for:
-  https://github.com/sindresorhus/atom-editorconfig/issues/193
+	This file contains verifying specs for:
+	https://github.com/sindresorhus/atom-editorconfig/issues/193
 
-  If any property values are the string 'unset', they the resulting settings
+	If any property values are the string 'unset', they the resulting settings
 	should also be the value 'unset'.
 */
 
-import fs from 'fs';
-import path from 'path';
+const fs = require('fs');
+const path = require('path');
 
 const testPrefix = path.basename(__filename).split('-').shift();
 const projectRoot = path.join(__dirname, 'fixtures', testPrefix);
 const filePath = path.join(projectRoot, `test.${testPrefix}`);
 
-describe('editorconfig', () => {
-	let textEditors = [];
+describe('Issue #193', () => {
+	let textEditor;
 
-	beforeEach(() => {
-		waitsForPromise(() =>
-			Promise.all([
-				atom.packages.activatePackage('editorconfig'),
-				atom.workspace.open(filePath)
-			]).then(results => {
-				textEditors = results.splice(1);
-			})
-		);
+	beforeEach('Activating package', async () => {
+		attachToDOM(atom.views.getView(atom.workspace));
+		await atom.packages.activatePackage('editorconfig');
+		textEditor = await atom.workspace.open(filePath);
 	});
 
-	afterEach(() => {
-		// Remove the created fixture, if it exists
-		runs(() => {
-			fs.stat(filePath, (err, stats) => {
-				if (!err && stats.isFile()) {
-					fs.unlink(filePath);
-				}
-			});
-		});
-
-		waitsFor(() => {
-			try {
-				return fs.statSync(filePath).isFile() === false;
-			} catch (err) {
-				return true;
-			}
-		}, 5000, `removed ${filePath}`);
+	afterEach(`Removing created fixture: ${filePath}`, () => {
+		if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
+			fs.unlinkSync(filePath);
+		}
 	});
 
-	describe('EditorConfig', () => {
-		it('unset properties should remain unset, since it is the fallback', () => {
-			const settings = textEditors[0].getBuffer().editorconfig.settings;
+	it('treats unset properties as equivalent to \'unset\'', () => {
+		const settings = textEditor.getBuffer().editorconfig.settings;
 
-			expect(settings.end_of_line).toEqual('unset');
-			expect(settings.charset).toEqual('unset');
-			expect(settings.indent_style).toEqual('unset');
-			expect(settings.tab_width).toEqual('unset');
-			expect(settings.insert_final_newline).toEqual('unset');
-			expect(settings.trim_trailing_whitespace).toEqual('unset');
-			expect(settings.max_line_length).toEqual('unset');
-		});
+		expect(settings.end_of_line).to.equal('unset');
+		expect(settings.charset).to.equal('unset');
+		expect(settings.indent_style).to.equal('unset');
+		expect(settings.tab_width).to.equal('unset');
+		expect(settings.insert_final_newline).to.equal('unset');
+		expect(settings.trim_trailing_whitespace).to.equal('unset');
+		expect(settings.max_line_length).to.equal('unset');
 	});
 });

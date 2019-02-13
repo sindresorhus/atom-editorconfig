@@ -1,83 +1,60 @@
-/** @babel */
-/* eslint-env jasmine, atomtest */
+'use strict';
 
 /*
-  This file contains verifying specs for:
-  https://github.com/sindresorhus/atom-editorconfig/issues/148
+	This file contains verifying specs for:
+	https://github.com/sindresorhus/atom-editorconfig/issues/148
 
-  If the max_line_length is redisabled additional instances of the
-  base-wrap-guide are added
+	If the max_line_length is redisabled additional instances of the
+	base-wrap-guide are added
 */
 
-import fs from 'fs';
-import path from 'path';
+const fs = require('fs');
+const path = require('path');
 
 const testPrefix = path.basename(__filename).split('-').shift();
 const projectRoot = path.join(__dirname, 'fixtures', testPrefix);
 const filePath = path.join(projectRoot, `test.${testPrefix}`);
 
-describe('editorconfig', () => {
+describe('Issue #148', () => {
 	let textEditor;
 	let editorDom;
 
-	beforeEach(() => {
-		waitsForPromise(() =>
-			Promise.all([
-				atom.packages.activatePackage('editorconfig'),
-				atom.packages.activatePackage('wrap-guide'),
-				atom.workspace.open(filePath)
-			]).then(results => {
-				textEditor = results.pop();
-				editorDom = atom.views.getView(textEditor);
-			})
-		);
+	beforeEach('Activating packages', async () => {
+		attachToDOM(atom.views.getView(atom.workspace));
+		await atom.packages.activatePackage('editorconfig');
+		await atom.packages.activatePackage('wrap-guide');
+		textEditor = await atom.workspace.open(filePath);
+		editorDom = atom.views.getView(textEditor);
 	});
 
-	afterEach(() => {
-		// Remove the created fixture, if it exists
-		runs(() => {
-			fs.stat(filePath, (err, stats) => {
-				if (!err && stats.isFile()) {
-					fs.unlink(filePath);
-				}
-			});
-		});
-
-		waitsFor(() => {
-			try {
-				return fs.statSync(filePath).isFile() === false;
-			} catch (err) {
-				return true;
-			}
-		}, 5000, `removed ${filePath}`);
+	afterEach(`Removing created fixture: ${filePath}`, () => {
+		if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
+			fs.unlinkSync(filePath);
+		}
 	});
 
-	describe('EditorConfig', () => {
-		it('should assure no additional wrapGuides are created', () => {
-			const ecfg = textEditor.getBuffer().editorconfig;
-			const wgCount = () => {
-				return editorDom
-							.querySelectorAll('* /deep/ .wrap-guide')
-							.length;
-			};
+	it('assures no additional wrapGuides are created', () => {
+		const ecfg = textEditor.getBuffer().editorconfig;
+		const wgCount = () => {
+			return editorDom.querySelectorAll('* /deep/ .wrap-guide').length;
+		};
 
-			expect(wgCount()).toBe(1);
-			// eslint-disable-next-line camelcase
-			ecfg.settings.max_line_length = 30;
-			ecfg.applySettings();
-			expect(wgCount()).toBe(1);
-			// eslint-disable-next-line camelcase
-			ecfg.settings.max_line_length = 'unset';
-			ecfg.applySettings();
-			expect(wgCount()).toBe(1);
-			// eslint-disable-next-line camelcase
-			ecfg.settings.max_line_length = 30;
-			ecfg.applySettings();
-			expect(wgCount()).toBe(1);
-			// eslint-disable-next-line camelcase
-			ecfg.settings.max_line_length = 'unset';
-			ecfg.applySettings();
-			expect(wgCount()).toBe(1);
-		});
+		expect(wgCount()).to.equal(1);
+		// eslint-disable-next-line camelcase
+		ecfg.settings.max_line_length = 30;
+		ecfg.applySettings();
+		expect(wgCount()).to.equal(1);
+		// eslint-disable-next-line camelcase
+		ecfg.settings.max_line_length = 'unset';
+		ecfg.applySettings();
+		expect(wgCount()).to.equal(1);
+		// eslint-disable-next-line camelcase
+		ecfg.settings.max_line_length = 30;
+		ecfg.applySettings();
+		expect(wgCount()).to.equal(1);
+		// eslint-disable-next-line camelcase
+		ecfg.settings.max_line_length = 'unset';
+		ecfg.applySettings();
+		expect(wgCount()).to.equal(1);
 	});
 });

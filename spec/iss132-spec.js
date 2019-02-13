@@ -1,15 +1,14 @@
-/** @babel */
-/* eslint-env jasmine, atomtest */
+'use strict';
 
 /*
-  This file contains verifying specs for:
-  https://github.com/sindresorhus/atom-editorconfig/issues/132
+	This file contains verifying specs for:
+	https://github.com/sindresorhus/atom-editorconfig/issues/132
 
-  If the indent_size /or the tab_width is set to 0 Atom throws an exception.
+	If the indent_size /or the tab_width is set to 0 Atom throws an exception.
 */
 
-import fs from 'fs';
-import path from 'path';
+const fs = require('fs');
+const path = require('path');
 
 const testPrefix = path.basename(__filename).split('-').shift();
 const projectRoot = path.join(__dirname, 'fixtures', testPrefix);
@@ -22,50 +21,29 @@ const filePath2 = path.join(
 	`test.${testPrefix}b`
 );
 
-describe('editorconfig', () => {
+describe('Issue #132', () => {
 	let textEditors = [];
 
-	beforeEach(() => {
-		waitsForPromise(() =>
-			Promise.all([
-				atom.packages.activatePackage('editorconfig'),
-				atom.workspace.open(filePath),
-				atom.workspace.open(filePath2)
-			]).then(results => {
-				textEditors = results.splice(1);
-			})
-		);
+	beforeEach('Activating package', async () => {
+		attachToDOM(atom.views.getView(atom.workspace));
+		await atom.packages.activatePackage('editorconfig');
+		textEditors[0] = await atom.workspace.open(filePath);
+		textEditors[1] = await atom.workspace.open(filePath2);
 	});
 
-	afterEach(() => {
-		// Remove the created fixture, if it exists
-		runs(() => {
-			fs.stat(filePath, (err, stats) => {
-				if (!err && stats.isFile()) {
-					fs.unlink(filePath);
-				}
-			});
-			fs.stat(filePath2, (err, stats) => {
-				if (!err && stats.isFile()) {
-					fs.unlink(filePath2);
-				}
-			});
-		});
-
-		waitsFor(() => {
-			try {
-				return fs.statSync(filePath).isFile() === false &&
-					fs.statSync(filePath2).isFile() === false;
-			} catch (err) {
-				return true;
+	afterEach(`Removing fixtures`, () => {
+		for (const file of [filePath, filePath2]) {
+			if (fs.existsSync(file) && fs.statSync(file).isFile()) {
+				fs.unlinkSync(file);
 			}
-		}, 5000, `removed ${filePath} and ${filePath2}`);
+		}
 	});
 
-	describe('EditorConfig', () => {
-		it('should default zero indent_size and tab_width to unset', () => {
-			expect(textEditors[0].getBuffer().editorconfig.settings.tab_width).toEqual('unset');
-			expect(textEditors[1].getBuffer().editorconfig.settings.tab_width).toEqual('unset');
-		});
+	it('unsets `indent_size` if set to zero', () => {
+		expect(textEditors[0].getBuffer().editorconfig.settings.tab_width).to.equal('unset');
+	});
+
+	if('unsets `tab_width` if set to zero', () => {
+		expect(textEditors[1].getBuffer().editorconfig.settings.tab_width).to.equal('unset');
 	});
 });

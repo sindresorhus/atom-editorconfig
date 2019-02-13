@@ -1,66 +1,47 @@
-/** @babel */
-/* eslint-env jasmine, atomtest */
+'use strict';
 
 /*
-  This file contains verifying specs for:
-  https://github.com/sindresorhus/atom-editorconfig/issues/4
+	This file contains verifying specs for:
+	https://github.com/sindresorhus/atom-editorconfig/issues/4
 */
 
-import fs from 'fs';
-import path from 'path';
+const fs = require('fs');
+const path = require('path');
 
 const projectRoot = path.join(__dirname, 'fixtures');
 const filePath = path.join(projectRoot, 'test.iss4');
 
-describe('editorconfig', () => {
-	let textEditor;
+describe('Issue #4', () => {
 	const textWithFinalNewline = 'I am Providence.\n';
 	const textWithoutFinalNewline = 'I am Providence.';
+	let textEditor;
 
-	beforeEach(() => {
-		waitsForPromise(() =>
-			Promise.all([
-				atom.packages.activatePackage('editorconfig'),
-				atom.workspace.open(filePath)
-			]).then(results => {
-				textEditor = results[1];
-			})
-		);
+	beforeEach('Activating package', async () => {
+		attachToDOM(atom.views.getView(atom.workspace));
+		await atom.packages.activatePackage('editorconfig');
+		textEditor = await atom.workspace.open(filePath);
 	});
 
-	afterEach(() => {
-		// Remove the created fixture, if it exists
-		runs(() => {
-			fs.stat(filePath, (err, stats) => {
-				if (!err && stats.isFile()) {
-					fs.unlink(filePath);
-				}
-			});
-		});
-
-		waitsFor(() => {
-			try {
-				return fs.statSync(filePath).isFile() === false;
-			} catch (err) {
-				return true;
-			}
-		}, 5000, `removed ${filePath}`);
+	afterEach(`Removing created fixture: ${filePath}`, () => {
+		if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
+			fs.unlinkSync(filePath);
+		}
 	});
 
-	describe('Atom being set to insert **no** final newline', () => {
+	when('Atom is told to insert no final newline', () => {
 		beforeEach(() => {
 			// eslint-disable-next-line camelcase
 			textEditor.getBuffer().editorconfig.settings.insert_final_newline = false;
 		});
 
-		it('should leave the missing newline.', () => {
+		it('leaves the missing newline', () => {
 			textEditor.setText(textWithoutFinalNewline);
 			textEditor.save();
-			expect(textEditor.getText().length).toEqual(textWithoutFinalNewline.length);
+			expect(textEditor.getText().length).to.equal(textWithoutFinalNewline.length);
 		});
 	});
 
-	describe('Atom being set to insert final newline', () => {
+	when('Atom is told to insert a final newline', () => {
 		beforeEach(() => {
 			// eslint-disable-next-line camelcase
 			textEditor.getBuffer().editorconfig.settings.insert_final_newline = true;
@@ -68,10 +49,10 @@ describe('editorconfig', () => {
 			textEditor.getBuffer().editorconfig.settings.end_of_line = '\n';
 		});
 
-		it('should insert a final newline.', () => {
+		it('inserts a final newline', () => {
 			textEditor.setText(textWithoutFinalNewline);
 			textEditor.save();
-			expect(textEditor.getText().length).toEqual(textWithFinalNewline.length);
+			expect(textEditor.getText().length).to.equal(textWithFinalNewline.length);
 		});
 	});
 });

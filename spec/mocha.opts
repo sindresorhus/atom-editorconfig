@@ -1,0 +1,2 @@
+--auto-it
+--spec-pattern /[\\\/].+-spec\.js$/

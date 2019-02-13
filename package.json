@@ -23,12 +23,14 @@
     "style",
     "code-style"
   ],
+  "atomTestRunner": "atom-mocha",
   "dependencies": {
     "editorconfig": "^0.13.2",
     "import-lazy": "^2.1.0",
     "pify": "^2.3.0"
   },
   "devDependencies": {
+    "atom-mocha": "^2.0.7",
     "xo": "*"
   },
   "xo": {

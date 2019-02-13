@@ -1,10 +1,11 @@
-/** @babel */
-/* eslint-env jasmine, atomtest */
+'use strict';
 
-/* This file contains all specs to ensure the base-functionality of
-this plugin. */
+/*
+	This file contains all specs to ensure the base-functionality of
+	this plugin.
+*/
 
-import wrapGuideInterceptor from '../lib/wrapguide-interceptor';
+const wrapGuideInterceptor = require('../lib/wrapguide-interceptor');
 
 const editorStub = {
 	getGuidesColumns: wrapGuideInterceptor.getGuidesColumns,
@@ -27,32 +28,36 @@ const editorStub = {
 	}
 };
 
-describe('wrapGuideInterceptor.getNativeGuidesColumns()', () => {
-	let editor;
-	beforeEach(() => {
-		editor = Object.assign({}, editorStub);
-	});
+describe('wrapGuideInterceptor', () => {
+	describe('getNativeGuidesColumns()', () => {
+		let editor;
 
-	it('should pass guidesColums if `max_line_length` is `unset`', () => {
-		expect(editor.getGuidesColumns()).toEqual(editor.nativeGuidesColumns);
-	});
+		beforeEach(() => {
+			attachToDOM(atom.views.getView(atom.workspace));
+			editor = Object.assign({}, editorStub);
+		});
 
-	it('should add the `max_line_length` to the default guides', () => {
-		editor.editorconfig.settings.max_line_length = 130; // eslint-disable-line camelcase
+		it('passes guidesColums if `max_line_length` is "unset"', () => {
+			expect(editor.getGuidesColumns()).to.eql(editor.nativeGuidesColumns);
+		});
 
-		expect(editor.getGuidesColumns()).toEqual([30, 60, 90, 120, 130]);
-	});
+		it('adds `max_line_length` to the default guides', () => {
+			editor.editorconfig.settings.max_line_length = 130; // eslint-disable-line camelcase
 
-	it('should remove default guides which are wider than `max_line_length`', () => {
-		editor.editorconfig.settings.max_line_length = 89; // eslint-disable-line camelcase
+			expect(editor.getGuidesColumns()).to.eql([30, 60, 90, 120, 130]);
+		});
 
-		expect(editor.getGuidesColumns()).toEqual([30, 60, 89]);
-	});
+		it('removes default guides which are wider than `max_line_length`', () => {
+			editor.editorconfig.settings.max_line_length = 89; // eslint-disable-line camelcase
 
-	it('should return only `max_line_length` if there is only a single wrap guide', () => {
-		editor.editorconfig.settings.max_line_length = 89; // eslint-disable-line camelcase
-		editor.nativeGuidesColumns = 85;
+			expect(editor.getGuidesColumns()).to.eql([30, 60, 89]);
+		});
 
-		expect(editor.getGuidesColumns()).toEqual(89);
+		it('returns only `max_line_length` if there is only a single wrap guide', () => {
+			editor.editorconfig.settings.max_line_length = 89; // eslint-disable-line camelcase
+			editor.nativeGuidesColumns = 85;
+
+			expect(editor.getGuidesColumns()).to.eql(89);
+		});
 	});
 });

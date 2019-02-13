@@ -1,24 +1,23 @@
-/** @babel */
-/* eslint-env jasmine, atomtest */
+'use strict';
 
 /*
-  This file contains verifying specs for:
-  https://github.com/sindresorhus/atom-editorconfig/issues/94
+	This file contains verifying specs for:
+	https://github.com/sindresorhus/atom-editorconfig/issues/94
 */
 
-import {init as generateConfig} from '../commands/generate';
+const {init:generateConfig} = require('../commands/generate');
 
-describe('editorconfig with disabled whitespace-package', () => {
-	beforeEach(() => {
-		waitsForPromise(() =>
-			Promise.all([
-				atom.packages.activatePackage('editorconfig')
-			]));
-	});
+describe('Issue #94', () => {
+	when('the `whitespace` package has been disabled', () => {
+		beforeEach('Activating package', () => {
+			attachToDOM(atom.views.getView(atom.workspace));
+			return atom.packages.activatePackage('editorconfig');
+		});
 
-	describe('when generating an .editorconfig', () => {
-		it('shouldn\'t throw an exception', () => {
-			expect(generateConfig).not.toThrow();
+		when('generating an `.editorconfig` file', () => {
+			it('does not throw an exception', () => {
+				expect(generateConfig).not.to.throw();
+			});
 		});
 	});
 });

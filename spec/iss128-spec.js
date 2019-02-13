@@ -1,18 +1,17 @@
-/** @babel */
-/* eslint-env jasmine, atomtest */
+'use strict';
 
 /*
-  This file contains verifying specs for:
-  https://github.com/sindresorhus/atom-editorconfig/issues/128
+	This file contains verifying specs for:
+	https://github.com/sindresorhus/atom-editorconfig/issues/128
 
-  To apply the max_line_length-property the wrap-guide-package is being de/activated if needed,
-  to avoid that two wrap-guides are being displayed at once. The past implementation assumed that
-  changing the activation-state wouldn't be able to override a package-disablement. It turned out
-  that the package activation-state must be guarded by a disablement-proof.
+	To apply the max_line_length-property the wrap-guide-package is being de/activated if needed,
+	to avoid that two wrap-guides are being displayed at once. The past implementation assumed that
+	changing the activation-state wouldn't be able to override a package-disablement. It turned out
+	that the package activation-state must be guarded by a disablement-proof.
 */
 
-import fs from 'fs';
-import path from 'path';
+const fs = require('fs');
+const path = require('path');
 
 const projectRoot = path.join(__dirname, 'fixtures');
 const filePath = path.join(
@@ -20,41 +19,23 @@ const filePath = path.join(
 	`test.${path.basename(__filename).split('-').shift()}`
 );
 
-describe('editorconfig', () => {
+describe('Issue #128', () => {
 	let textEditor;
 
-	beforeEach(() => {
-		waitsForPromise(() =>
-			Promise.all([
-				atom.packages.activatePackage('editorconfig'),
-				atom.packages.disablePackage('wrap-guide'),
-				atom.workspace.open(filePath)
-			]).then(results => {
-				textEditor = results[2];
-			})
-		);
+	beforeEach('Activating package', async () => {
+		attachToDOM(atom.views.getView(atom.workspace));
+		await atom.packages.activatePackage('editorconfig');
+		await atom.packages.disablePackage('wrap-guide');
+		textEditor = await atom.workspace.open(filePath);
 	});
 
-	afterEach(() => {
-		// Remove the created fixture, if it exists
-		runs(() => {
-			fs.stat(filePath, (err, stats) => {
-				if (!err && stats.isFile()) {
-					fs.unlink(filePath);
-				}
-			});
-		});
-
-		waitsFor(() => {
-			try {
-				return fs.statSync(filePath).isFile() === false;
-			} catch (err) {
-				return true;
-			}
-		}, 5000, `removed ${filePath}`);
+	afterEach(`Removing created fixture: ${filePath}`, () => {
+		if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
+			fs.unlinkSync(filePath);
+		}
 	});
 
-	describe('Atom with disabled wrap-guide', () => {
+	when('the `wrap-guide` package is disabled', () => {
 		beforeEach(() => {
 			Object.assign(textEditor.getBuffer().editorconfig.settings, {
 				max_line_length: 'unset' // eslint-disable-line camelcase
@@ -62,7 +43,7 @@ describe('editorconfig', () => {
 		});
 
 		it('should not activate wrap-guide', () => {
-			expect(atom.packages.isPackageActive('wrap-guide')).toEqual(false);
+			expect(atom.packages.isPackageActive('wrap-guide')).to.be.false;
 		});
 	});
 });

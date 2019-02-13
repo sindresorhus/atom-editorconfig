@@ -1,54 +1,35 @@
-/** @babel */
-/* eslint-env jasmine, atomtest */
+'use strict';
 
 /*
-  This file contains verifying specs for:
-  https://github.com/sindresorhus/atom-editorconfig/issues/108
+	This file contains verifying specs for:
+	https://github.com/sindresorhus/atom-editorconfig/issues/108
 */
 
-import fs from 'fs';
-import path from 'path';
+const fs = require('fs');
+const path = require('path');
 
 const projectRoot = path.join(__dirname, 'fixtures');
 const filePath = path.join(projectRoot, 'test.iss108');
 
-describe('editorconfig', () => {
-	let textEditor;
+describe('Issue #108', () => {
 	const textWithManyFinalNewlines = 'I\nam\nProvidence.\n\r\n\r\r\n\n\n';
 	const textWithOneFinalNewline = 'I\nam\nProvidence.\n';
 	const textWithoutFinalNewline = 'I\nam\nProvidence.';
+	let textEditor;
 
-	beforeEach(() => {
-		waitsForPromise(() =>
-			Promise.all([
-				atom.packages.activatePackage('editorconfig'),
-				atom.workspace.open(filePath)
-			]).then(results => {
-				textEditor = results[1];
-			})
-		);
+	beforeEach('Activating package', async () => {
+		attachToDOM(atom.views.getView(atom.workspace));
+		await atom.packages.activatePackage('editorconfig');
+		textEditor = await atom.workspace.open(filePath);
 	});
 
-	afterEach(() => {
-		// Remove the created fixture, if it exists
-		runs(() => {
-			fs.stat(filePath, (err, stats) => {
-				if (!err && stats.isFile()) {
-					fs.unlink(filePath);
-				}
-			});
-		});
-
-		waitsFor(() => {
-			try {
-				return fs.statSync(filePath).isFile() === false;
-			} catch (err) {
-				return true;
-			}
-		}, 5000, `removed ${filePath}`);
+	afterEach(`Removing created fixture: ${filePath}`, () => {
+		if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
+			fs.unlinkSync(filePath);
+		}
 	});
 
-	describe('Atom being set to insert **no** final newline', () => {
+	when('Atom is told to insert no final newline', () => {
 		beforeEach(() => {
 			// eslint-disable-next-line camelcase
 			textEditor.getBuffer().editorconfig.settings.end_of_line = '\n';
@@ -56,24 +37,24 @@ describe('editorconfig', () => {
 			textEditor.getBuffer().editorconfig.settings.insert_final_newline = false;
 		});
 
-		it('should leave the missing newline.', () => {
+		it('retains missing newlines', () => {
 			textEditor.setText(textWithoutFinalNewline);
 			textEditor.save();
-			expect(textEditor.getText().length).toEqual(textWithoutFinalNewline.length);
+			expect(textEditor.getText()).to.equal(textWithoutFinalNewline);
 		});
-		it('should strip one odd newline.', () => {
+		it('strips a single odd newline', () => {
 			textEditor.setText(textWithOneFinalNewline);
 			textEditor.save();
-			expect(textEditor.getText().length).toEqual(textWithoutFinalNewline.length);
+			expect(textEditor.getText()).to.equal(textWithoutFinalNewline);
 		});
-		it('should strip many odd newlines.', () => {
+		it('strips multiple odd newlines', () => {
 			textEditor.setText(textWithManyFinalNewlines);
 			textEditor.save();
-			expect(textEditor.getText().length).toEqual(textWithoutFinalNewline.length);
+			expect(textEditor.getText()).to.equal(textWithoutFinalNewline);
 		});
 	});
 
-	describe('Atom being set to insert a final newline', () => {
+	when('Atom is told to insert a final newline', () => {
 		beforeEach(() => {
 			// eslint-disable-next-line camelcase
 			textEditor.getBuffer().editorconfig.settings.insert_final_newline = true;
@@ -81,20 +62,20 @@ describe('editorconfig', () => {
 			textEditor.getBuffer().editorconfig.settings.end_of_line = '\n';
 		});
 
-		it('should insert a final newline.', () => {
+		it('inserts a final newline.', () => {
 			textEditor.setText(textWithoutFinalNewline);
 			textEditor.save();
-			expect(textEditor.getText().length).toEqual(textWithOneFinalNewline.length);
+			expect(textEditor.getText()).to.equal(textWithOneFinalNewline);
 		});
-		it('should leave one final newline.', () => {
+		it('retains one final newline', () => {
 			textEditor.setText(textWithOneFinalNewline);
 			textEditor.save();
-			expect(textEditor.getText().length).toEqual(textWithOneFinalNewline.length);
+			expect(textEditor.getText()).to.equal(textWithOneFinalNewline);
 		});
-		it('should strip many odd final newline.', () => {
+		it('strips multiple odd final newlines', () => {
 			textEditor.setText(textWithManyFinalNewlines);
 			textEditor.save();
-			expect(textEditor.getText().length).toEqual(textWithOneFinalNewline.length);
+			expect(textEditor.getText()).to.equal(textWithOneFinalNewline);
 		});
 	});
 });

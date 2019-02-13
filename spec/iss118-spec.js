@@ -1,54 +1,35 @@
-/** @babel */
-/* eslint-env jasmine, atomtest */
+'use strict';
 
 /*
-  This file contains verifying specs for:
-  https://github.com/sindresorhus/atom-editorconfig/issues/118
+	This file contains verifying specs for:
+	https://github.com/sindresorhus/atom-editorconfig/issues/118
 */
 
-import fs from 'fs';
-import path from 'path';
+const fs = require('fs');
+const path = require('path');
 
 const testPrefix = path.basename(__filename).split('-').shift();
 const projectRoot = path.join(__dirname, 'fixtures');
 const filePath = path.join(projectRoot, `test.${testPrefix}`);
 
-describe('editorconfig', () => {
-	let textEditor;
+describe('Issue #118', () => {
 	const textWithoutTrailingWhitespaces = 'I\nam\nProvidence.';
 	const textWithManyTrailingWhitespaces = 'I  \t  \nam  \t  \nProvidence.';
+	let textEditor;
 
-	beforeEach(() => {
-		waitsForPromise(() =>
-			Promise.all([
-				atom.packages.activatePackage('editorconfig'),
-				atom.workspace.open(filePath)
-			]).then(results => {
-				textEditor = results[1];
-			})
-		);
+	beforeEach('Activating package', async () => {
+		attachToDOM(atom.views.getView(atom.workspace));
+		await atom.packages.activatePackage('editorconfig');
+		textEditor = await atom.workspace.open(filePath);
 	});
 
-	afterEach(() => {
-		// Remove the created fixture, if it exists
-		runs(() => {
-			fs.stat(filePath, (err, stats) => {
-				if (!err && stats.isFile()) {
-					fs.unlink(filePath);
-				}
-			});
-		});
-
-		waitsFor(() => {
-			try {
-				return fs.statSync(filePath).isFile() === false;
-			} catch (err) {
-				return true;
-			}
-		}, 5000, `removed ${filePath}`);
+	afterEach(`Removing created fixture: ${filePath}`, () => {
+		if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
+			fs.unlinkSync(filePath);
+		}
 	});
 
-	describe('Atom being set to remove trailing whitespaces', () => {
+	when('Atom is told to remove trailing whitespace', () => {
 		beforeEach(() => {
 			// eslint-disable-next-line camelcase
 			textEditor.getBuffer().editorconfig.settings.trim_trailing_whitespace = true;
@@ -56,10 +37,10 @@ describe('editorconfig', () => {
 			textEditor.getBuffer().editorconfig.settings.insert_final_newline = false;
 		});
 
-		it('should strip trailing whitespaces on save.', () => {
+		it('strips trailing whitespaces on save', () => {
 			textEditor.setText(textWithManyTrailingWhitespaces);
 			textEditor.save();
-			expect(textEditor.getText().length).toEqual(textWithoutTrailingWhitespaces.length);
+			expect(textEditor.getText().length).to.equal(textWithoutTrailingWhitespaces.length);
 		});
 	});
 });

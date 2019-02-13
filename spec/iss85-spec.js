@@ -1,13 +1,12 @@
-/** @babel */
-/* eslint-env jasmine, atomtest */
+'use strict';
 
 /*
 	This file contains verifying specs for:
 	https://github.com/sindresorhus/atom-editorconfig/issues/85
 */
 
-import fs from 'fs';
-import path from 'path';
+const fs = require('fs');
+const path = require('path');
 
 const projectRoot = path.join(__dirname, 'fixtures', 'iss85');
 const filePath = path.join(projectRoot, 'test.iss85');
@@ -17,51 +16,33 @@ const getEcfgForTabWith = tabWidth => {
 	return `root = true\n[*.iss85]\ntab_width = ${tabWidth}\n`;
 };
 
-describe('editorconfig', () => {
+describe('Issue #85', () => {
 	let fileEditor;
 	let ecfgEditor;
 
-	beforeEach(() => {
-		waitsForPromise(() =>
-			Promise.all([
-				atom.packages.activatePackage('editorconfig'),
-				atom.workspace.open(filePath),
-				atom.workspace.open(ecfgPath)
-			]).then(results => {
-				[, fileEditor, ecfgEditor] = results;
-			})
-		);
+	beforeEach('Activating package', async () => {
+		attachToDOM(atom.views.getView(atom.workspace));
+		await atom.packages.activatePackage('editorconfig');
+		fileEditor = await atom.workspace.open(filePath);
+		ecfgEditor = await atom.workspace.open(ecfgPath);
 	});
 
-	afterEach(() => {
-		// Remove the created fixture, if it exists
-		runs(() => {
-			fs.stat(filePath, (err, stats) => {
-				if (!err && stats.isFile()) {
-					fs.unlink(filePath);
-				}
-			});
-		});
-
-		waitsFor(() => {
-			try {
-				return (fs.statSync(filePath).isFile() === false);
-			} catch (err) {
-				return true;
-			}
-		}, 5000, `removed ${filePath}`);
+	afterEach(`Removing created fixture: ${filePath}`, () => {
+		if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
+			fs.unlinkSync(filePath);
+		}
 	});
 
-	xdescribe('Editing an corresponding .editorconfig', () => {
-		it('should change the editorconfig-settings in other fileEditors', () => {
+	when('modifying an `.editorconfig` file', () => {
+		it('updates the settings of other editors', () => {
 			fileEditor.save();
 			ecfgEditor.getBuffer().setText(getEcfgForTabWith(85));
 			ecfgEditor.save();
-			expect(fileEditor.getBuffer().editorconfig.settings.tab_width).toEqual(85);
+			expect(fileEditor.getBuffer().editorconfig.settings.tab_width).to.equal(85);
 
 			ecfgEditor.getBuffer().setText(getEcfgForTabWith(2));
 			ecfgEditor.save();
-			expect(fileEditor.getBuffer().editorconfig.settings.tab_width).toEqual(2);
+			expect(fileEditor.getBuffer().editorconfig.settings.tab_width).to.equal(2);
 		});
 	});
 });

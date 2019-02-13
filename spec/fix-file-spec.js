@@ -1,19 +1,17 @@
-/** @babel */
-/* eslint-env jasmine, atomtest */
+'use strict';
 
 /*
-  This file contains verifying specs for:
-  https://github.com/sindresorhus/atom-editorconfig/issues/168
-  and the general implementation of FixFile
+	This file contains verifying specs for:
+	https://github.com/sindresorhus/atom-editorconfig/issues/168
+	and the general implementation of FixFile
 
-  #169 is missing the preservation of trailing whitespaces in doc-comments, which
-  until yet got normalized by FixFile.
+	#169 is missing the preservation of trailing whitespaces in doc-comments,
+	which until yet got normalized by FixFile.
 */
 
-import fs from 'fs';
-import path from 'path';
-
-import {init as fixFile} from '../commands/fix';
+const fs = require('fs');
+const path = require('path');
+const {init:fixFile} = require('../commands/fix');
 
 const testPrefix = path.basename(__filename).split('-').shift();
 const projectRoot = path.join(__dirname, 'fixtures', testPrefix);
@@ -55,42 +53,24 @@ I really
 \tnow
 `;
 
-describe('editorconfig', () => {
-	let editor;
+describe('EditorConfig:FixFile', () => {
+	let textEditor;
 
-	beforeEach(() => {
-		waitsForPromise(() =>
-			Promise.all([
-				atom.packages.activatePackage('editorconfig'),
-				atom.workspace.open(filePath)
-			]).then(results => {
-				editor = results.pop();
-			})
-		);
+	beforeEach('Activating package', async () => {
+		attachToDOM(atom.views.getView(atom.workspace));
+		await atom.packages.activatePackage('editorconfig');
+		textEditor = await atom.workspace.open(filePath);
 	});
 
-	afterEach(() => {
-		// Remove the created fixture, if it exists
-		runs(() => {
-			fs.stat(filePath, (err, stats) => {
-				if (!err && stats.isFile()) {
-					fs.unlink(filePath);
-				}
-			});
-		});
-
-		waitsFor(() => {
-			try {
-				return fs.statSync(filePath).isFile() === false;
-			} catch (err) {
-				return true;
-			}
-		}, 5000, `removed ${filePath}`);
+	afterEach(`Removing created fixture: ${filePath}`, () => {
+		if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
+			fs.unlinkSync(filePath);
+		}
 	});
 
-	describe('EditorConfig:FixFile', () => {
-		it('should transform trailing soft-/tabs and preserve additional spaces', () => {
-			const buffer = editor.getBuffer();
+	when('running the `EditorConfig:FixFile` command', () => {
+		it('transforms trailing soft-/tabs and preserves additional spaces', () => {
+			const buffer = textEditor.getBuffer();
 			const ecfg = buffer.editorconfig;
 
 			ecfg.settings.indent_style = 'tab'; // eslint-disable-line camelcase
@@ -99,13 +79,13 @@ describe('editorconfig', () => {
 			ecfg.applySettings();
 
 			buffer.setText(spacedText);
-			expect(buffer.getText()).toEqual(spacedText);
+			expect(buffer.getText()).to.equal(spacedText);
 			fixFile();
-			expect(buffer.getText()).toEqual(tabbedText);
+			expect(buffer.getText()).to.equal(tabbedText);
 
 			ecfg.settings.indent_style = 'space'; // eslint-disable-line camelcase
 			fixFile();
-			expect(buffer.getText()).toEqual(spacedText);
+			expect(buffer.getText()).to.equal(spacedText);
 		});
 	});
 });

@@ -1,1 +1,5 @@
 node_modules
+spec/fixtures/test.*
+spec/fixtures/**/test.*
+!spec/fixtures/test.iss
+!yarn.lock
