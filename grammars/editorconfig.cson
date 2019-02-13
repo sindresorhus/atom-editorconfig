@@ -1,0 +1,191 @@
+name: "editorconfig"
+scopeName: "source.editorconfig"
+fileTypes: ["editorconfig"]
+patterns: [include: "#main"]
+firstLineMatch: """(?ix)
+
+	# Emacs modeline
+	-\\*-(?:\\s*(?=[^:;\\s]+\\s*-\\*-)|(?:.*?[;\\s]|(?<=-\\*-))mode\\s*:\\s*)
+		editor-?config(?:config|-conf)?
+	(?=[\\s;]|(?<![-*])-\\*-).*?-\\*-
+
+	|
+
+	# Vim modeline
+	(?:(?:\\s|^)vi(?:m[<=>]?\\d+|m)?|\\sex)(?=:(?=\\s*set?\\s[^\\n:]+:)|:(?!\\s* set?\\s))(?:(?:\\s|\\s*:\\s*)\\w*(?:\\s*=(?:[^\\n\\\\\\s]|\\\\.)*)?)*[\\s:](?:filetype|ft|syntax)\\s*=
+		editor-?config(?:-config|conf)?
+	(?=\\s|:|$)
+"""
+
+repository:
+	main:
+		patterns: [
+			{include: "#comment"}
+			{include: "#section"}
+			{include: "#rule"}
+		]
+
+
+	# Comment lines
+	comment:
+		patterns: [{
+			# Comments beginning with a number-sign
+			name:  "comment.line.number-sign.editorconfig"
+			begin: "(\\s*)(#)"
+			end:   "$"
+			beginCaptures:
+				1: name: "punctuation.whitespace.comment.leading.editorconfig"
+				2: name: "punctuation.definition.comment.editorconfig"
+		},{
+			# Comments beginning with a semicolon
+			name:  "comment.line.semicolon.editorconfig"
+			begin: "(\\s*)(;)"
+			end:   "$"
+			beginCaptures:
+				1: name: "punctuation.whitespace.comment.leading.editorconfig"
+				2: name: "punctuation.definition.comment.editorconfig"
+		}]
+
+
+	# Escape sequence
+	escape:
+		name:  "constant.character.escape.editorconfig"
+		match: "\\\\."
+
+
+	# Bareword identifiers
+	keywords:
+		patterns: [{
+			# Boolean values
+			name:  "constant.language.boolean.${1:/downcase}.editorconfig"
+			match: "(?i)\\b(true|false|on|off|yes|no)\\b"
+		},{
+			# Character sets
+			name:  "constant.language.charset.encoding.${1:/downcase}.editorconfig"
+			match: "(?i)\\b(latin1|utf-8|utf-16[bl]e)\\b"
+		},{
+			# Anything else
+			name:  "constant.language.${1:/downcase}.editorconfig"
+			match: "(?i)\\b(CRLF|CR|LF|tab|space|unset)\\b"
+		}]
+
+
+	# Numeric literal
+	number:
+		name:  "constant.numeric.decimal.integer.int.editorconfig"
+		match: "\\d+"
+
+
+	# Stuff matched inside pathnames/file-globbing patterns
+	pathSpec:
+		patterns: [
+			{include: "#escape"}
+			{include: "#pathBracketsCurly"}
+			{include: "#pathBracketsSquare"}
+			{match: "\\*{2}", name: "keyword.operator.glob.wildcard.globstar.editorconfig"}
+			{match: "\\*",    name: "keyword.operator.glob.wildcard.editorconfig"}
+			{match: "\\?",    name: "keyword.operator.glob.wildcard.editorconfig"}
+		]
+
+
+	# Brace expansion of the form `{s1,s2,s3}` or `{num1..num2}`
+	pathBracketsCurly:
+		begin: "{"
+		end:   "}|(?=$)"
+		beginCaptures: 0: name: "punctuation.definition.brace.bracket.curly.begin.editorconfig"
+		endCaptures:   0: name: "punctuation.definition.brace.bracket.curly.end.editorconfig"
+		patterns: [
+			{include: "#escape"}
+			{match: ",", name: "punctuation.separator.delimiter.comma.editorconfig"}
+			{include: "#pathRange"}
+			{include: "#pathSpec"}
+		]
+
+
+	# Number-range matched within a brace expansion: `{num1..num2}`
+	pathRange:
+		name:  "meta.range.editorconfig"
+		match: "([0-9]+)(\\.{2})([0-9]+)"
+		captures:
+			1: patterns: [include: "#number"]
+			2: name: "punctuation.definition.separator.range.editorconfig"
+			3: patterns: [include: "#number"]
+
+
+	# [[Balanced [bracket-pairs]]] matched inside section-titles
+	pathBracketsSquare:
+		begin: "\\["
+		end:   "\\]|(?=$)"
+		beginCaptures: 0: name: "punctuation.definition.brace.bracket.square.begin.editorconfig"
+		endCaptures:   0: name: "punctuation.definition.brace.bracket.square.end.editorconfig"
+		patterns: [include: "#pathSpec"]
+
+
+	# Rule declaration of the form `name = value`
+	rule:
+		name:  "meta.rule.${1:/downcase}.editorconfig"
+		begin: "^\\s*([A-Za-z0-9_]+)\\s*(=)"
+		end:   "$"
+		beginCaptures:
+			1: name: "keyword.other.definition.${1:/downcase}.editorconfig"
+			2: name: "punctuation.separator.key-value.editorconfig"
+		patterns: [include: "#value"]
+
+
+	# Group of rules beginning with a [bracketed title]
+	section:
+		name:  "meta.section.editorconfig"
+		begin: "^\\s*(?=\\[.*?\\])"
+		end:   "(?!\\G)(?=^\\s*\\[)"
+		patterns: [
+			{include: "#sectionHeader"}
+			{include: "#comment"}
+			{include: "#rule"}
+		]
+
+
+	# The [bracketed-title] preceding a group of rules
+	sectionHeader:
+		name:  "meta.section.header.editorconfig"
+		begin: "\\G\\["
+		end:   "\\]|(?=$)"
+		beginCaptures: 0: name: "punctuation.section.brace.bracket.square.begin.editorconfig"
+		endCaptures:   0: name: "punctuation.section.brace.bracket.square.end.editorconfig"
+		contentName: "entity.name.section.group-title.editorconfig"
+		patterns: [{
+			# Exclamation mark prefix inverting the path-spec
+			name:  "keyword.control.logical.not.negation.editorconfig"
+			match: "\\G!"
+		}, include: "#pathSpec"]
+
+
+	# Quoted string literals
+	string:
+		patterns: [{
+			# "Double quotes"
+			name:  "string.quoted.double.editorconfig"
+			begin: '"'
+			end:   '"'
+			beginCaptures: 0: name: "punctuation.definition.string.begin.editorconfig"
+			endCaptures:   0: name: "punctuation.definition.string.end.editorconfig"
+			patterns: [include: "#escape"]
+		},{
+			# 'Single quotes'
+			name:  "string.quoted.single.editorconfig"
+			begin: "'"
+			end:   "'"
+			beginCaptures: 0: name: "punctuation.definition.string.begin.editorconfig"
+			endCaptures:   0: name: "punctuation.definition.string.end.editorconfig"
+			patterns: [include: "#escape"]
+		}]
+
+
+	# Anything matched after a rule's `=` token
+	value:
+		patterns: [
+			{include: "#escape"}
+			{include: "#comment"}
+			{include: "#keywords"}
+			{include: "#number"}
+			{include: "#string"}
+		]
