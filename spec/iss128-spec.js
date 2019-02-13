@@ -43,7 +43,7 @@ describe('Issue #128', () => {
 		});
 
 		it('should not activate wrap-guide', () => {
-			expect(atom.packages.isPackageActive('wrap-guide')).to.be.false;
+			expect(atom.packages.isPackageActive('wrap-guide')).to.equal(false);
 		});
 	});
 });

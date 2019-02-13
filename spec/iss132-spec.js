@@ -22,7 +22,7 @@ const filePath2 = path.join(
 );
 
 describe('Issue #132', () => {
-	let textEditors = [];
+	const textEditors = [];
 
 	beforeEach('Activating package', async () => {
 		attachToDOM(atom.views.getView(atom.workspace));
@@ -31,7 +31,7 @@ describe('Issue #132', () => {
 		textEditors[1] = await atom.workspace.open(filePath2);
 	});
 
-	afterEach(`Removing fixtures`, () => {
+	afterEach('Removing fixtures', () => {
 		for (const file of [filePath, filePath2]) {
 			if (fs.existsSync(file) && fs.statSync(file).isFile()) {
 				fs.unlinkSync(file);
@@ -43,7 +43,7 @@ describe('Issue #132', () => {
 		expect(textEditors[0].getBuffer().editorconfig.settings.tab_width).to.equal('unset');
 	});
 
-	if('unsets `tab_width` if set to zero', () => {
+	it('unsets `tab_width` if set to zero', () => {
 		expect(textEditors[1].getBuffer().editorconfig.settings.tab_width).to.equal('unset');
 	});
 });

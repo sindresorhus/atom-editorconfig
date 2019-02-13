@@ -53,7 +53,7 @@ function initializeTextBuffer(buffer) {
 				}
 
 				const configOptions = {scope: editor.getRootScopeDescriptor()};
-				const settings = this.settings;
+				const {settings} = this;
 
 				if (editor && editor.getBuffer() === buffer) {
 					if (settings.indent_style === 'unset') {
@@ -98,18 +98,15 @@ function initializeTextBuffer(buffer) {
 						if (wrapGuide.editorconfig === undefined) {
 							wrapGuide.editorconfig = this;
 							wrapGuide.getNativeGuideColumn = wrapGuide.getGuideColumn;
-							wrapGuide.getGuideColumn = wrapGuideInterceptor
-																	.getGuideColumn
-																	.bind(wrapGuide);
+							wrapGuide.getGuideColumn = wrapGuideInterceptor.getGuideColumn.bind(wrapGuide);
 							wrapGuide.getNativeGuidesColumns = wrapGuide.getGuidesColumns;
-							wrapGuide.getGuidesColumns = wrapGuideInterceptor
-																	.getGuidesColumns
-																	.bind(wrapGuide);
+							wrapGuide.getGuidesColumns = wrapGuideInterceptor.getGuidesColumns.bind(wrapGuide);
 						}
+
 						if (typeof wrapGuide.updateGuide === 'function') {
 							wrapGuide.updateGuide();
 						} else {
-							// FIXME: This won't work with multiple wrap-guides
+							// NB: This won't work with multiple wrap-guides
 							const columnWidth = bufferDom.getDefaultCharacterWidth() * editorParams.preferredLineLength;
 							if (columnWidth > 0) {
 								wrapGuide.style.left = Math.round(columnWidth) + 'px';
@@ -124,13 +121,14 @@ function initializeTextBuffer(buffer) {
 						buffer.setPreferredLineEnding(settings.end_of_line);
 					}
 				}
+
 				setState(this);
 			},
 
 			// `onWillSave` event handler
 			// Trims whitespaces and inserts/strips final newline before saving
 			onWillSave() {
-				const settings = this.settings;
+				const {settings} = this;
 
 				if (settings.trim_trailing_whitespace === true) {
 					buffer.backwardsScan(/[ \t]+$/gm, params => {
@@ -195,7 +193,7 @@ function observeTextEditor(editor) {
 		}
 
 		const ecfg = editor.getBuffer().editorconfig;
-		const settings = ecfg.settings;
+		const {settings} = ecfg;
 		const lineEndings = {
 			crlf: '\r\n',
 			cr: '\r',
@@ -240,15 +238,15 @@ function observeTextEditor(editor) {
 			'unset';
 
 		// #227: Allow `latin1` as an alias of ISO 8859-1.
-		if (String(settings.charset).toLowerCase().replace(/\W/g, "") === 'latin1') {
+		if (String(settings.charset).toLowerCase().replace(/\W/g, '') === 'latin1') {
 			settings.charset = 'iso88591';
 		}
 
 		/* eslint-enable camelcase */
 
 		ecfg.applySettings();
-	}).catch(Error, e => {
-		console.warn(`atom-editorconfig: ${e}`);
+	}).catch(error => {
+		console.warn(`atom-editorconfig: ${error}`);
 	});
 }
 

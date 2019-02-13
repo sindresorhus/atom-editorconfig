@@ -5,12 +5,13 @@ const init = () => {
 	if (!editor) {
 		return;
 	}
+
 	const buffer = editor.getBuffer();
 	if (typeof buffer.editorconfig === 'undefined') {
 		return;
 	}
 
-	const settings = buffer.editorconfig.settings;
+	const {settings} = buffer.editorconfig;
 	const softTabs = settings.indent_style === 'space';
 	const checkpoint = buffer.createCheckpoint();
 	const fixedProperties = {
@@ -52,6 +53,7 @@ const init = () => {
 					if (curr === ' ') {
 						return prev + 1;
 					}
+
 					return prev + tabLength - (prev % tabLength);
 				}, 0);
 
@@ -74,6 +76,7 @@ const init = () => {
 			fixedProperties.indentStyle / editor.getTabLength()
 		);
 	}
+
 	let changesInTotal = 0;
 	Object.keys(fixedProperties).forEach(k => {
 		changesInTotal += fixedProperties[k];
@@ -98,6 +101,7 @@ The file ${editor.getTitle()} conformed to the \`end_of_line\` and \`indent_styl
 No changes were applied.
 `;
 	}
+
 	atom.notifications.addSuccess(editor.getTitle(), notificationOptions);
 };
 

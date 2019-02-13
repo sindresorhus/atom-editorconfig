@@ -17,7 +17,7 @@ describe('Activation benchmark', () => {
 	it('should have loaded fine', () => {
 		const pack = atom.packages.getLoadedPackage('editorconfig');
 
-		expect(pack).not.to.be.undefined;
+		expect(pack).not.to.equal(undefined);
 
 		if (typeof pack !== 'undefined') {
 			log(`The package took ${pack.loadTime}ms to load and ${pack.activateTime}ms to activate.`);

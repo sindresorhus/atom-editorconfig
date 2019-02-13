@@ -25,6 +25,7 @@ describe('Base functionality', () => {
 					isAvailable = true;
 				}
 			});
+		// eslint-disable-next-line no-unused-expressions
 		expect(isAvailable).to.be.ok;
 	});
 
@@ -36,10 +37,12 @@ describe('Base functionality', () => {
 					isAvailable = true;
 				}
 			});
+		// eslint-disable-next-line no-unused-expressions
 		expect(isAvailable).to.be.ok;
 	});
 
 	it('sets indent_style to "space"', () => {
+		// eslint-disable-next-line no-unused-expressions
 		expect(textEditor.getSoftTabs()).to.be.ok;
 	});
 

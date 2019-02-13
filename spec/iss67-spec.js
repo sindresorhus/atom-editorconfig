@@ -6,7 +6,7 @@
 */
 
 const path = require('path');
-const {init:generateConfig} = require('../commands/generate');
+const {init: generateConfig} = require('../commands/generate');
 const {poll, punch} = require('./utils.js');
 
 describe('Issue #67', () => {
@@ -21,9 +21,11 @@ describe('Issue #67', () => {
 			let callCount = 0;
 
 			before(() => {
+				// eslint-disable-next-line no-unused-expressions
 				expect(originalAddError).to.be.null;
 				callCount = 0;
-				[originalAddError] = punch(atom.notifications, 'addError', function(fn, args){
+				// eslint-disable-next-line max-nested-callbacks
+				[originalAddError] = punch(atom.notifications, 'addError', function (fn, args) {
 					++callCount;
 					return fn.call(this, args);
 				});
@@ -49,6 +51,7 @@ describe('Issue #67', () => {
 
 				atom.project.setPaths([]);
 				expect(atom.project.getPaths().length).to.equal(0);
+				// eslint-disable-next-line no-unused-expressions
 				expect(atom.workspace.getActiveTextEditor()).to.be.undefined;
 				expect(generateConfig).not.to.throw();
 				expect(callCount).to.be.at.least(1);

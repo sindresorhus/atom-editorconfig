@@ -11,7 +11,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const {init:fixFile} = require('../commands/fix');
+const {init: fixFile} = require('../commands/fix');
 
 const testPrefix = path.basename(__filename).split('-').shift();
 const projectRoot = path.join(__dirname, 'fixtures', testPrefix);

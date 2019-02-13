@@ -31,7 +31,7 @@ describe('Issue #193', () => {
 	});
 
 	it('treats unset properties as equivalent to \'unset\'', () => {
-		const settings = textEditor.getBuffer().editorconfig.settings;
+		const {settings} = textEditor.getBuffer().editorconfig;
 
 		expect(settings.end_of_line).to.equal('unset');
 		expect(settings.charset).to.equal('unset');

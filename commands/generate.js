@@ -12,7 +12,7 @@ const init = () => {
 		atom.workspace.getActiveTextEditor().getPath()) {
 		basePath = path.dirname(atom.workspace.getActiveTextEditor().getPath());
 	} else {
-		atom.notifications.addError(`An .editorconfig file can't be generated without an open file or project.`);
+		atom.notifications.addError('An .editorconfig file can\'t be generated without an open file or project.');
 		return;
 	}
 
@@ -58,11 +58,11 @@ trim_trailing_whitespace = false
 		atom.notifications.addSuccess('.editorconfig file successfully generated', {
 			detail: 'An .editorconfig file was successfully generated in your project based on your current settings.'
 		});
-	}).catch(err => {
-		if (err.code === 'EEXIST') {
+	}).catch(error => {
+		if (error.code === 'EEXIST') {
 			atom.notifications.addError('An .editorconfig file already exists in your project root.');
 		} else {
-			atom.notifications.addError(err.message, {detail: err.stack});
+			atom.notifications.addError(error.message, {detail: error.stack});
 		}
 	});
 };

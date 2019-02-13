@@ -21,7 +21,7 @@ describe('Issue #69', () => {
 		});
 
 		it('doesn\'t mark it as modified', () => {
-			expect(textEditor.isModified()).not.to.be.ok;
+			expect(textEditor.isModified()).to.equal(false);
 		});
 	});
 });

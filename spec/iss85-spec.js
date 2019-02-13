@@ -50,7 +50,7 @@ describe('Issue #85', () => {
 		});
 	});
 
-	function revertConfigChanges(){
+	function revertConfigChanges() {
 		fs.writeFileSync(ecfgPath, getEcfgForTabWith(85), {encoding: 'utf8'});
 	}
 });

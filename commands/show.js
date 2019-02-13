@@ -2,9 +2,10 @@
 
 const notificationTemplate = props => {
 	return `
-${props.messages.reduce((prev, curr) => {
-	return `${prev}${curr.replace(/\r|\n/gm, '').replace('@', '  \n')}\n\n`;
-}, '')}
+${
+	props.messages.reduce((prev, curr) => {
+		return `${prev}${curr.replace(/\r|\n/gm, '').replace('@', '  \n')}\n\n`;
+	}, '')}
 
 ### Active Configuration
 |Editorconfig-Property|Applied Setting|
@@ -30,7 +31,7 @@ const init = () => {
 		textEditor.getBuffer().editorconfig) {
 		const buffer = textEditor.getBuffer();
 		const ecfg = buffer.editorconfig;
-		const settings = ecfg.settings;
+		const {settings} = ecfg;
 		const lineEndings = {'\n': '\\n', '\r': '\\r', '\r\n': '\\r\\n'};
 
 		const properties = {
