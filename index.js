@@ -239,6 +239,11 @@ function observeTextEditor(editor) {
 			config.charset.replace(/-/g, '').toLowerCase() :
 			'unset';
 
+		// #227: Allow `latin1` as an alias of ISO 8859-1.
+		if (String(settings.charset).toLowerCase().replace(/\W/g, "") === 'latin1') {
+			settings.charset = 'iso88591';
+		}
+
 		/* eslint-enable camelcase */
 
 		ecfg.applySettings();
