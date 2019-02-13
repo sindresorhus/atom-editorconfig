@@ -5,6 +5,8 @@
 	performance-awareness.
 */
 
+const {log} = require('./utils.js');
+
 describe('Activation benchmark', () => {
 	beforeEach('Activating package', () => {
 		attachToDOM(atom.views.getView(atom.workspace));
@@ -17,7 +19,7 @@ describe('Activation benchmark', () => {
 		expect(pack).not.to.be.undefined;
 
 		if (typeof pack !== 'undefined') {
-			console.info(`The package took ${pack.loadTime}ms to load and ${pack.activateTime}ms to activate.`);
+			log(`The package took ${pack.loadTime}ms to load and ${pack.activateTime}ms to activate.`);
 		}
 	});
 });

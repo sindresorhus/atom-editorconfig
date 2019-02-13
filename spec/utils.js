@@ -2,10 +2,22 @@
 
 // Utility functions taken from https://github.com/Alhadis/Utils
 module.exports = {
+	log,
 	poll,
 	punch,
 	wait
 };
+
+/**
+ * Print a message to the console if running interactively.
+ * @param {*} args
+ * @return {void}
+ */
+function log(...args){
+	if (!atom.getLoadSettings().headless) {
+		console.trace(...args);
+	}
+}
 
 /**
  * Keep calling a function until it returns a truthy value.

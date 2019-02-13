@@ -6,7 +6,7 @@
 */
 
 const {init:generateConfig} = require('../commands/generate');
-const {poll} = require("./utils.js");
+const {log, poll} = require("./utils.js");
 
 describe('Issue #47', () => {
 	when('opening the keymap', () => {
@@ -17,12 +17,12 @@ describe('Issue #47', () => {
 					atom.views.getView(atom.workspace.getActivePane()),
 					'application:open-your-keymap'
 				);
-				console.info(atom.textEditors.editors.size);
+				log(atom.textEditors.editors.size);
 				await poll(() => {
-					console.info(atom.textEditors.editors.size);
+					log(atom.textEditors.editors.size);
 					return atom.workspace.getTextEditors().length > 0;
 				});
-				console.info(atom.workspace.getTextEditors()[0].getPath());
+				log(atom.workspace.getTextEditors()[0].getPath());
 				expect(generateConfig).not.to.throw();
 			});
 		});
