@@ -1,4 +1,8 @@
-# EditorConfig [![Build Status](https://travis-ci.org/sindresorhus/atom-editorconfig.svg?branch=master)](https://travis-ci.org/sindresorhus/atom-editorconfig)
+# EditorConfig
+
+[![Build status: TravisCI][TravisCI-badge]][TravisCI-link]
+[![Build status: AppVeyor][AppVeyor-badge]][AppVeyor-link]
+[![Latest package version][APM-badge]][APM-link]
 
 [EditorConfig](http://editorconfig.org) helps developers maintain consistent coding styles between different editors.
 
@@ -136,3 +140,11 @@ MIT © [Sindre Sorhus](https://sindresorhus.com)
 <!-- Referenced links -->
 [issues]: https://github.com/sindresorhus/atom-editorconfig/issues/new
 [contributors]: https://github.com/sindresorhus/atom-editorconfig/graphs/contributors
+
+<!-- Badges -->
+[TravisCI-badge]: https://travis-ci.org/sindresorhus/atom-editorconfig.svg?branch=master
+[TravisCI-link]:  https://travis-ci.org/sindresorhus/atom-editorconfig
+[AppVeyor-badge]: https://ci.appveyor.com/api/projects/status/h0bav8m09ld9vga2?svg=true
+[AppVeyor-link]:  https://ci.appveyor.com/project/Alhadis/atom-editorconfig
+[APM-badge]:      https://img.shields.io/apm/v/editorconfig.svg?colorB=brightgreen
+[APM-link]:       https://atom.io/packages/editorconfig
