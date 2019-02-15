@@ -123,13 +123,28 @@ repository:
 
 	# Rule declaration of the form `name = value`
 	rule:
-		name:  "meta.rule.${1:/downcase}.editorconfig"
-		begin: "^\\s*([A-Za-z0-9_]+)\\s*(=)"
-		end:   "$"
-		beginCaptures:
-			1: name: "keyword.other.definition.${1:/downcase}.editorconfig"
-			2: name: "punctuation.separator.key-value.editorconfig"
-		patterns: [include: "#value"]
+		patterns: [{
+			# Mark confusable as error: `indent_width` => `indent_size`
+			match: "^\\s*(indent_(width))(?=$|[=\\s])"
+			captures:
+				1: name: "keyword.other.definition.indent_size.editorconfig"
+				2: name: "invalid.illegal.confusable.editorconfig"
+		},{
+			# Mark confusable as error: `tab_size` => `tab_width`
+			match: "^\\s*(tab_(size))(?=$|[=\\s])"
+			captures:
+				1: name: "keyword.other.definition.tab_width.editorconfig"
+				2: name: "invalid.illegal.confusable.editorconfig"
+		},{
+			# Anything else highlighted normally
+			name:  "meta.rule.${1:/downcase}.editorconfig"
+			begin: "^\\s*([A-Za-z0-9_]+)\\s*(=)"
+			end:   "$"
+			beginCaptures:
+				1: name: "keyword.other.definition.${1:/downcase}.editorconfig"
+				2: name: "punctuation.separator.key-value.editorconfig"
+			patterns: [include: "#value"]
+		}]
 
 
 	# Group of rules beginning with a [bracketed title]

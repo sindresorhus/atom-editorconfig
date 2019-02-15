@@ -6,6 +6,11 @@ This project honours [Semantic Versioning](http://semver.org/).
 [Staged]: ../../compare/v2.3.0...HEAD
 
 
+[Staged]
+--------------------------------------------------------------------------------
+* Added error highlighting to confusable rule names (`tab_size`/`indent_width`)
+
+
 [v2.3.0]
 --------------------------------------------------------------------------------
 **February 14th, 2019**  
