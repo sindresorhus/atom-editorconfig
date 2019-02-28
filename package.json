@@ -30,7 +30,7 @@
     "pify": "^2.3.0"
   },
   "devDependencies": {
-    "atom-mocha": "^2.0.7",
+    "atom-mocha": "^2.1.0",
     "xo": "*"
   },
   "xo": {
