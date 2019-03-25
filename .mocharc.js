@@ -1,7 +1,9 @@
 'use strict';
 
 module.exports = {
-	autoIt: true,
+	require: [
+		"mocha-when/register"
+	],
 	slow: 1500,
 	specPattern: /[\\\/].+-spec\.js$/i,
 	timeout: 60000
