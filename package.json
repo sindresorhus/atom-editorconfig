@@ -1,78 +1,78 @@
 {
-  "name": "editorconfig",
-  "version": "2.3.0",
-  "description": "Helps developers maintain consistent coding styles between different editors",
-  "license": "MIT",
-  "repository": "sindresorhus/atom-editorconfig",
-  "author": {
-    "name": "Sindre Sorhus",
-    "email": "sindresorhus@gmail.com",
-    "url": "sindresorhus.com"
-  },
-  "private": true,
-  "engines": {
-    "atom": ">=1.13.0"
-  },
-  "scripts": {
-    "test": "./node_modules/.bin/xo && apm test"
-  },
-  "keywords": [
-    "editorconfig",
-    "format",
-    "code",
-    "style",
-    "code-style"
-  ],
-  "atomTestRunner": "atom-mocha",
-  "dependencies": {
-    "editorconfig": "^0.13.2",
-    "import-lazy": "^2.1.0",
-    "pify": "^2.3.0"
-  },
-  "devDependencies": {
-    "atom-mocha": "^2.1.0",
-    "mocha-when": "^1.0.0",
-    "xo": "*"
-  },
-  "xo": {
-    "globals": [
-      "afterEach",
-      "atom",
-      "attachToDOM",
-      "before",
-      "beforeEach",
-      "describe",
-      "document",
-      "expect",
-      "it",
-      "when"
-    ],
-    "ignores": [
-      "atom/**"
-    ],
-    "rules": {
-      "import/prefer-default-export": "off",
-      "camelcase": [
-        "error",
-        {
-          "allow": [
-            "end_of_line",
-            "indent_size",
-            "indent_style",
-            "insert_final_newline",
-            "max_line_length",
-            "tab_width",
-            "trim_trailing_whitespace"
-          ]
-        }
-      ]
-    }
-  },
-  "consumedServices": {
-    "status-bar": {
-      "versions": {
-        "^1.0.0": "consumeStatusBar"
-      }
-    }
-  }
+	"name": "editorconfig",
+	"version": "2.3.0",
+	"description": "Helps developers maintain consistent coding styles between different editors",
+	"license": "MIT",
+	"repository": "sindresorhus/atom-editorconfig",
+	"author": {
+		"name": "Sindre Sorhus",
+		"email": "sindresorhus@gmail.com",
+		"url": "sindresorhus.com"
+	},
+	"private": true,
+	"engines": {
+		"atom": ">=1.13.0"
+	},
+	"scripts": {
+		"test": "./node_modules/.bin/xo && apm test"
+	},
+	"keywords": [
+		"editorconfig",
+		"format",
+		"code",
+		"style",
+		"code-style"
+	],
+	"atomTestRunner": "atom-mocha",
+	"dependencies": {
+		"editorconfig": "^0.13.2",
+		"import-lazy": "^2.1.0",
+		"pify": "^2.3.0"
+	},
+	"devDependencies": {
+		"atom-mocha": "^2.1.0",
+		"mocha-when": "^1.0.0",
+		"xo": "*"
+	},
+	"xo": {
+		"globals": [
+			"afterEach",
+			"atom",
+			"attachToDOM",
+			"before",
+			"beforeEach",
+			"describe",
+			"document",
+			"expect",
+			"it",
+			"when"
+		],
+		"ignores": [
+			"atom/**"
+		],
+		"rules": {
+			"import/prefer-default-export": "off",
+			"camelcase": [
+				"error",
+				{
+					"allow": [
+						"end_of_line",
+						"indent_size",
+						"indent_style",
+						"insert_final_newline",
+						"max_line_length",
+						"tab_width",
+						"trim_trailing_whitespace"
+					]
+				}
+			]
+		}
+	},
+	"consumedServices": {
+		"status-bar": {
+			"versions": {
+				"^1.0.0": "consumeStatusBar"
+			}
+		}
+	}
 }
