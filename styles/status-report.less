@@ -1,0 +1,80 @@
+@import "./fieval-icon";
+
+.aec-status-report {
+
+	// Replace usual notification icon with Fieval
+	&.icon::before {
+		.aec-icon();
+		font-size: 20px;
+		line-height: 1;
+	}
+
+	// Title/header of notification element
+	.message.item {
+
+		// Name of file being examined; truncate if name is REALLY long
+		.aec-filename{
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			display: inline-block;
+			vertical-align: bottom;
+			max-width: calc(100% - 1ch);
+			font-weight: bold;
+
+			&::after{
+				content: ":";
+				font-weight: normal;
+			}
+		}
+	}
+
+	// Adjustments to default styling of notification body
+	.description {
+		h3{
+			margin-top: 0;
+		}
+
+		ol{
+			padding-left: 1em;
+		}
+
+		li{
+			margin-bottom: 1em;
+		}
+
+		#active-configuration{
+			margin-top: 1em;
+			border-top: 1px solid;
+			padding-top: 1em;
+		}
+
+		table{
+			min-width: 60%;
+		}
+	}
+
+
+	// Success/green = no problems
+	&.success{
+		.message.item .aec-filename::after{
+			content: "!";
+		}
+
+		// Hacks to make a 1-item list look like a paragraph
+		.description{
+			ol{
+				padding-left: 0;
+
+				& > li{
+					margin-left: 1em;
+				}
+				& > li:only-child{
+					list-style: none;
+					padding-left: 0;
+					margin-left: 0;
+				}
+			}
+		}
+	}
+}

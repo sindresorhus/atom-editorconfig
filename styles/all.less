@@ -1,0 +1,18 @@
+// UI and syntax-theme variables provided by Atom
+@import "ui-variables";
+@import "syntax-variables";
+
+// Stuff pertinent to this package
+@import "./fieval-icon";
+@import "./status-report";
+
+#aec-status-bar-tile {
+	box-sizing: border-box;
+	cursor: pointer;
+
+	&::before{
+		.aec-icon();
+		font-size: 16px;
+		line-height: normal;
+	}
+}

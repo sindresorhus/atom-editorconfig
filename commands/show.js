@@ -1,75 +1,89 @@
 /** @babel */
 
-const notificationTemplate = props => {
-	return `
-${
-	props.messages.reduce((prev, curr) => {
-		return `${prev}${curr.replace(/\r|\n/gm, '').replace('@', '  \n')}\n\n`;
-	}, '')}
+import {getConfigForEditor} from "../lib/helpers.js";
+import {Notification} from "atom";
+
+const notificationTemplate = (props = {}) => {
+	let output = "";
+
+	// Format messages list
+	if(Array.isArray(props.messages) && props.messages.length > 0){
+		output += props.messages.map(msg => msg
+			.replace(/[\r\n]+/g, " ")
+			.replace(/\s*@\s*/g, " \n")
+			.replace(/^/, "1. ")
+		).join("\n");
+	}
+
+
+	// Format active configuration
+	// TODO: Replace this Markdown crap with real DOM generation.
+	output += `
 
 ### Active Configuration
-|Editorconfig-Property|Applied Setting|
-|--------|------:|
-|\`end_of_line\`|\`${props.end_of_line}\`|
-|\`charset\`|\`${props.charset}\`|
-|\`indent_style\`|\`${props.indent_style}\`|
-|\`indent_size\`/ \`tab_width\`|\`${props.tab_width}\`|
-|\`insert_final_newline\`|\`${props.insert_final_newline}\`|
-|\`trim_trailing_whitespace\`|\`${props.trim_trailing_whitespace}\`|
-|\`max_line_length\`|\`${props.max_line_length}\`|
 
-_(unset: atom-editorconfig is not influencing its behavior. A full description of all properties can be found on editorconfig.org.)_
+| EditorConfig settings         |  Current values                     |
+|-------------------------------|------------------------------------:|
+| `charset`                     | `${props.charset}`                  |
+| `end_of_line`                 | `${props.end_of_line}`              |
+| `indent_size` / `tab_width`   | `${props.tab_width}`                |
+| `indent_style`                | `${props.indent_style}`             |
+| `insert_final_newline`        | `${props.insert_final_newline}`     |
+| `max_line_length`             | `${props.max_line_length}`          |
+| `trim_trailing_whitespace`    | `${props.trim_trailing_whitespace}` |
 
-${(props.filename !== undefined && props.filename) || ''}
-`;
+<p></p>
+
+**Note:** `unset` means `atom-editorconfig` is not influencing a property's behaviour.
+A full description of all properties can be found on [editorconfig.org][1] or their
+[project's Wiki][2].
+
+[1]: https://editorconfig.org/#supported-properties
+[2]: https://github.com/editorconfig/editorconfig/wiki/EditorConfig-Properties`;
+	return output.replace(/`/g, "`");
 };
 
 const init = () => {
 	const textEditor = atom.workspace.getActiveTextEditor();
-	if (textEditor &&
-		textEditor.getBuffer() &&
-		textEditor.getBuffer().editorconfig) {
+	const ecfg = getConfigForEditor(textEditor);
+	if (ecfg) {
 		const buffer = textEditor.getBuffer();
-		const ecfg = buffer.editorconfig;
-		const {settings} = ecfg;
+		const {settings, state} = ecfg;
 		const lineEndings = {'\n': '\\n', '\r': '\\r', '\r\n': '\\r\\n'};
 
 		const properties = {
 			filename: buffer.getUri(),
 			messages: ecfg.messages,
-			// eslint-disable-next-line camelcase
 			end_of_line: lineEndings[settings.end_of_line] || settings.end_of_line,
 			charset: settings.charset,
-			// eslint-disable-next-line camelcase
 			indent_style: settings.indent_style,
-			// eslint-disable-next-line camelcase
 			tab_width: settings.tab_width,
-			// eslint-disable-next-line camelcase
 			insert_final_newline: settings.insert_final_newline,
-			// eslint-disable-next-line camelcase
 			trim_trailing_whitespace: settings.trim_trailing_whitespace,
-			// eslint-disable-next-line camelcase
 			max_line_length: settings.max_line_length
 		};
 
-		const notificationOptions = {
-			description: notificationTemplate(properties),
-			dismissable: true
-		};
-
-		switch (ecfg.state) {
-			case 'success':
-				atom.notifications.addSuccess(textEditor.getTitle(), notificationOptions);
-				break;
-			case 'warning':
-				atom.notifications.addWarning(textEditor.getTitle(), notificationOptions);
-				break;
-			case 'error':
-				atom.notifications.addError(textEditor.getTitle(), notificationOptions);
-				break;
-			default:
-				atom.notifications.addInfo(textEditor.getTitle(), notificationOptions);
+		let title = `<span class="aec-filename">${textEditor.getTitle()}</span>`;
+		let severity = state;
+		const numIssues = (properties.messages && properties.messages.length) || 0;
+		if (state === 'success' || !numIssues) {
+			title = `No problems affecting ${title}`;
+		} else if (state === 'warning' || state === 'error') {
+			const plural = numIssues !== 1 ? 's' : '';
+			title = `${numIssues} problem${plural} affecting ${title}`;
+		} else {
+			severity = 'info';
+			title = `Status report for ${title}`;
 		}
+		const notification = atom.notifications.addNotification(
+			new Notification(severity, title, {
+				description: notificationTemplate(properties),
+				dismissable: true
+			})
+		);
+		const popup = atom.views.getView(notification);
+		popup.element.classList.add("aec-status-report");
+		const fileName = popup.element.querySelector(".aec-filename");
 	}
 };
 

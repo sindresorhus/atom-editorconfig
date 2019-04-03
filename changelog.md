@@ -9,6 +9,11 @@ This project honours [Semantic Versioning](http://semver.org/).
 [Staged]
 --------------------------------------------------------------------------------
 * Added error highlighting to confusable rule names (`tab_size`/`indent_width`)
+* Fixed [`#219`][]: Uncaught `TypeError` thrown when running show-status command
+* Improved UX when generating status-report
+
+[`#219`]: https://github.com/sindresorhus/atom-editorconfig/issues/219
+
 
 
 [v2.3.0]

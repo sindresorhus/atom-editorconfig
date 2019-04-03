@@ -1,0 +1,28 @@
+@aec-icon-codepoint: '\0041';
+@aec-icon-font-name: 'EditorConfig';
+@aec-icon-font-path: 'atom://editorconfig/fonts/AtomEditorconfig-Regular.woff';
+
+.aec-icon {
+	.reset-style();
+	content: @aec-icon-codepoint;
+	font-family: @aec-icon-font-name;
+}
+
+.reset-style {
+	font-style: normal;
+	font-weight: normal;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+@font-face {
+	.reset-style();
+	font-family: @aec-icon-font-name;
+	src: url(@aec-icon-font-path) format('woff');
+}
+
+.aec-icon-mouse {
+	&, &:before {
+		.aec-icon();
+	}
+}

@@ -51,7 +51,21 @@
       "atom/**"
     ],
     "rules": {
-      "import/prefer-default-export": "off"
+      "import/prefer-default-export": "off",
+      "camelcase": [
+        "error",
+        {
+          "allow": [
+            "end_of_line",
+            "indent_size",
+            "indent_style",
+            "insert_final_newline",
+            "max_line_length",
+            "tab_width",
+            "trim_trailing_whitespace"
+          ]
+        }
+      ]
     }
   },
   "consumedServices": {
