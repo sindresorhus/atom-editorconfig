@@ -8,6 +8,7 @@ This project honours [Semantic Versioning](http://semver.org/).
 
 [Staged]
 --------------------------------------------------------------------------------
+* Added `fix-file-quietly` command that runs `fix-file` without any notification
 * Added error highlighting to confusable rule names (`tab_size`/`indent_width`)
 * Fixed [`#219`][]: Uncaught `TypeError` thrown when running show-status command
 * Improved UX when generating status-report

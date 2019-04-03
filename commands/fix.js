@@ -1,6 +1,6 @@
 /** @babel */
 
-const init = () => {
+const init = (displaySummary = true) => {
 	const editor = atom.workspace.getActiveTextEditor();
 	if (!editor) {
 		return;
@@ -82,31 +82,43 @@ const init = () => {
 		changesInTotal += fixedProperties[k];
 	});
 
-	// Prepare notification & save changes
-	const notificationOptions = {dismissable: true};
+	// Save changes, if they were any
 	if (changesInTotal > 0) {
-		const styleName = softTabs === true ? 'Tab(s)' : 'Space(s)';
-
 		buffer.groupChangesSinceCheckpoint(checkpoint);
-		notificationOptions.description = `
-|Fixed EditorConfig-Properties||
-|--------|------:|
-|\`end_of_line\`|${fixedProperties.endOfLine}|
-|\`indent_style\`|${fixedProperties.indentStyle} ${styleName}|
-|Changes in total|**${changesInTotal}**|
-`;
-	} else {
-		notificationOptions.description = `
-The file ${editor.getTitle()} conformed to the \`end_of_line\` and \`indent_style\` properties.
-No changes were applied.
-`;
 	}
 
-	atom.notifications.addSuccess(editor.getTitle(), notificationOptions);
+	// Display how many changes were made (for some reason)
+	if (displaySummary) {
+		let description;
+
+		if (changesInTotal > 0) {
+			const styleName = softTabs === true ? 'Tab(s)' : 'Space(s)';
+			description = `
+| Properties       | Fixes                                       |
+|------------------|---------------------------------------------|
+| `end_of_line`    | ${fixedProperties.endOfLine}                |
+| `indent_style`   | ${fixedProperties.indentStyle} ${styleName} |
+| Total changes    | **${changesInTotal}**                       |
+`;
+		} else {
+			description = `
+The file ${editor.getTitle()} conformed to the `end_of_line` and `indent_style` properties.
+No changes were applied.
+`;
+		}
+
+		atom.notifications.addSuccess(editor.getTitle(), {
+			description: description.replace(/`/g, '`'),
+			dismissable: true
+		});
+	}
 };
 
 const subscriber = () => {
-	atom.commands.add('atom-workspace', 'EditorConfig:fix-file', init);
+	atom.commands.add('atom-workspace', {
+		'EditorConfig:fix-file': () => init(),
+		'EditorConfig:fix-file-quietly': () => init(false)
+	});
 };
 
 export {subscriber as default, init};

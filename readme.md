@@ -56,6 +56,7 @@ See the EditorConfig [documentation](http://editorconfig.org) for a detailed des
 ## EditorConfig commands
 
 - `EditorConfig: Fix File`: Fixes `indent_style` and `end_of_line` issues for the current editor.
+- `EditorConfig: Fix File Quietly`: Same as `Fix File`, except no feedback is displayed after fixing.
 - `EditorConfig: Show State`: Shows the current state of EditorConfig for your current editor.
 - `EditorConfig: Generate Config`: Generates an initial `.editorconfig` for your project.
 
