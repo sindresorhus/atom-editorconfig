@@ -3,16 +3,18 @@ Change Log
 
 This project honours [Semantic Versioning](http://semver.org/).
 
-[Staged]: ../../compare/v2.3.0...HEAD
+[Staged]: ../../compare/v2.4.0...HEAD
 
 
-[Staged]
+[v2.4.0]
 --------------------------------------------------------------------------------
+**April 3rd, 2019**  
 * Added `fix-file-quietly` command that runs `fix-file` without any notification
 * Added error highlighting to confusable rule names (`tab_size`/`indent_width`)
 * Fixed [`#219`][]: Uncaught `TypeError` thrown when running show-status command
 * Improved UX when generating status-report
 
+[v2.4.0]: https://github.com/sindresorhus/atom-editorconfig/releases/tag/v2.4.0
 [`#219`]: https://github.com/sindresorhus/atom-editorconfig/issues/219
 
 
