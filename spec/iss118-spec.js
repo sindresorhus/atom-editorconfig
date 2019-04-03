@@ -31,9 +31,7 @@ describe('Issue #118', () => {
 
 	when('Atom is told to remove trailing whitespace', () => {
 		beforeEach(() => {
-			// eslint-disable-next-line camelcase
 			textEditor.getBuffer().editorconfig.settings.trim_trailing_whitespace = true;
-			// eslint-disable-next-line camelcase
 			textEditor.getBuffer().editorconfig.settings.insert_final_newline = false;
 		});
 

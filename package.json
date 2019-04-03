@@ -14,7 +14,8 @@
 		"atom": ">=1.13.0"
 	},
 	"scripts": {
-		"test": "./node_modules/.bin/xo && apm test"
+		"lint": "npx xo",
+		"test": "apm test"
 	},
 	"keywords": [
 		"editorconfig",
@@ -32,7 +33,7 @@
 	"devDependencies": {
 		"atom-mocha": "^2.1.0",
 		"mocha-when": "^1.0.0",
-		"xo": "*"
+		"xo": "^0.24.0"
 	},
 	"xo": {
 		"globals": [

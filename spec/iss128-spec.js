@@ -38,7 +38,7 @@ describe('Issue #128', () => {
 	when('the `wrap-guide` package is disabled', () => {
 		beforeEach(() => {
 			Object.assign(textEditor.getBuffer().editorconfig.settings, {
-				max_line_length: 'unset' // eslint-disable-line camelcase
+				max_line_length: 'unset'
 			});
 		});
 

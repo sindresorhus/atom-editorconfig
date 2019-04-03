@@ -27,7 +27,6 @@ function initializeTextBuffer(buffer) {
 			disposables: new (atm.CompositeDisposable)(),
 			state: 'subtle',
 			settings: {
-				/* eslint-disable camelcase */
 				trim_trailing_whitespace: 'unset',
 				insert_final_newline: 'unset',
 				max_line_length: 'unset',
@@ -35,7 +34,6 @@ function initializeTextBuffer(buffer) {
 				indent_style: 'unset',
 				tab_width: 'unset',
 				charset: 'unset'
-				/* eslint-enable camelcase */
 			},
 
 			// Get the current Editor for this.buffer
@@ -203,8 +201,6 @@ function observeTextEditor(editor) {
 		// Preserve evaluated Editorconfig
 		ecfg.config = config;
 
-		/* eslint-disable camelcase */
-
 		// Carefully normalize and initialize config-settings
 		settings.trim_trailing_whitespace = ('trim_trailing_whitespace' in config) &&
 			typeof config.trim_trailing_whitespace === 'boolean' ?
@@ -241,8 +237,6 @@ function observeTextEditor(editor) {
 		if (String(settings.charset).toLowerCase().replace(/\W/g, '') === 'latin1') {
 			settings.charset = 'iso88591';
 		}
-
-		/* eslint-enable camelcase */
 
 		ecfg.applySettings();
 	}).catch(error => {

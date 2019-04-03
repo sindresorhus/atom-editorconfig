@@ -41,8 +41,8 @@ trailing spaces.\n`;
 	when('Atom is told to insert a final newline', () => {
 		beforeEach(() => {
 			Object.assign(textEditor.getBuffer().editorconfig.settings, {
-				trim_trailing_whitespace: true, // eslint-disable-line camelcase
-				insert_final_newline: true // eslint-disable-line camelcase
+				trim_trailing_whitespace: true,
+				insert_final_newline: true
 			});
 		});
 

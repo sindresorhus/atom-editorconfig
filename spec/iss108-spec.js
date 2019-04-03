@@ -31,9 +31,7 @@ describe('Issue #108', () => {
 
 	when('Atom is told to insert no final newline', () => {
 		beforeEach(() => {
-			// eslint-disable-next-line camelcase
 			textEditor.getBuffer().editorconfig.settings.end_of_line = '\n';
-			// eslint-disable-next-line camelcase
 			textEditor.getBuffer().editorconfig.settings.insert_final_newline = false;
 		});
 
@@ -56,9 +54,7 @@ describe('Issue #108', () => {
 
 	when('Atom is told to insert a final newline', () => {
 		beforeEach(() => {
-			// eslint-disable-next-line camelcase
 			textEditor.getBuffer().editorconfig.settings.insert_final_newline = true;
-			// eslint-disable-next-line camelcase
 			textEditor.getBuffer().editorconfig.settings.end_of_line = '\n';
 		});
 

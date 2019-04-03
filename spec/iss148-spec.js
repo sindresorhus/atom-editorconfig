@@ -40,19 +40,15 @@ describe('Issue #148', () => {
 		};
 
 		expect(wgCount()).to.equal(1);
-		// eslint-disable-next-line camelcase
 		ecfg.settings.max_line_length = 30;
 		ecfg.applySettings();
 		expect(wgCount()).to.equal(1);
-		// eslint-disable-next-line camelcase
 		ecfg.settings.max_line_length = 'unset';
 		ecfg.applySettings();
 		expect(wgCount()).to.equal(1);
-		// eslint-disable-next-line camelcase
 		ecfg.settings.max_line_length = 30;
 		ecfg.applySettings();
 		expect(wgCount()).to.equal(1);
-		// eslint-disable-next-line camelcase
 		ecfg.settings.max_line_length = 'unset';
 		ecfg.applySettings();
 		expect(wgCount()).to.equal(1);

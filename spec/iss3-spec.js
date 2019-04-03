@@ -34,9 +34,7 @@ describe('Issue #3', () => {
 
 		when('Atom is told to retain trailing whitespace', () => {
 			it('leaves trailing whitespace intact', async () => {
-				// eslint-disable-next-line camelcase
 				textEditor.getBuffer().editorconfig.settings.insert_final_newline = true;
-				// eslint-disable-next-line camelcase
 				textEditor.getBuffer().editorconfig.settings.trim_trailing_whitespace = false;
 				textEditor.setText(textWithTrailingWhitespaces);
 				await textEditor.save();
@@ -46,9 +44,7 @@ describe('Issue #3', () => {
 
 		when('Atom is told to strip trailing whitespace', () => {
 			it('removes trailing whitespace', async () => {
-				// eslint-disable-next-line camelcase
 				textEditor.getBuffer().editorconfig.settings.insert_final_newline = true;
-				// eslint-disable-next-line camelcase
 				textEditor.getBuffer().editorconfig.settings.trim_trailing_whitespace = true;
 				textEditor.setText(textWithTrailingWhitespaces);
 				await textEditor.save();

@@ -1,23 +1,22 @@
 /** @babel */
 
-import {getConfigForEditor} from "../lib/helpers.js";
-import {Notification} from "atom";
+import {Notification} from 'atom';
+import {getConfigForEditor} from '../lib/helpers';
 
 const notificationTemplate = (props = {}) => {
-	let output = "";
+	let output = '';
 
 	// Format messages list
-	if(Array.isArray(props.messages) && props.messages.length > 0){
+	if (Array.isArray(props.messages) && props.messages.length > 0) {
 		output += props.messages.map(msg => msg
-			.replace(/[\r\n]+/g, " ")
-			.replace(/\s*@\s*/g, " \n")
-			.replace(/^/, "1. ")
-		).join("\n");
+			.replace(/[\r\n]+/g, ' ')
+			.replace(/\s*@\s*/g, ' \n')
+			.replace(/^/, '1. ')
+		).join('\n');
 	}
 
-
 	// Format active configuration
-	// TODO: Replace this Markdown crap with real DOM generation.
+	// This Markdown crap is temporary until I can replace it with real DOM generation
 	output += `
 
 ### Active Configuration
@@ -40,7 +39,7 @@ A full description of all properties can be found on [editorconfig.org][1] or th
 
 [1]: https://editorconfig.org/#supported-properties
 [2]: https://github.com/editorconfig/editorconfig/wiki/EditorConfig-Properties`;
-	return output.replace(/`/g, "`");
+	return output.replace(/`/g, '`');
 };
 
 const init = () => {
@@ -69,12 +68,13 @@ const init = () => {
 		if (state === 'success' || !numIssues) {
 			title = `No problems affecting ${title}`;
 		} else if (state === 'warning' || state === 'error') {
-			const plural = numIssues !== 1 ? 's' : '';
+			const plural = numIssues === 1 ? '' : 's';
 			title = `${numIssues} problem${plural} affecting ${title}`;
 		} else {
 			severity = 'info';
 			title = `Status report for ${title}`;
 		}
+
 		const notification = atom.notifications.addNotification(
 			new Notification(severity, title, {
 				description: notificationTemplate(properties),
@@ -82,8 +82,7 @@ const init = () => {
 			})
 		);
 		const popup = atom.views.getView(notification);
-		popup.element.classList.add("aec-status-report");
-		const fileName = popup.element.querySelector(".aec-filename");
+		popup.element.classList.add('aec-status-report');
 	}
 };
 

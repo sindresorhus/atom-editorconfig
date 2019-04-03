@@ -73,9 +73,9 @@ describe('EditorConfig:FixFile', () => {
 			const buffer = textEditor.getBuffer();
 			const ecfg = buffer.editorconfig;
 
-			ecfg.settings.indent_style = 'tab'; // eslint-disable-line camelcase
-			ecfg.settings.indent_size = 2; // eslint-disable-line camelcase
-			ecfg.settings.tab_width = 2; // eslint-disable-line camelcase
+			ecfg.settings.indent_style = 'tab';
+			ecfg.settings.indent_size = 2;
+			ecfg.settings.tab_width = 2;
 			ecfg.applySettings();
 
 			buffer.setText(spacedText);
@@ -83,7 +83,7 @@ describe('EditorConfig:FixFile', () => {
 			fixFile();
 			expect(buffer.getText()).to.equal(tabbedText);
 
-			ecfg.settings.indent_style = 'space'; // eslint-disable-line camelcase
+			ecfg.settings.indent_style = 'space';
 			fixFile();
 			expect(buffer.getText()).to.equal(spacedText);
 		});

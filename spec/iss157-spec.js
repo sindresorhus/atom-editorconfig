@@ -38,7 +38,6 @@ describe('Issue #157', () => {
 		const configOptions = {scope: textEditor.getRootScopeDescriptor()};
 		const ecfg = textEditor.getBuffer().editorconfig;
 
-		// eslint-disable-next-line camelcase
 		ecfg.settings.indent_style = 'unset';
 
 		atom.config.set('editor.softTabs', true, configOptions);

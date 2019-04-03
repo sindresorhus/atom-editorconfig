@@ -12,7 +12,7 @@ const editorStub = {
 	nativeGuidesColumns: [30, 60, 90, 120],
 	editorconfig: {
 		settings: {
-			max_line_length: 'unset' // eslint-disable-line camelcase
+			max_line_length: 'unset'
 		}
 	},
 	getNativeGuidesColumns() {
@@ -42,19 +42,19 @@ describe('wrapGuideInterceptor', () => {
 		});
 
 		it('adds `max_line_length` to the default guides', () => {
-			editor.editorconfig.settings.max_line_length = 130; // eslint-disable-line camelcase
+			editor.editorconfig.settings.max_line_length = 130;
 
 			expect(editor.getGuidesColumns()).to.eql([30, 60, 90, 120, 130]);
 		});
 
 		it('removes default guides which are wider than `max_line_length`', () => {
-			editor.editorconfig.settings.max_line_length = 89; // eslint-disable-line camelcase
+			editor.editorconfig.settings.max_line_length = 89;
 
 			expect(editor.getGuidesColumns()).to.eql([30, 60, 89]);
 		});
 
 		it('returns only `max_line_length` if there is only a single wrap guide', () => {
-			editor.editorconfig.settings.max_line_length = 89; // eslint-disable-line camelcase
+			editor.editorconfig.settings.max_line_length = 89;
 			editor.nativeGuidesColumns = 85;
 
 			expect(editor.getGuidesColumns()).to.eql(89);
