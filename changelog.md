@@ -6,6 +6,12 @@ This project honours [Semantic Versioning](http://semver.org/).
 [Staged]: ../../compare/v2.4.0...HEAD
 
 
+[Staged]
+--------------------------------------------------------------------------------
+* Added support for `utf-8-bom` as a `charset` value
+
+
+
 [v2.4.0]
 --------------------------------------------------------------------------------
 **April 3rd, 2019**  

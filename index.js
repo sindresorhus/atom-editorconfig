@@ -25,6 +25,7 @@ function initializeTextBuffer(buffer) {
 		buffer.editorconfig = {
 			buffer, // Preserving a reference to the parent `TextBuffer`
 			disposables: new (atm.CompositeDisposable)(),
+			lastEncoding: buffer.getEncoding(),
 			state: 'subtle',
 			settings: {
 				trim_trailing_whitespace: 'unset',
@@ -73,6 +74,8 @@ function initializeTextBuffer(buffer) {
 
 					if (settings.charset === 'unset') {
 						buffer.setEncoding(atom.config.get('core.fileEncoding', configOptions));
+					} else if (settings.charset === 'utf8bom') {
+						buffer.setEncoding('utf8');
 					} else {
 						buffer.setEncoding(settings.charset);
 					}
@@ -123,10 +126,46 @@ function initializeTextBuffer(buffer) {
 				setState(this);
 			},
 
+			// Inserts or removes a leading byte-order mark
+			setBOM(enabled) {
+				const hasBOM = buffer.getText().codePointAt(0) === 0xFEFF;
+				if (enabled && !hasBOM) {
+					buffer.setTextInRange([[0, 0], [0, 0]], '\uFEFF');
+				} else if (!enabled && hasBOM) {
+					buffer.delete([[0, 0], [0, 1]]);
+				}
+			},
+
+			// Add or remove byte-order mark depending on UTF-8 type
+			updateBOM() {
+				const {settings} = this;
+				if (settings.charset === 'utf8bom') {
+					this.setBOM(true);
+				} else if (settings.charset === 'utf8') {
+					this.setBOM(false);
+				}
+			},
+
+			// `onDidChangeEncoding` event handler
+			// Used to insert/strip byte-order marks in UTF-8 encoded files
+			onDidChangeEncoding(encoding) {
+				if (encoding === 'utf8') {
+					this.updateBOM();
+				} else if (this.lastEncoding === 'utf8') {
+					this.setBOM(false);
+				}
+
+				this.lastEncoding = encoding;
+			},
+
 			// `onWillSave` event handler
 			// Trims whitespaces and inserts/strips final newline before saving
 			onWillSave() {
 				const {settings} = this;
+
+				if (buffer.getEncoding() === 'utf8') {
+					this.updateBOM();
+				}
 
 				if (settings.trim_trailing_whitespace === true) {
 					buffer.backwardsScan(/[ \t]+$/gm, params => {
@@ -158,7 +197,8 @@ function initializeTextBuffer(buffer) {
 		};
 
 		buffer.editorconfig.disposables.add(
-			buffer.onWillSave(buffer.editorconfig.onWillSave.bind(buffer.editorconfig))
+			buffer.onWillSave(buffer.editorconfig.onWillSave.bind(buffer.editorconfig)),
+			buffer.onDidChangeEncoding(buffer.editorconfig.onDidChangeEncoding.bind(buffer.editorconfig))
 		);
 
 		if (buffer.getUri() && buffer.getUri().match(/[\\|/]\.editorconfig$/g) !== null) {
