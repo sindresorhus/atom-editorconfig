@@ -1,4 +1,4 @@
-name: "editorconfig"
+name: "EditorConfig"
 scopeName: "source.editorconfig"
 fileTypes: ["editorconfig"]
 patterns: [include: "#main"]
@@ -62,7 +62,7 @@ repository:
 		},{
 			# Character sets
 			name:  "constant.language.charset.encoding.${1:/downcase}.editorconfig"
-			match: "(?i)\\b(latin1|utf-8|utf-16[bl]e)\\b"
+			match: "(?i)\\b(latin1|utf-8(?:-bom)?|utf-16[bl]e)\\b"
 		},{
 			# Anything else
 			name:  "constant.language.${1:/downcase}.editorconfig"
