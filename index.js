@@ -1,16 +1,15 @@
 'use strict';
+const importLazy = require('import-lazy')(require);
 const generateConfig = require('./commands/generate');
 const showState = require('./commands/show');
 const fixFile = require('./commands/fix');
 
-const importLazy = require('import-lazy')(require);
-
 const atm = importLazy('atom');
+const editorconfig = importLazy('editorconfig');
 
 const checklist = importLazy('./lib/checklist');
 const wrapGuideInterceptor = importLazy('./lib/wrapguide-interceptor');
 const statusTile = importLazy('./lib/statustile-view');
-const editorconfig = importLazy('editorconfig');
 
 // Sets the state of the embedded editorconfig
 // This includes the severity (info, warning..) as well as the notification-messages for users
