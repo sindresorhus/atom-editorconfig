@@ -1,7 +1,8 @@
-/** @babel */
-import fs from 'fs';
-import path from 'path';
-import pify from 'pify';
+'use strict';
+
+const fs = require('fs');
+const path = require('path');
+const pify = require('pify');
 
 const init = () => {
 	let basePath = '';
@@ -71,4 +72,4 @@ const subscriber = () => {
 	atom.commands.add('atom-workspace', 'EditorConfig:generate-config', init);
 };
 
-export {subscriber as default, init};
+module.exports = Object.assign(subscriber, {init});

@@ -1,4 +1,4 @@
-/** @babel */
+'use strict';
 
 const init = (displaySummary = true) => {
 	const editor = atom.workspace.getActiveTextEditor();
@@ -121,4 +121,4 @@ const subscriber = () => {
 	});
 };
 
-export {subscriber as default, init};
+module.exports = Object.assign(subscriber, {init});

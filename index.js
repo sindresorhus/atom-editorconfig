@@ -1,7 +1,7 @@
-/** @babel */
-import generateConfig from './commands/generate';
-import showState from './commands/show';
-import fixFile from './commands/fix';
+'use strict';
+const generateConfig = require('./commands/generate');
+const showState = require('./commands/show');
+const fixFile = require('./commands/fix');
 
 const importLazy = require('import-lazy')(require);
 
@@ -349,4 +349,4 @@ const consumeStatusBar = statusBar => {
 	}
 };
 
-export default {activate, deactivate, consumeStatusBar};
+module.exports = {activate, deactivate, consumeStatusBar};

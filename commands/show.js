@@ -1,7 +1,7 @@
-/** @babel */
+'use strict';
 
-import {Notification} from 'atom';
-import {getConfigForEditor} from '../lib/helpers';
+const {Notification} = require('atom');
+const {getConfigForEditor} = require('../lib/helpers');
 
 const notificationTemplate = (props = {}) => {
 	let output = '';
@@ -90,4 +90,4 @@ const subscriber = () => {
 	atom.commands.add('atom-workspace', 'EditorConfig:show-state', init);
 };
 
-export {subscriber as default, init};
+module.exports = Object.assign(subscriber, {init});
