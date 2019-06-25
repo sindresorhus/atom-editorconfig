@@ -26,12 +26,12 @@
 	],
 	"atomTestRunner": "atom-mocha",
 	"dependencies": {
-		"editorconfig": "^0.13.2",
-		"import-lazy": "^2.1.0",
-		"pify": "^2.3.0"
+		"editorconfig": "^0.15.3",
+		"import-lazy": "^4.0.0",
+		"pify": "^4.0.1"
 	},
 	"devDependencies": {
-		"atom-mocha": "^2.1.0",
+		"atom-mocha": "^2.1.2",
 		"mocha-when": "^1.0.0",
 		"xo": "^0.24.0"
 	},

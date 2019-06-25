@@ -3,7 +3,7 @@ import generateConfig from './commands/generate';
 import showState from './commands/show';
 import fixFile from './commands/fix';
 
-const importLazy = require('import-lazy').proxy(require);
+const importLazy = require('import-lazy')(require);
 
 const atm = importLazy('atom');
 
