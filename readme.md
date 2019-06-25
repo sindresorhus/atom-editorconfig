@@ -74,7 +74,7 @@ See the EditorConfig [documentation](http://editorconfig.org) for a detailed des
 
 ## Example file
 
-```ini
+```editorconfig
 root = true
 
 [*]
