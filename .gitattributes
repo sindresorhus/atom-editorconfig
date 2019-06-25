@@ -1,6 +1,7 @@
 * text=auto
 *.js text eol=lf
 *.iss linguist-language=text
+eol-cr/*.txt eol=cr
 /.github/ export-ignore
 /yarn.lock export-ignore
 /*.gif export-ignore

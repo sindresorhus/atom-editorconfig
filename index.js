@@ -166,30 +166,50 @@ function initializeTextBuffer(buffer) {
 					this.updateBOM();
 				}
 
-				if (settings.trim_trailing_whitespace === true) {
-					buffer.backwardsScan(/[ \t]+$/gm, params => {
-						if (params.match[0].length > 0) {
-							params.replace('');
-						}
-					});
-				}
+				if (settings.end_of_line === '\r') {
+					let text = buffer.getText().replace(/\n/g, '\r');
 
-				if (settings.insert_final_newline !== 'unset') {
-					const lastRow = buffer.getLineCount() - 1;
+					// NB: Atom doesn't handle CR endings well when scanning/counting lines.
+					// So we handle whitespace trimming the messier and less efficient way.
+					if (settings.trim_trailing_whitespace === true) {
+						text = text.replace(/[ \t]+$/gm, '');
+					}
 
-					if (buffer.isRowBlank(lastRow)) {
-						let stripStart = buffer.previousNonBlankRow(lastRow);
+					if (settings.insert_final_newline !== 'unset') {
+						text = text.replace(/(?:\r[ \t]*)+$/, '');
 
 						if (settings.insert_final_newline === true) {
-							stripStart += 1;
+							text += '\r';
 						}
+					}
 
-						// Strip empty lines from the end
-						if (stripStart < lastRow) {
-							buffer.deleteRows(stripStart + 1, lastRow);
+					buffer.setText(text);
+				} else {
+					if (settings.trim_trailing_whitespace === true) {
+						buffer.backwardsScan(/[ \t]+$/gm, params => {
+							if (params.match[0].length > 0) {
+								params.replace('');
+							}
+						});
+					}
+
+					if (settings.insert_final_newline !== 'unset') {
+						const lastRow = buffer.getLineCount() - 1;
+
+						if (buffer.isRowBlank(lastRow)) {
+							let stripStart = buffer.previousNonBlankRow(lastRow);
+
+							if (settings.insert_final_newline === true) {
+								stripStart += 1;
+							}
+
+							// Strip empty lines from the end
+							if (stripStart < lastRow) {
+								buffer.deleteRows(stripStart + 1, lastRow);
+							}
+						} else if (settings.insert_final_newline === true) {
+							buffer.append('\n');
 						}
-					} else if (settings.insert_final_newline === true) {
-						buffer.append('\n');
 					}
 				}
 			}
