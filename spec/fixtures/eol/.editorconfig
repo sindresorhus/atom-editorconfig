@@ -1,0 +1,13 @@
+root = true
+
+[*]
+insert_final_newline = unset
+
+[cr.*]
+end_of_line = cr
+
+[crlf.*]
+end_of_line = crlf
+
+[lf.*]
+end_of_line = lf

@@ -31,12 +31,14 @@
 		"pify": "^4.0.1"
 	},
 	"devDependencies": {
-		"atom-mocha": "^2.1.2",
-		"mocha-when": "^1.0.0",
+		"atom-mocha": "^2.2.0",
 		"xo": "^0.24.0"
 	},
 	"xo": {
 		"globals": [
+			"AtomMocha",
+			"Chai",
+			"after",
 			"afterEach",
 			"atom",
 			"attachToDOM",
@@ -53,6 +55,7 @@
 		],
 		"rules": {
 			"import/prefer-default-export": "off",
+			"max-nested-callbacks": "off",
 			"camelcase": [
 				"error",
 				{
@@ -67,7 +70,11 @@
 					]
 				}
 			]
-		}
+		},
+		"overrides": [{
+			"files": ["spec/*.js"],
+			"rules": {"no-unused-expressions": "off"}
+		}]
 	},
 	"consumedServices": {
 		"status-bar": {

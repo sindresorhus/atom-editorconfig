@@ -1,0 +1,16 @@
+root = true
+
+[ascii.*]
+charset = latin1
+
+[utf8.*]
+charset = utf-8
+
+[utf8bom.*]
+charset = utf-8-bom
+
+[utf16be.*]
+charset = utf-16be
+
+[utf16le.*]
+charset = utf-16le

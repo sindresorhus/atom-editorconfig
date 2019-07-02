@@ -7,11 +7,11 @@
 
 const fs = require('fs');
 const path = require('path');
-const {wait} = require('./utils.js');
 
 const projectRoot = path.join(__dirname, 'fixtures', 'iss85');
 const filePath = path.join(projectRoot, 'test.iss85');
 const ecfgPath = path.join(projectRoot, '.editorconfig');
+const {wait} = AtomMocha.utils;
 
 const getEcfgForTabWith = tabWidth => {
 	return `root = true\n[*.iss85]\ntab_width = ${tabWidth}\n`;

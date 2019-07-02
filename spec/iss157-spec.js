@@ -44,14 +44,12 @@ describe('Issue #157', () => {
 		textEditor.setText(snippetWithHardTabs);
 		ecfg.applySettings();
 
-		// eslint-disable-next-line no-unused-expressions
 		expect(textEditor.getSoftTabs()).not.to.be.ok;
 
 		atom.config.set('editor.softTabs', false, configOptions);
 		textEditor.setText(snippetWithSoftTabs);
 		ecfg.applySettings();
 
-		// eslint-disable-next-line no-unused-expressions
 		expect(textEditor.getSoftTabs()).to.be.ok;
 	});
 });

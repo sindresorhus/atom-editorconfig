@@ -18,7 +18,6 @@ describe('Issue #178', () => {
 
 		when('updating the status-bar icon', () => {
 			it('doesn\'t throw an exception', () => {
-				// eslint-disable-next-line max-nested-callbacks
 				expect(() => updateIcon('warning')).not.to.throw();
 			});
 		});

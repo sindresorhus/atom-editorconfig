@@ -1,0 +1,23 @@
+/* POSIX */
+.syntax--lf::before{
+	content: "\\n";
+	outline: 1px solid;
+	background: rgba(0, 255, 0, 0.25);
+	color: #0f0;
+}
+
+/* Windows */
+.syntax--crlf::before{
+	content: "\\r\\n";
+	outline: 1px solid;
+	background: rgba(255, 255, 0, 0.25);
+	color: #ff0;
+}
+
+/* Ancient Mac */
+.syntax--cr::before{
+	content: "\\r";
+	outline: 1px solid;
+	background: rgba(255, 0, 0, 0.25);
+	color: #f00;
+}

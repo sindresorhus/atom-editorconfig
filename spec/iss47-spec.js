@@ -6,7 +6,9 @@
 */
 
 const {init: generateConfig} = require('../commands/generate');
-const {log, poll} = require('./utils.js');
+
+const {poll} = AtomMocha.utils;
+const {log} = require('./utils.js');
 
 describe('Issue #47', () => {
 	when('opening the keymap', () => {
@@ -18,7 +20,6 @@ describe('Issue #47', () => {
 					'application:open-your-keymap'
 				);
 				log(atom.textEditors.editors.size);
-				// eslint-disable-next-line max-nested-callbacks
 				await poll(() => {
 					log(atom.textEditors.editors.size);
 					return atom.workspace.getTextEditors().length > 0;

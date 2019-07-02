@@ -25,6 +25,7 @@ function initializeTextBuffer(buffer) {
 			buffer, // Preserving a reference to the parent `TextBuffer`
 			disposables: new (atm.CompositeDisposable)(),
 			lastEncoding: buffer.getEncoding(),
+			originallyCRLF: buffer.lineEndingForRow(0) === '\r\n',
 			state: 'subtle',
 			settings: {
 				trim_trailing_whitespace: 'unset',
@@ -167,7 +168,13 @@ function initializeTextBuffer(buffer) {
 				}
 
 				if (settings.end_of_line === '\r') {
-					let text = buffer.getText().replace(/\n/g, '\r');
+					let text = buffer.getText();
+
+					if (this.originallyCRLF) {
+						text = text.replace(/\r\n/g, '\r');
+					}
+
+					text = text.replace(/\n/g, '\r');
 
 					// NB: Atom doesn't handle CR endings well when scanning/counting lines.
 					// So we handle whitespace trimming the messier and less efficient way.
@@ -185,6 +192,22 @@ function initializeTextBuffer(buffer) {
 
 					buffer.setText(text);
 				} else {
+					if (settings.end_of_line === '\r\n') {
+						buffer.backwardsScan(/([^\r]|^)\n|\r(?!\n)/g, params => {
+							const {match} = params;
+							if (match && match[0].length > 0) {
+								params.replace((match[1] || '') + '\r\n');
+							}
+						});
+					} else if (settings.end_of_line === '\n') {
+						buffer.backwardsScan(/\r\n|\r([^\n]|$)/g, params => {
+							const {match} = params;
+							if (match && match[0].length > 0) {
+								params.replace('\n' + ([match[1]] || ''));
+							}
+						});
+					}
+
 					if (settings.trim_trailing_whitespace === true) {
 						buffer.backwardsScan(/[ \t]+$/gm, params => {
 							if (params.match[0].length > 0) {

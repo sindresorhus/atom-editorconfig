@@ -1,4 +1,0 @@
-root = true
-
-[*.txt]
-end_of_line = cr
