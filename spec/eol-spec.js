@@ -14,6 +14,11 @@ const path = require('path');
 const {open, wait} = AtomMocha.utils;
 const fixturesDir = path.join(__dirname, 'fixtures', 'eol');
 
+const closeAll = async () => {
+	const editors = [...atom.textEditors.editors];
+	return Promise.all(editors.map(ed => ed.destroy()));
+};
+
 const rmtmp = () => {
 	for (let file of fs.readdirSync(fixturesDir)) {
 		file = path.join(fixturesDir, file);
@@ -34,9 +39,30 @@ const defaultText = [
 describe('EOL', () => {
 	let editor;
 
-	before('Activating package', async () => {
+	before('Activating packages', async () => {
 		attachToDOM(atom.views.getView(atom.workspace));
+		await atom.packages.activatePackage('line-ending-selector');
 		await atom.packages.activatePackage(path.join(__dirname, '..'));
+	});
+
+	before('Setting up fixtures', () => {
+		['unset', 'cr', 'crlf', 'lf'].forEach((target, index, names) => {
+			(names = names.slice(1)).forEach(source => {
+				const sourcePath = path.join(fixturesDir, `${source}.txt`);
+				const targetPath = path.join(fixturesDir, `${target}.${names.indexOf(source) + 1}.txt`);
+				fs.existsSync(targetPath) && fs.unlinkSync(targetPath);
+				fs.copyFileSync(sourcePath, targetPath);
+			});
+		});
+	});
+
+	after('Tearing down fixtures', () => {
+		fs.readdirSync(fixturesDir).forEach(name => {
+			if (/^(?:crlf|lf|cr|unset)\.\d\.txt(?:\.tmp)?$/i.test(name)) {
+				const fixture = path.join(fixturesDir, name);
+				fs.unlinkSync(fixture);
+			}
+		});
 	});
 
 	beforeEach(() => rmtmp());
@@ -53,7 +79,168 @@ describe('EOL', () => {
 		after('Deactivating debugging package', () => atom.packages.deactivatePackage(eolPath));
 	}
 
+	when('unset', () => {
+		before(() => closeAll());
+		beforeEach(() => atom.packages.deactivatePackage('line-ending-selector'));
+		afterEach(() => atom.packages.activatePackage('line-ending-selector'));
+
+		when('a file uses CR', () => {
+			before('Opening fixture', async () => {
+				editor = await open('fixtures/eol/unset.1.txt');
+				await wait(100);
+				editor.should.have.text(defaultText.join('\r'));
+			});
+
+			when('opened', () => {
+				it('doesn\'t modify the buffer', () => {
+					editor.should.be.an.editor;
+					editor.getEncoding().should.equal('utf8');
+					editor.buffer.editorconfig.settings.end_of_line.should.equal('unset');
+					editor.should.not.be.modified;
+					editor.should.have.text(defaultText.join('\r'));
+				});
+
+				it('doesn\'t update its preferred line-ending', () => {
+					expect(editor.buffer.getPreferredLineEnding()).not.to.exist;
+				});
+
+				it('flags it as not using CRLF', () => {
+					editor.buffer.editorconfig.should.have.property('originallyCRLF').that.equals(false);
+				});
+			});
+
+			when('typing a line-break', () => {
+				it('inserts the hard-coded default of LF', () => {
+					editor.should.have.text(defaultText.join('\r'));
+
+					for (let i = 0; i < 3; i++) {
+						atom.commands.dispatch(editor.element, 'core:move-right');
+					}
+
+					editor.insertNewline();
+					editor.should.have.text('1. \nFoo\r2. Bar\r3. Baz\r4. Qux\r');
+					editor.insertNewline();
+					editor.should.have.text('1. \n\nFoo\r2. Bar\r3. Baz\r4. Qux\r');
+				});
+			});
+
+			when('saved', () => {
+				it('performs no conversion', async () => {
+					const expected = '1. \n\nFoo\r2. Bar\r3. Baz\r4. Qux\r';
+					editor.should.have.text(expected);
+					await editor.save();
+					editor.should.have.text(expected);
+					await editor.save();
+					await editor.save();
+					editor.should.have.text(expected);
+				});
+			});
+		});
+
+		when('a file uses CRLF', () => {
+			before('Opening fixture', async () => {
+				editor = await open('fixtures/eol/unset.2.txt');
+				await wait(100);
+				editor.should.have.text(defaultText.join('\r\n'));
+			});
+
+			when('opened', () => {
+				it('doesn\'t modify the buffer', () => {
+					editor.should.be.an.editor;
+					editor.getEncoding().should.equal('utf8');
+					editor.buffer.editorconfig.settings.end_of_line.should.equal('unset');
+					editor.should.not.be.modified;
+					editor.should.have.text(defaultText.join('\r\n'));
+				});
+
+				it('doesn\'t update its preferred line-ending', () => {
+					expect(editor.buffer.getPreferredLineEnding()).not.to.exist;
+				});
+
+				it('flags it as using CRLF', () => {
+					editor.buffer.editorconfig.should.have.property('originallyCRLF').that.equals(true);
+				});
+			});
+
+			when('typing a line-break', () => {
+				it('inserts CRLF', () => {
+					editor.should.have.text(defaultText.join('\r\n'));
+					editor.getLastCursor().setBufferPosition([0, 3]);
+					editor.insertNewline();
+					editor.should.have.text('1. \r\nFoo\r\n2. Bar\r\n3. Baz\r\n4. Qux\r\n');
+					editor.insertNewline();
+					editor.should.have.text('1. \r\n\r\nFoo\r\n2. Bar\r\n3. Baz\r\n4. Qux\r\n');
+				});
+			});
+
+			when('saved', () => {
+				it('performs no conversion', async () => {
+					const expected = '1. \r\n \n \rFoo\r\n \n\r2. Bar\n3. Baz\r\n4. Qux\r\n';
+					editor.setText(expected);
+					editor.should.have.text(expected);
+					await editor.save();
+					editor.should.have.text(expected);
+					await editor.save();
+					await editor.save();
+					editor.should.have.text(expected);
+				});
+			});
+		});
+
+		when('a file uses LF', () => {
+			before('Opening fixture', async () => {
+				editor = await open('fixtures/eol/unset.3.txt');
+				await wait(100);
+				editor.should.have.text(defaultText.join('\n'));
+			});
+
+			when('opened', () => {
+				it('doesn\'t modify the buffer', () => {
+					editor.should.be.an.editor;
+					editor.getEncoding().should.equal('utf8');
+					editor.buffer.editorconfig.settings.end_of_line.should.equal('unset');
+					editor.should.not.be.modified;
+					editor.should.have.text(defaultText.join('\n'));
+				});
+
+				it('doesn\'t update its preferred line-ending', () => {
+					expect(editor.buffer.getPreferredLineEnding()).not.to.exist;
+				});
+
+				it('flags it as not using CRLF', () => {
+					editor.buffer.editorconfig.should.have.property('originallyCRLF').that.equals(false);
+				});
+			});
+
+			when('typing a line-break', () => {
+				it('inserts LF', () => {
+					editor.should.have.text(defaultText.join('\n'));
+					editor.getLastCursor().setBufferPosition([0, 3]);
+					editor.insertNewline();
+					editor.should.have.text('1. \nFoo\n2. Bar\n3. Baz\n4. Qux\n');
+					editor.insertNewline();
+					editor.should.have.text('1. \n\nFoo\n2. Bar\n3. Baz\n4. Qux\n');
+				});
+			});
+
+			when('saved', () => {
+				it('performs no conversion', async () => {
+					const expected = '1. \r\n \n \rFoo\r\n \n\r2. Bar\n3. Baz\r\n4. Qux\r\n';
+					editor.setText(expected);
+					editor.should.have.text(expected);
+					await editor.save();
+					editor.should.have.text(expected);
+					await editor.save();
+					await editor.save();
+					editor.should.have.text(expected);
+				});
+			});
+		});
+	});
+
 	when('configured to use CR', () => {
+		before(() => closeAll());
+
 		when('a file uses CR', () => {
 			before('Opening fixture', async () => {
 				editor = await open('fixtures/eol/cr.1.txt');
@@ -243,6 +430,8 @@ describe('EOL', () => {
 	});
 
 	when('configured to use CRLF', () => {
+		before(() => closeAll());
+
 		when('a file uses CR', () => {
 			before('Opening fixture', async () => {
 				editor = await open('fixtures/eol/crlf.1.txt');
@@ -420,6 +609,8 @@ describe('EOL', () => {
 	});
 
 	when('configured to use LF', () => {
+		before(() => closeAll());
+
 		when('a file uses CR', () => {
 			before('Opening fixture', async () => {
 				editor = await open('fixtures/eol/lf.1.txt');
