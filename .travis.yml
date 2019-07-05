@@ -1,26 +1,13 @@
-matrix:
-  include:
-    - os: linux
-      dist: trusty
-      sudo: required
-      language: cpp
-      env: ATOM_CHANNEL=stable APM_TEST_PACKAGES="" CHROME_DEVEL_SANDBOX=""
-    - os: linux
-      dist: trusty
-      sudo: required
-      language: cpp
-      env: ATOM_CHANNEL=beta APM_TEST_PACKAGES="" CHROME_DEVEL_SANDBOX=""
-    - os: osx
-      language: objective-c
-      env: ATOM_CHANNEL=stable APM_TEST_PACKAGES=""
-    - os: osx
-      language: objective-c
-      env: ATOM_CHANNEL=beta APM_TEST_PACKAGES=""
-addons:
-  apt:
-    packages:
-    - build-essential
-    - git
-    - libgnome-keyring-dev
-    - fakeroot
+branches:
+  only:
+    - master
+git:
+  depth: 10
+
+language: objective-c
+
+env:
+- ATOM_CHANNEL=stable
+- ATOM_CHANNEL=beta
+
 script: 'curl -s https://raw.githubusercontent.com/atom/ci/master/build-package.sh | sh && ./node_modules/.bin/xo'
