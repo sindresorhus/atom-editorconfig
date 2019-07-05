@@ -71,10 +71,16 @@
 				}
 			]
 		},
-		"overrides": [{
-			"files": ["spec/*.js"],
-			"rules": {"no-unused-expressions": "off"}
-		}]
+		"overrides": [
+			{
+				"files": [
+					"spec/*.js"
+				],
+				"rules": {
+					"no-unused-expressions": "off"
+				}
+			}
+		]
 	},
 	"consumedServices": {
 		"status-bar": {
