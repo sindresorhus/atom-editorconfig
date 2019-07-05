@@ -93,7 +93,7 @@ function initializeTextBuffer(buffer) {
 
 					// Ensure the wrap-guide is being intercepted
 					const bufferDom = atom.views.getView(editor);
-					const wrapGuide = bufferDom.querySelector('* /deep/ .wrap-guide');
+					const wrapGuide = bufferDom.querySelector('.wrap-guide');
 					if (wrapGuide !== null) {
 						if (wrapGuide.editorconfig === undefined) {
 							wrapGuide.editorconfig = this;
