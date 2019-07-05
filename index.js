@@ -1,15 +1,14 @@
 'use strict';
+const {CompositeDisposable, Disposable} = require('atom');
 const importLazy = require('import-lazy')(require);
-const generateConfig = require('./commands/generate');
-const showState = require('./commands/show');
-const fixFile = require('./commands/fix');
+const generateConfig = require('./commands/generate-config.js');
+const showState = require('./commands/show-state.js');
+const fixFile = require('./commands/fix-file.js');
 
-const atm = importLazy('atom');
 const editorconfig = importLazy('editorconfig');
-
-const checklist = importLazy('./lib/checklist');
-const wrapGuideInterceptor = importLazy('./lib/wrapguide-interceptor');
-const statusTile = importLazy('./lib/statustile-view');
+const checklist = importLazy('./lib/checklist.js');
+const wrapGuideInterceptor = importLazy('./lib/wrapguide-interceptor.js');
+const statusTile = importLazy('./lib/statustile-view.js');
 
 // Sets the state of the embedded editorconfig
 // This includes the severity (info, warning..) as well as the notification-messages for users
@@ -23,7 +22,7 @@ function initializeTextBuffer(buffer) {
 	if ('editorconfig' in buffer === false) {
 		buffer.editorconfig = {
 			buffer, // Preserving a reference to the parent `TextBuffer`
-			disposables: new (atm.CompositeDisposable)(),
+			disposables: new CompositeDisposable(),
 			lastEncoding: buffer.getEncoding(),
 			originallyCRLF: buffer.lineEndingForRow(0) === '\r\n',
 			state: 'subtle',
@@ -240,7 +239,9 @@ function initializeTextBuffer(buffer) {
 
 		buffer.editorconfig.disposables.add(
 			buffer.onWillSave(buffer.editorconfig.onWillSave.bind(buffer.editorconfig)),
-			buffer.onDidChangeEncoding(buffer.editorconfig.onDidChangeEncoding.bind(buffer.editorconfig))
+			buffer.onDidChangeEncoding(buffer.editorconfig.onDidChangeEncoding.bind(buffer.editorconfig)),
+			buffer.onDidDestroy(() => buffer.editorconfig.disposables.dispose()),
+			new Disposable(() => delete buffer.editorconfig)
 		);
 
 		if (buffer.getUri() && buffer.getUri().match(/[\\|/]\.editorconfig$/g) !== null) {
@@ -345,50 +346,66 @@ function observeActivePaneItem(editor) {
 	}
 }
 
-// Hook into the events to recognize the user opening new editors or changing the pane
-const activate = () => {
-	generateConfig();
-	showState();
-	fixFile();
-	atom.workspace.observeTextEditors(observeTextEditor);
-	atom.workspace.observeActivePaneItem(observeActivePaneItem);
-	reapplyEditorconfig();
+module.exports = {
+	disposables: null,
 
-	// #220: Fix spurious "thrashing" in open editors at startup
-	if (!atom.packages.hasActivatedInitialPackages()) {
-		const disposables = new (atm.CompositeDisposable)();
-		disposables.add(
-			atom.packages.onDidActivatePackage(pkg => {
-				if (pkg.name === 'whitespace' || pkg.name === 'wrap-guide') {
-					reapplyEditorconfig();
-				}
+	// Activate package and register commands and event listeners
+	activate() {
+		if (Disposable.isDisposable(this.disposables)) {
+			this.disposables.dispose();
+		}
+
+		this.disposables = new CompositeDisposable(
+			atom.commands.add('atom-workspace', {
+				'EditorConfig:fix-file': () => fixFile(),
+				'EditorConfig:fix-file-quietly': () => fixFile(false),
+				'EditorConfig:generate-config': () => generateConfig(),
+				'EditorConfig:show-state': () => showState()
 			}),
-			atom.packages.onDidActivateInitialPackages(() => {
-				disposables.dispose();
-				reapplyEditorconfig();
+			atom.workspace.observeTextEditors(observeTextEditor),
+			atom.workspace.observeActivePaneItem(observeActivePaneItem),
+			new Disposable(() => {
+				// Remove all embedded editorconfig-objects
+				const textEditors = atom.workspace.getTextEditors();
+				textEditors.forEach(ed => ed.getBuffer().editorconfig.disposables.dispose());
+
+				// Clean the status-bar up
+				statusTile.removeIcon();
 			})
 		);
+		reapplyEditorconfig();
+
+		// #220: Fix spurious "thrashing" in open editors at startup
+		if (!atom.packages.hasActivatedInitialPackages()) {
+			const disposables = new CompositeDisposable();
+			disposables.add(
+				atom.packages.onDidActivatePackage(pkg => {
+					if (pkg.name === 'whitespace' || pkg.name === 'wrap-guide') {
+						reapplyEditorconfig();
+					}
+				}),
+				atom.packages.onDidActivateInitialPackages(() => {
+					disposables.dispose();
+					reapplyEditorconfig();
+				})
+			);
+		}
+	},
+
+	deactivate() {
+		if (Disposable.isDisposable(this.disposables)) {
+			this.disposables.dispose();
+			this.disposables = null;
+		}
+	},
+
+	// Apply the statusbar icon-container. The icon will be applied if needed
+	consumeStatusBar(statusBar) {
+		if (statusTile.containerExists() === false) {
+			statusBar.addRightTile({
+				item: statusTile.createContainer(),
+				priority: 999
+			});
+		}
 	}
 };
-
-// Clean the status-icon up, remove all embedded editorconfig-objects
-const deactivate = () => {
-	const textEditors = atom.workspace.getTextEditors();
-	textEditors.forEach(editor => {
-		editor.getBuffer().editorconfig.disposables.dispose();
-	});
-	statusTile.removeIcon();
-};
-
-// Apply the statusbar icon-container
-// The icon will be applied if needed
-const consumeStatusBar = statusBar => {
-	if (statusTile.containerExists() === false) {
-		statusBar.addRightTile({
-			item: statusTile.createContainer(),
-			priority: 999
-		});
-	}
-};
-
-module.exports = {activate, deactivate, consumeStatusBar};

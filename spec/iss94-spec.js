@@ -6,7 +6,7 @@
 */
 
 const path = require('path');
-const {init: generateConfig} = require('../commands/generate');
+const generateConfig = require('../commands/generate-config.js');
 
 describe('Issue #94', () => {
 	when('the `whitespace` package has been disabled', () => {

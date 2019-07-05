@@ -6,7 +6,7 @@
 */
 
 const path = require('path');
-const {init: generateConfig} = require('../commands/generate');
+const generateConfig = require('../commands/generate-config.js');
 
 const {poll} = AtomMocha.utils;
 const {punch} = require('./utils.js');

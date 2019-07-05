@@ -1,6 +1,6 @@
 'use strict';
 
-const init = (displaySummary = true) => {
+module.exports = (displaySummary = true) => {
 	const editor = atom.workspace.getActiveTextEditor();
 	if (!editor) {
 		return;
@@ -113,12 +113,3 @@ No changes were applied.
 		});
 	}
 };
-
-const subscriber = () => {
-	atom.commands.add('atom-workspace', {
-		'EditorConfig:fix-file': () => init(),
-		'EditorConfig:fix-file-quietly': () => init(false)
-	});
-};
-
-module.exports = Object.assign(subscriber, {init});

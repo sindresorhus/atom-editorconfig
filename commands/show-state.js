@@ -42,7 +42,7 @@ A full description of all properties can be found on [editorconfig.org][1] or th
 	return output.replace(/`/g, '`');
 };
 
-const init = () => {
+module.exports = () => {
 	const textEditor = atom.workspace.getActiveTextEditor();
 	const ecfg = getConfigForEditor(textEditor);
 	if (ecfg) {
@@ -85,9 +85,3 @@ const init = () => {
 		popup.element.classList.add('aec-status-report');
 	}
 };
-
-const subscriber = () => {
-	atom.commands.add('atom-workspace', 'EditorConfig:show-state', init);
-};
-
-module.exports = Object.assign(subscriber, {init});

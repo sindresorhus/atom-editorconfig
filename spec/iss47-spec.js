@@ -5,7 +5,7 @@
 	https://github.com/sindresorhus/atom-editorconfig/issues/47
 */
 
-const {init: generateConfig} = require('../commands/generate');
+const generateConfig = require('../commands/generate-config.js');
 
 const {poll} = AtomMocha.utils;
 const {log} = require('./utils.js');

@@ -11,7 +11,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const {init: fixFile} = require('../commands/fix');
+const fixFile = require('../commands/fix-file.js');
 
 const testPrefix = path.basename(__filename).split('-').shift();
 const projectRoot = path.join(__dirname, 'fixtures', testPrefix);
@@ -53,7 +53,7 @@ I really
 \tnow
 `;
 
-describe('EditorConfig:FixFile', () => {
+describe('EditorConfig:fix-file', () => {
 	let textEditor;
 
 	beforeEach('Activating package', async () => {

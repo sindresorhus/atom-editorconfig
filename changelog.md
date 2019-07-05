@@ -9,6 +9,9 @@ This project honours [Semantic Versioning](http://semver.org/).
 [Staged]
 --------------------------------------------------------------------------------
 * Added support for `utf-8-bom` as a `charset` value
+* Fixed [`#208`][]: Commands and observers not disposed when package is disabled
+
+[`#208`]: https://github.com/sindresorhus/atom-editorconfig/issues/208
 
 
 

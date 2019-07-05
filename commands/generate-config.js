@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const pify = require('pify');
 
-const init = () => {
+module.exports = () => {
 	let basePath = '';
 
 	if (atom.project.getPaths().length > 0) {
@@ -67,9 +67,3 @@ trim_trailing_whitespace = false
 		}
 	});
 };
-
-const subscriber = () => {
-	atom.commands.add('atom-workspace', 'EditorConfig:generate-config', init);
-};
-
-module.exports = Object.assign(subscriber, {init});
