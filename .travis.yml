@@ -4,10 +4,25 @@ branches:
 git:
   depth: 10
 
-language: objective-c
+language: cpp
+
+matrix:
+  include:
+    - os: osx
+    - os: linux
+      dist: xenial
+
+addons:
+  apt:
+    packages:
+      - build-essential
+      - fakeroot
+      - git
+      - libgconf2-4
+      - libsecret-1-dev
 
 env:
 - ATOM_CHANNEL=stable
 - ATOM_CHANNEL=beta
 
-script: 'curl -s https://raw.githubusercontent.com/atom/ci/master/build-package.sh | sh && ./node_modules/.bin/xo'
+script: "curl -sL https://git.io/fji1w | sh"

@@ -15,7 +15,7 @@
 	},
 	"scripts": {
 		"lint": "npx xo",
-		"test": "apm test"
+		"test": "atom -t ./spec"
 	},
 	"keywords": [
 		"editorconfig",
