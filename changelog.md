@@ -3,11 +3,12 @@ Change Log
 
 This project honours [Semantic Versioning](http://semver.org/).
 
-[Staged]: ../../compare/v2.4.0...HEAD
+[Staged]: ../../compare/v2.5.0...HEAD
 
 
-[Staged]
+[v2.5.0]
 --------------------------------------------------------------------------------
+**July 11th, 2019**  
 * Added support for `utf-8-bom` as a `charset` value
 * Added support for `cr` line-endings in files configured to use them. Note that
   Atom *doesn't* support these natively — read about the caveats [here][cr-eol].
@@ -15,6 +16,7 @@ This project honours [Semantic Versioning](http://semver.org/).
 * Line-endings are now correctly normalised when entered or saved
 * Fixed [`#208`][]: Commands and observers not disposed when package is disabled
 
+[v2.5.0]: https://github.com/sindresorhus/atom-editorconfig/releases/tag/v2.5.0
 [`#208`]: https://github.com/sindresorhus/atom-editorconfig/issues/208
 [cr-eol]: https://github.com/sindresorhus/atom-editorconfig/#cr-caveat
 
