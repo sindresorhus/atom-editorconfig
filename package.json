@@ -27,8 +27,7 @@
 	"atomTestRunner": "atom-mocha",
 	"dependencies": {
 		"editorconfig": "^0.15.3",
-		"import-lazy": "^4.0.0",
-		"pify": "^4.0.1"
+		"mapped-disposable": "^1.0.3"
 	},
 	"devDependencies": {
 		"atom-mocha": "^2.2.0",

@@ -1,19 +1,28 @@
 'use strict';
 const {CompositeDisposable, Disposable} = require('atom');
-const importLazy = require('import-lazy')(require);
-const generateConfig = require('./commands/generate-config.js');
-const showState = require('./commands/show-state.js');
-const fixFile = require('./commands/fix-file.js');
 
-const editorconfig = importLazy('editorconfig');
-const checklist = importLazy('./lib/checklist.js');
-const wrapGuideInterceptor = importLazy('./lib/wrapguide-interceptor.js');
-const statusTile = importLazy('./lib/statustile-view.js');
+// Lazy-loaded modules
+let checklist;
+let editorconfig;
+let fixFile;
+let generateConfig;
+let showState;
+let statusTile;
+let wrapGuideInterceptor;
 
 // Sets the state of the embedded editorconfig
 // This includes the severity (info, warning..) as well as the notification-messages for users
 function setState(ecfg) {
+	if (!checklist) {
+		checklist = require('./lib/checklist.js');
+	}
+
 	checklist(ecfg);
+
+	if (!statusTile) {
+		statusTile = require('./lib/statustile-view.js');
+	}
+
 	statusTile.updateIcon(ecfg.state);
 }
 
@@ -96,6 +105,10 @@ function initializeTextBuffer(buffer) {
 					const wrapGuide = bufferDom.querySelector('.wrap-guide');
 					if (wrapGuide !== null) {
 						if (wrapGuide.editorconfig === undefined) {
+							if (!wrapGuideInterceptor) {
+								wrapGuideInterceptor = require('./lib/wrapguide-interceptor.js');
+							}
+
 							wrapGuide.editorconfig = this;
 							wrapGuide.getNativeGuideColumn = wrapGuide.getGuideColumn;
 							wrapGuide.getGuideColumn = wrapGuideInterceptor.getGuideColumn.bind(wrapGuide);
@@ -268,6 +281,10 @@ function observeTextEditor(editor) {
 		return;
 	}
 
+	if (!editorconfig) {
+		editorconfig = require('editorconfig');
+	}
+
 	editorconfig.parse(file).then(config => {
 		if (Object.keys(config).length === 0) {
 			return;
@@ -342,6 +359,10 @@ function observeActivePaneItem(editor) {
 			editor.buffer.editorconfig.applySettings();
 		}
 	} else {
+		if (!statusTile) {
+			statusTile = require('./lib/statustile-view.js');
+		}
+
 		statusTile.removeIcon();
 	}
 }
@@ -357,10 +378,34 @@ module.exports = {
 
 		this.disposables = new CompositeDisposable(
 			atom.commands.add('atom-workspace', {
-				'EditorConfig:fix-file': () => fixFile(),
-				'EditorConfig:fix-file-quietly': () => fixFile(false),
-				'EditorConfig:generate-config': () => generateConfig(),
-				'EditorConfig:show-state': () => showState()
+				'EditorConfig:fix-file': () => {
+					if (!fixFile) {
+						fixFile = require('./commands/fix-file.js');
+					}
+
+					return fixFile();
+				},
+				'EditorConfig:fix-file-quietly': () => {
+					if (!fixFile) {
+						fixFile = require('./commands/fix-file.js');
+					}
+
+					return fixFile(false);
+				},
+				'EditorConfig:generate-config': () => {
+					if (!generateConfig) {
+						generateConfig = require('./commands/generate-config.js');
+					}
+
+					return generateConfig();
+				},
+				'EditorConfig:show-state': () => {
+					if (!showState) {
+						showState = require('./commands/show-state.js');
+					}
+
+					return showState();
+				}
 			}),
 			atom.workspace.observeTextEditors(observeTextEditor),
 			atom.workspace.observeActivePaneItem(observeActivePaneItem),
@@ -368,6 +413,10 @@ module.exports = {
 				// Remove all embedded editorconfig-objects
 				const textEditors = atom.workspace.getTextEditors();
 				textEditors.forEach(ed => ed.getBuffer().editorconfig.disposables.dispose());
+
+				if (!statusTile) {
+					statusTile = require('./lib/statustile-view.js');
+				}
 
 				// Clean the status-bar up
 				statusTile.removeIcon();
@@ -401,6 +450,10 @@ module.exports = {
 
 	// Apply the statusbar icon-container. The icon will be applied if needed
 	consumeStatusBar(statusBar) {
+		if (!statusTile) {
+			statusTile = require('./lib/statustile-view.js');
+		}
+
 		if (statusTile.containerExists() === false) {
 			statusBar.addRightTile({
 				item: statusTile.createContainer(),

@@ -2,7 +2,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const pify = require('pify');
+const {promisify} = require('util');
 
 module.exports = () => {
 	let basePath = '';
@@ -55,7 +55,7 @@ insert_final_newline = ${ensureFinalNewline}
 trim_trailing_whitespace = false
 `;
 
-	pify(fs.writeFile)(configFile, ret, {flag: 'wx'}).then(() => {
+	promisify(fs.writeFile)(configFile, ret, {flag: 'wx'}).then(() => {
 		atom.notifications.addSuccess('.editorconfig file successfully generated', {
 			detail: 'An .editorconfig file was successfully generated in your project based on your current settings.'
 		});
