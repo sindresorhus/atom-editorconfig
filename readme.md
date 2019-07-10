@@ -52,7 +52,9 @@ See the EditorConfig [documentation](http://editorconfig.org) for a detailed des
 
 > :bulb: Any malformed or missing property falls back to `unset` which leaves the control to Atom.
 
+<a name="cr-caveat"></a>
 > :warning: Atom does not support CR line-endings. When `end_of_line` is set to `cr`, EditorConfig will respect the setting when saving files, but their contents will appear to be squashed onto a single line.
+
 
 ## EditorConfig commands
 

@@ -9,9 +9,14 @@ This project honours [Semantic Versioning](http://semver.org/).
 [Staged]
 --------------------------------------------------------------------------------
 * Added support for `utf-8-bom` as a `charset` value
+* Added support for `cr` line-endings in files configured to use them. Note that
+  Atom *doesn't* support these natively — read about the caveats [here][cr-eol].
+* Carriage returns without line-feeds are now stripped when saving LF/CRLF files
+* Line-endings are now correctly normalised when entered or saved
 * Fixed [`#208`][]: Commands and observers not disposed when package is disabled
 
 [`#208`]: https://github.com/sindresorhus/atom-editorconfig/issues/208
+[cr-eol]: https://github.com/sindresorhus/atom-editorconfig/#cr-caveat
 
 
 
