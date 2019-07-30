@@ -6,6 +6,12 @@ This project honours [Semantic Versioning](http://semver.org/).
 [Staged]: ../../compare/v2.5.0...HEAD
 
 
+[Staged]
+--------------------------------------------------------------------------------
+* Improved highlighting of non-standard EditorConfig rules
+
+
+
 [v2.5.0]
 --------------------------------------------------------------------------------
 **July 11th, 2019**  

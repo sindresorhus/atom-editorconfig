@@ -26,6 +26,12 @@ repository:
 		]
 
 
+	# Unquoted string, highlighted in custom rules
+	bareword:
+		name:  "string.unquoted.bareword.editorconfig"
+		match: "[^=#;\\s]+"
+
+
 	# Comment lines
 	comment:
 		patterns: [{
@@ -58,15 +64,15 @@ repository:
 		patterns: [{
 			# Boolean values
 			name:  "constant.language.boolean.${1:/downcase}.editorconfig"
-			match: "(?i)\\b(true|false|on|off|yes|no)\\b"
+			match: "(?i)(?<=\\s|=)(true|false|on|off|yes|no)(?=$|\\s)"
 		},{
 			# Character sets
 			name:  "constant.language.charset.encoding.${1:/downcase}.editorconfig"
-			match: "(?i)\\b(latin1|utf-8(?:-bom)?|utf-16[bl]e)\\b"
+			match: "(?i)(?<=\\s|=)(latin1|utf-8(?:-bom)?|utf-16[bl]e)(?=$|\\s)"
 		},{
 			# Anything else
 			name:  "constant.language.${1:/downcase}.editorconfig"
-			match: "(?i)\\b(CRLF|CR|LF|tab|space|unset)\\b"
+			match: "(?i)(?<=\\s|=)(CRLF|CR|LF|tab|space|unset)(?=$|\\s)"
 		}]
 
 
@@ -136,14 +142,39 @@ repository:
 				1: name: "keyword.other.definition.tab_width.editorconfig"
 				2: name: "invalid.illegal.confusable.editorconfig"
 		},{
-			# Anything else highlighted normally
-			name:  "meta.rule.${1:/downcase}.editorconfig"
-			begin: "^\\s*([A-Za-z0-9_]+)\\s*(=)"
-			end:   "$"
+			# Core properties, defined by EditorConfig spec. We match these
+			# separately to avoid highlighting barewords. See below.
+			name: "meta.rule.${1:/downcase}.editorconfig"
+			begin: """(?ix)
+				^ \\s*
+				( charset
+				| end_of_line
+				| indent_size
+				| indent_style
+				| insert_final_newline
+				| max_line_length
+				| root
+				| tab_width
+				| trim_trailing_whitespace
+				) \\s* (=)
+			"""
+			end: "$"
 			beginCaptures:
 				1: name: "keyword.other.definition.${1:/downcase}.editorconfig"
 				2: name: "punctuation.separator.key-value.editorconfig"
 			patterns: [include: "#value"]
+		},{
+			# Anything else: use "best guess" highlighting
+			name:  "meta.rule.custom.editorconfig"
+			begin: "^\\s*(?![\\[#;])([^\\s=]+)\\s*(=)"
+			end:   "$"
+			beginCaptures:
+				1: name: "keyword.other.definition.custom.editorconfig"
+				2: name: "punctuation.separator.key-value.editorconfig"
+			patterns: [
+				{include: "#value"}
+				{include: "#bareword"}
+			]
 		}]
 
 
