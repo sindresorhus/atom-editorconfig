@@ -1,0 +1,74 @@
+root=true
+# Happy path
+
+; No lint msg should be created when analyzing this file.
+
+# Check handling of comment with #
+; Check handling of comment with ;
+
+# Check unset for all supported declaration name
+[*.unset]
+indent_style=unset
+[*.unset]
+end_of_line=unset
+[*.unset]
+charset=unset
+[*.unset]
+insert_final_newline=unset
+[*.unset]
+trim_trailing_whitespace=unset
+[*.unset]
+indent_size=unset
+[*.unset]
+tab_width=unset
+[*.f]
+
+# Check every supported declaration name * all their possible value.
+
+[*.a]
+indent_style=tab
+[*.b]
+indent_style=space
+[*.c]
+end_of_line=lf
+[*.d]
+end_of_line=cr
+[*.e]
+end_of_line=crlf
+[*.f]
+charset=utf-8
+[*.g]
+insert_final_newline=true
+[*.h]
+insert_final_newline=false
+[*.i]
+trim_trailing_whitespace=true
+[*.j]
+trim_trailing_whitespace=false
+[*.k]
+indent_size=0
+[*.l]
+indent_size=1
+[*.m]
+indent_size=11
+[*.n]
+tab_width=0
+[*.o]
+tab_width=1
+[*.p]
+tab_width=11
+
+
+
+
+# Test spacing
+
+
+
+
+    [  *  .  spacing  ]
+
+
+
+
+	       	indent_style		  		 =       	 space

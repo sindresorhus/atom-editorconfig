@@ -9,6 +9,18 @@ let generateConfig;
 let showState;
 let statusTile;
 let wrapGuideInterceptor;
+let lint;
+
+lint = require('./lib/lint.js');
+
+function provideLinter() {
+	// Auto-magically called by the package linter, see package.json -> "providedServices.linter"
+	if (!lint) {
+		lint = require('./lib/lint.js');
+	}
+
+	return lint.provideLinter();
+}
 
 // Sets the state of the embedded editorconfig
 // This includes the severity (info, warning..) as well as the notification-messages for users
@@ -376,6 +388,8 @@ module.exports = {
 			this.disposables.dispose();
 		}
 
+		require('atom-package-deps').install('editorconfig');
+
 		this.disposables = new CompositeDisposable(
 			atom.commands.add('atom-workspace', {
 				'EditorConfig:fix-file': () => {
@@ -446,6 +460,14 @@ module.exports = {
 			this.disposables.dispose();
 			this.disposables = null;
 		}
+	},
+
+	provideLinter() {
+		if (!lint) {
+			lint = require('./lib/lint.js');
+		}
+
+		return lint.provideLinter();
 	},
 
 	// Apply the statusbar icon-container. The icon will be applied if needed
