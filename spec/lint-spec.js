@@ -9,6 +9,7 @@ const path = require('path');
 const projectRoot = path.join(__dirname, 'fixtures');
 
 const {provideLinter} = require('../lib/lint.js');
+
 const lintMethod = provideLinter().lint;
 
 describe('Lint related tests', () => {
