@@ -115,7 +115,12 @@ describe('Lint related tests', () => {
 			expect(result.length).to.equal(1);
 			expect(result[0].excerpt).to.equal('Declaration line must have only one equal symbol\'=\'');
 		});
-
+		it('correctly handle a value of tab for indent_size', async () => {
+			textEditor = await atom.workspace.open(path.join(projectRoot, 'lint', '.editorconfig'));
+			textEditor.setText('[*.abc]\nindent_size=tab\n');
+			const result = await lintMethod(textEditor);
+			expect(result.length).to.equal(0);
+		});
 		it('may fix some issue', async () => {
 			textEditor = await atom.workspace.open(path.join(projectRoot, 'lint', '.editorconfig'));
 			textEditor.setText('[*.abc\n');
