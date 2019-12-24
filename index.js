@@ -13,7 +13,7 @@ let lint;
 
 lint = require('./lib/lint.js');
 
-function provideLinter() {
+function provideLinter() { // eslint-disable-line no-unused-vars
 	// Auto-magically called by the package linter, see package.json -> "providedServices.linter"
 	if (!lint) {
 		lint = require('./lib/lint.js');
@@ -21,8 +21,6 @@ function provideLinter() {
 
 	return lint.provideLinter();
 }
-
-provideLinter(); // This call is useless but makes XO happy
 
 // Sets the state of the embedded editorconfig
 // This includes the severity (info, warning..) as well as the notification-messages for users
