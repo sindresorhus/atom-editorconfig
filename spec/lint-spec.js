@@ -96,19 +96,26 @@ describe('Lint related tests', () => {
 		});
 		it('may report lint messages with result.push #8', async () => {
 			textEditor = await atom.workspace.open(path.join(projectRoot, 'lint', '.editorconfig'));
+			textEditor.setText('[*.abc]\ncharset=\n');
+			const result = await lintMethod(textEditor);
+			expect(result.length).to.equal(1);
+			expect(result[0].excerpt).to.equal('Missing value');
+		});
+		it('may report lint messages with result.push #9', async () => {
+			textEditor = await atom.workspace.open(path.join(projectRoot, 'lint', '.editorconfig'));
 			textEditor.setText('[*]\nindent_size=a\n');
 			const result = await lintMethod(textEditor);
 			expect(result.length).to.equal(1);
 			expect(result[0].excerpt).to.equal('Invalid number.');
 		});
-		it('may report lint messages with result.push #9', async () => {
+		it('may report lint messages with result.push #10', async () => {
 			textEditor = await atom.workspace.open(path.join(projectRoot, 'lint', '.editorconfig'));
 			textEditor.setText('root=maybe\n');
 			const result = await lintMethod(textEditor);
 			expect(result.length).to.equal(1);
 			expect(result[0].excerpt).to.equal('Invalid value.');
 		});
-		it('may report lint messages with result.push #10', async () => {
+		it('may report lint messages with result.push #11', async () => {
 			textEditor = await atom.workspace.open(path.join(projectRoot, 'lint', '.editorconfig'));
 			textEditor.setText('root==true\n');
 			const result = await lintMethod(textEditor);
@@ -118,6 +125,12 @@ describe('Lint related tests', () => {
 		it('correctly handle a value of tab for indent_size', async () => {
 			textEditor = await atom.workspace.open(path.join(projectRoot, 'lint', '.editorconfig'));
 			textEditor.setText('[*.abc]\nindent_size=tab\n');
+			const result = await lintMethod(textEditor);
+			expect(result.length).to.equal(0);
+		});
+		it('correctly handle any value for charset', async () => {
+			textEditor = await atom.workspace.open(path.join(projectRoot, 'lint', '.editorconfig'));
+			textEditor.setText('[*.abc]\ncharset=def\n'); // The value of def is not a known charset
 			const result = await lintMethod(textEditor);
 			expect(result.length).to.equal(0);
 		});
