@@ -388,8 +388,6 @@ module.exports = {
 			this.disposables.dispose();
 		}
 
-		require('atom-package-deps').install('editorconfig');
-
 		this.disposables = new CompositeDisposable(
 			atom.commands.add('atom-workspace', {
 				'EditorConfig:fix-file': () => {
