@@ -66,10 +66,6 @@ repository:
 			name:  "constant.language.boolean.${1:/downcase}.editorconfig"
 			match: "(?i)(?<=\\s|=)(true|false|on|off|yes|no)(?=$|\\s)"
 		},{
-			# Character sets
-			name:  "constant.language.charset.encoding.${1:/downcase}.editorconfig"
-			match: "(?i)(?<=\\s|=)(latin1|utf-8(?:-bom)?|utf-16[bl]e)(?=$|\\s)"
-		},{
 			# Anything else
 			name:  "constant.language.${1:/downcase}.editorconfig"
 			match: "(?i)(?<=\\s|=)(CRLF|CR|LF|tab|space|unset)(?=$|\\s)"
@@ -147,8 +143,7 @@ repository:
 			name: "meta.rule.${1:/downcase}.editorconfig"
 			begin: """(?ix)
 				^ \\s*
-				( charset
-				| end_of_line
+				( end_of_line
 				| indent_size
 				| indent_style
 				| insert_final_newline
@@ -163,6 +158,18 @@ repository:
 				1: name: "keyword.other.definition.${1:/downcase}.editorconfig"
 				2: name: "punctuation.separator.key-value.editorconfig"
 			patterns: [include: "#value"]
+		},{
+			# Character sets
+			name: "meta.rule.charset.editorconfig"
+			begin: "^\\s*(charset)\\s*(=)"
+			end: "$"
+			beginCaptures:
+				1: name: "keyword.other.definition.${1:/downcase}.editorconfig"
+				2: name: "punctuation.separator.key-value.editorconfig"
+			patterns: [{
+				name:  "constant.language.charset.encoding.${1:/downcase}.editorconfig"
+				match: "(?i)(?<=\\s|=)([-\\w]+)(?=$|\\s)"
+			}, include: "#value"]
 		},{
 			# Anything else: use "best guess" highlighting
 			name:  "meta.rule.custom.editorconfig"

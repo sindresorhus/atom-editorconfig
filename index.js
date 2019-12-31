@@ -342,12 +342,22 @@ function observeTextEditor(editor) {
 		}
 
 		settings.charset = ('charset' in config) ?
-			config.charset.replace(/-/g, '').toLowerCase() :
+			config.charset.replace(/-|_/g, '').toLowerCase() :
 			'unset';
 
-		// #227: Allow `latin1` as an alias of ISO 8859-1.
-		if (String(settings.charset).toLowerCase().replace(/\W/g, '') === 'latin1') {
-			settings.charset = 'iso88591';
+		switch (String(settings.charset).toLowerCase().replace(/\W/g, '')) {
+			case 'latin1': {
+				// #227: Allow `latin1` as an alias of ISO 8859-1.
+				settings.charset = 'iso88591';
+				break;
+			}
+
+			case 'sjis': {
+				settings.charset = 'shiftjis';
+				break;
+			}
+
+			default:
 		}
 
 		ecfg.applySettings();

@@ -65,6 +65,39 @@ describe('Character encodings', () => {
 				});
 			});
 		});
+
+		when('charset is set to "gbk"', () => {
+			it('sets its encoding to "GBK"', async () => {
+				const editor = await open('fixtures/charset/gbk.txt');
+				editor.should.be.an.editor;
+				await wait(200);
+				editor.should.have.encoding('gbk').and.not.encoding('utf8');
+				editor.getText().should.equal('无标题文档');
+				editor.should.not.be.modified;
+			});
+		});
+
+		when('charset is set to "shift_jis"', () => {
+			it('sets its encoding to "shiftjis"', async () => {
+				const editor = await open('fixtures/charset/sjis.1.txt');
+				editor.should.be.an.editor;
+				await wait(200);
+				editor.should.have.encoding('shiftjis').and.not.encoding('shift_jis');
+				editor.getText().should.equal('ぁあぱひびぴふぶぷへべぺほぼぽまみ\n');
+				editor.should.not.be.modified;
+			});
+		});
+
+		when('charset is set to "sjis"', () => {
+			it('treats it as an alias for "shiftjis"', async () => {
+				const editor = await open('fixtures/charset/sjis.2.txt');
+				editor.should.be.an.editor;
+				await wait(200);
+				editor.should.have.encoding('shiftjis').and.not.encoding('sjis');
+				editor.getText().should.equal('￥　、。，．・：；？！゛゜´｀¨＾￣＿ヽヾゝゞ〃仝々〆〇ー―‐／\n');
+				editor.should.not.be.modified;
+			});
+		});
 	});
 
 	when('calling the internal setBOM() method', () => {

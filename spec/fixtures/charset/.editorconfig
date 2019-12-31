@@ -14,3 +14,12 @@ charset = utf-16be
 
 [utf16le.*]
 charset = utf-16le
+
+[gbk.*]
+charset = gbk
+
+[sjis.1.txt]
+charset = shift_jis
+
+[sjis.2.txt]
+charset = sjis
