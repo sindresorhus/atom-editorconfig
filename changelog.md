@@ -3,15 +3,17 @@ Change Log
 
 This project honours [Semantic Versioning](http://semver.org/).
 
-[Staged]: ../../compare/v2.5.0...HEAD
+[Staged]: ../../compare/v2.6.0...HEAD
 
 
-[Staged]
+[v2.6.0]
 --------------------------------------------------------------------------------
+**December 31st, 2019**  
 * Added [`linter`][] integration for `.editorconfig` files ([`#236`][])
 * Improved highlighting of non-standard EditorConfig rules
 * Improved support for encodings other than UTF-*/Latin-1
 
+[v2.6.0]:   https://github.com/sindresorhus/atom-editorconfig/releases/tag/v2.6.0
 [`#236`]:   https://github.com/sindresorhus/atom-editorconfig/pull/236
 [`linter`]: https://atom.io/packages/linter
 
