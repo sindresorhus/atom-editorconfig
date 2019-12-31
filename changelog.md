@@ -8,8 +8,12 @@ This project honours [Semantic Versioning](http://semver.org/).
 
 [Staged]
 --------------------------------------------------------------------------------
+* Added [`linter`][] integration for `.editorconfig` files ([`#236`][])
 * Improved highlighting of non-standard EditorConfig rules
-* Add linting feature of .editorconfig file
+
+[`#236`]:   https://github.com/sindresorhus/atom-editorconfig/pull/236
+[`linter`]: https://atom.io/packages/linter
+
 
 
 [v2.5.0]
