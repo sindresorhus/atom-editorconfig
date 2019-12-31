@@ -69,6 +69,7 @@ See the EditorConfig [documentation](http://editorconfig.org) for a detailed des
 - Applies the settings from your `.editorconfig` file
 - Ability to fix `indent_style` and `end_of_line` issues
 - Syntax highlights `.editorconfig` files (now with specification-like case insensitivity)
+- Lint `.editorconfig` file
 - Ability to generate an `.editorconfig` file based on the current settings
 - Displays a nifty :mouse: in the statusBar whose color shows you if EditorConfig faces any problems
 - Clicking on the :mouse: invokes the `Show State` command for you

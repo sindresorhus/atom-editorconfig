@@ -9,7 +9,7 @@ This project honours [Semantic Versioning](http://semver.org/).
 [Staged]
 --------------------------------------------------------------------------------
 * Improved highlighting of non-standard EditorConfig rules
-
+* Add linting feature of .editorconfig file
 
 
 [v2.5.0]

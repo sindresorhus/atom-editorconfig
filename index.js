@@ -9,6 +9,18 @@ let generateConfig;
 let showState;
 let statusTile;
 let wrapGuideInterceptor;
+let lint;
+
+lint = require('./lib/lint.js');
+
+function provideLinter() { // eslint-disable-line no-unused-vars
+	// Auto-magically called by the package linter, see package.json -> "providedServices.linter"
+	if (!lint) {
+		lint = require('./lib/lint.js');
+	}
+
+	return lint.provideLinter();
+}
 
 // Sets the state of the embedded editorconfig
 // This includes the severity (info, warning..) as well as the notification-messages for users
@@ -47,8 +59,8 @@ function initializeTextBuffer(buffer) {
 
 			// Get the current Editor for this.buffer
 			getCurrentEditor() {
-				return atom.workspace.getTextEditors().reduce((prev, curr) => {
-					return (curr.getBuffer() === this.buffer && curr) || prev;
+				return atom.workspace.getTextEditors().reduce((previous, current) => {
+					return (current.getBuffer() === this.buffer && current) || previous;
 				}, undefined);
 			},
 
@@ -89,16 +101,16 @@ function initializeTextBuffer(buffer) {
 					}
 
 					// Max_line_length-settings
-					const editorParams = {};
+					const editorParameters = {};
 					if (settings.max_line_length === 'unset') {
-						editorParams.preferredLineLength =
+						editorParameters.preferredLineLength =
 							atom.config.get('editor.preferredLineLength', configOptions);
 					} else {
-						editorParams.preferredLineLength = settings.max_line_length;
+						editorParameters.preferredLineLength = settings.max_line_length;
 					}
 
 					// Update the editor-properties
-					editor.update(editorParams);
+					editor.update(editorParameters);
 
 					// Ensure the wrap-guide is being intercepted
 					const bufferDom = atom.views.getView(editor);
@@ -120,7 +132,7 @@ function initializeTextBuffer(buffer) {
 							wrapGuide.updateGuide();
 						} else {
 							// NB: This won't work with multiple wrap-guides
-							const columnWidth = bufferDom.getDefaultCharacterWidth() * editorParams.preferredLineLength;
+							const columnWidth = bufferDom.getDefaultCharacterWidth() * editorParameters.preferredLineLength;
 							if (columnWidth > 0) {
 								wrapGuide.style.left = Math.round(columnWidth) + 'px';
 								wrapGuide.style.display = 'block';
@@ -205,25 +217,25 @@ function initializeTextBuffer(buffer) {
 					buffer.setText(text);
 				} else {
 					if (settings.end_of_line === '\r\n') {
-						buffer.backwardsScan(/([^\r]|^)\n|\r(?!\n)/g, params => {
-							const {match} = params;
+						buffer.backwardsScan(/([^\r]|^)\n|\r(?!\n)/g, parameters => {
+							const {match} = parameters;
 							if (match && match[0].length > 0) {
-								params.replace((match[1] || '') + '\r\n');
+								parameters.replace((match[1] || '') + '\r\n');
 							}
 						});
 					} else if (settings.end_of_line === '\n') {
-						buffer.backwardsScan(/\r\n|\r([^\n]|$)/g, params => {
-							const {match} = params;
+						buffer.backwardsScan(/\r\n|\r([^\n]|$)/g, parameters => {
+							const {match} = parameters;
 							if (match && match[0].length > 0) {
-								params.replace('\n' + ([match[1]] || ''));
+								parameters.replace('\n' + ([match[1]] || ''));
 							}
 						});
 					}
 
 					if (settings.trim_trailing_whitespace === true) {
-						buffer.backwardsScan(/[ \t]+$/gm, params => {
-							if (params.match[0].length > 0) {
-								params.replace('');
+						buffer.backwardsScan(/[ \t]+$/gm, parameters => {
+							if (parameters.match[0].length > 0) {
+								parameters.replace('');
 							}
 						});
 					}
@@ -428,8 +440,8 @@ module.exports = {
 		if (!atom.packages.hasActivatedInitialPackages()) {
 			const disposables = new CompositeDisposable();
 			disposables.add(
-				atom.packages.onDidActivatePackage(pkg => {
-					if (pkg.name === 'whitespace' || pkg.name === 'wrap-guide') {
+				atom.packages.onDidActivatePackage(currentPackage => {
+					if (currentPackage.name === 'whitespace' || currentPackage.name === 'wrap-guide') {
 						reapplyEditorconfig();
 					}
 				}),
@@ -446,6 +458,14 @@ module.exports = {
 			this.disposables.dispose();
 			this.disposables = null;
 		}
+	},
+
+	provideLinter() {
+		if (!lint) {
+			lint = require('./lib/lint.js');
+		}
+
+		return lint.provideLinter();
 	},
 
 	// Apply the statusbar icon-container. The icon will be applied if needed
