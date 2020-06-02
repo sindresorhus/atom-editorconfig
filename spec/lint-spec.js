@@ -128,6 +128,26 @@ describe('Lint related tests', () => {
 			expect(result.length).to.equal(1);
 			expect(result[0].excerpt).to.equal('Declaration line must have only one equal symbol\'=\'');
 		});
+		it('reports invalid `max_line_length` values', async () => {
+			textEditor = await atom.workspace.open(path.join(projectRoot, 'lint', '.editorconfig'));
+			textEditor.setText('[*]\nmax_line_length = Nah\n');
+			let result = await lintMethod(textEditor);
+			expect(result.length).to.equal(1);
+			expect(result[0].excerpt).to.equal('Invalid number.');
+			textEditor.setText('[*]\nmax_line_length = 80\n');
+			result = await lintMethod(textEditor);
+			expect(result.length).to.equal(0);
+		});
+		it('recognises `off` as a valid `max_line_length` value', async () => {
+			textEditor = await atom.workspace.open(path.join(projectRoot, 'lint', '.editorconfig'));
+			textEditor.setText('[*]\nmax_line_length=off\n');
+			let result = await lintMethod(textEditor);
+			expect(result.length).to.equal(0);
+			textEditor.setText('[*]\nmax_line_length=on\n');
+			result = await lintMethod(textEditor);
+			expect(result.length).to.equal(1);
+			expect(result[0].excerpt).to.equal('Invalid number.');
+		});
 		it('recognises `tab` as a valid `indent_size` value', async () => {
 			textEditor = await atom.workspace.open(path.join(projectRoot, 'lint', '.editorconfig'));
 			textEditor.setText('[*.abc]\nindent_size=tab\n');
