@@ -147,8 +147,8 @@ MIT © [Sindre Sorhus](https://sindresorhus.com)
 [contributors]: https://github.com/sindresorhus/atom-editorconfig/graphs/contributors
 
 <!-- Badges -->
-[TravisCI-badge]: https://travis-ci.org/sindresorhus/atom-editorconfig.svg?branch=master
-[TravisCI-link]:  https://travis-ci.org/sindresorhus/atom-editorconfig
+[TravisCI-badge]: https://travis-ci.com/sindresorhus/atom-editorconfig.svg?branch=master
+[TravisCI-link]:  https://travis-ci.com/sindresorhus/atom-editorconfig
 [AppVeyor-badge]: https://ci.appveyor.com/api/projects/status/h0bav8m09ld9vga2?svg=true
 [AppVeyor-link]:  https://ci.appveyor.com/project/Alhadis/atom-editorconfig
 [APM-badge]:      https://img.shields.io/apm/v/editorconfig.svg?colorB=brightgreen
