@@ -13,11 +13,8 @@ os:
   - osx
 
 env:
-  global:
-    - APM_TEST_PACKAGES: linter intentions linter-ui-default busy-signal
-  jobs:
-    - ATOM_CHANNEL: stable
-    - ATOM_CHANNEL: beta
+  - ATOM_CHANNEL: stable
+  - ATOM_CHANNEL: beta
 
 addons:
   apt:
@@ -28,4 +25,6 @@ addons:
       - libgconf2-4
       - libsecret-1-dev
 
-script: "curl -sL https://git.io/fji1w | sh"
+script:
+  - export APM_TEST_PACKAGES='linter intentions linter-ui-default busy-signal'
+  - "curl -sL https://git.io/fji1w | sh"
