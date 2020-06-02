@@ -43,6 +43,7 @@ describe('Issue #67', () => {
 						if (!atom.workspace.isTextEditor(editor)) {
 							continue;
 						}
+
 						editor.shouldPromptToSave = () => false;
 						editor.destroy();
 					}

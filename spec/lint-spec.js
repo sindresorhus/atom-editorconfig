@@ -12,10 +12,13 @@ const {provideLinter} = require('../lib/lint.js');
 
 const lintMethod = provideLinter().lint;
 
-before(async () => {
-	for (const pkgName of ['linter', 'intentions', 'linter-ui-default', 'busy-signal']) {
-		await atom.packages.activatePackage(pkgName);
-	}
+before(() => {
+	return Promise.all([
+		'linter',
+		'intentions',
+		'linter-ui-default',
+		'busy-signal'
+	].map(pkgName => atom.packages.activatePackage(pkgName)));
 });
 
 describe('Lint related tests', () => {
