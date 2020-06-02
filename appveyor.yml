@@ -14,8 +14,8 @@ clone_depth: 10
 skip_tags: true
 
 environment:
-  APM_TEST_PACKAGES:
-  ATOM_LINT_WITH_BUNDLED_NODE: "true"
+  APM_TEST_PACKAGES: linter intentions linter-ui-default busy-signal
+  ATOM_LINT_WITH_BUNDLED_NODE: true
 
   matrix:
     - ATOM_CHANNEL: stable

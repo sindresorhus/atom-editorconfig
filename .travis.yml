@@ -13,6 +13,7 @@ os:
   - osx
 
 env:
+  - APM_TEST_PACKAGES='linter intentions linter-ui-default busy-signal'
   - ATOM_CHANNEL=stable
   - ATOM_CHANNEL=beta
 

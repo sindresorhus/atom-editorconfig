@@ -12,6 +12,12 @@ const {provideLinter} = require('../lib/lint.js');
 
 const lintMethod = provideLinter().lint;
 
+before(async () => {
+	for (const pkgName of ['linter', 'intentions', 'linter-ui-default', 'busy-signal']) {
+		await atom.packages.activatePackage(pkgName);
+	}
+});
+
 describe('Lint related tests', () => {
 	when('linting a .editorconfig file', () => {
 		let textEditor = null;
@@ -21,13 +27,13 @@ describe('Lint related tests', () => {
 			await atom.packages.activatePackage(path.join(__dirname, '..'));
 		});
 
-		it('It can report some lint messages', async () => {
+		it('reports lint messages', async () => {
 			textEditor = await atom.workspace.open(path.join(projectRoot, 'lint', '.editorconfig'));
 			textEditor.setText('_');
 			const result = await lintMethod(textEditor);
 			expect(result.length).to.not.equal(0);
 		});
-		it('does not report lint messages on empty file', async () => {
+		it('does not report lint messages for empty files', async () => {
 			textEditor = await atom.workspace.open(path.join(projectRoot, 'lint', '.editorconfig'));
 			textEditor.setText('');
 			const result = await lintMethod(textEditor);
@@ -38,103 +44,103 @@ describe('Lint related tests', () => {
 			const result = await lintMethod(textEditor);
 			expect(result.length).to.equal(0);
 		});
-		it('may report lint messages with result.push #0', async () => {
-			textEditor = await atom.workspace.open(path.join(projectRoot, 'lint', '.editorconfig'));
-			textEditor.setText('[');
-			const result = await lintMethod(textEditor);
-			expect(result.length).to.equal(1);
-			expect(result[0].excerpt).to.equal('Header line must end with \'\u005D\'');
-		});
-		it('may report lint messages with result.push #1', async () => {
+		it('reports headers that don\'t start with "["', async () => {
 			textEditor = await atom.workspace.open(path.join(projectRoot, 'lint', '.editorconfig'));
 			textEditor.setText(']');
 			const result = await lintMethod(textEditor);
 			expect(result.length).to.equal(1);
 			expect(result[0].excerpt).to.equal('Header line must start with \'\u005B\'');
 		});
-		it('may report lint messages with result.push #2', async () => {
+		it('reports headers that don\'t end with "]"', async () => {
+			textEditor = await atom.workspace.open(path.join(projectRoot, 'lint', '.editorconfig'));
+			textEditor.setText('[');
+			const result = await lintMethod(textEditor);
+			expect(result.length).to.equal(1);
+			expect(result[0].excerpt).to.equal('Header line must end with \'\u005D\'');
+		});
+		it('reports duplicate entries', async () => {
 			textEditor = await atom.workspace.open(path.join(projectRoot, 'lint', '.editorconfig'));
 			textEditor.setText('root=true\nroot=true\n');
 			const result = await lintMethod(textEditor);
 			expect(result.length).to.equal(1);
 			expect(result[0].excerpt).to.equal('Duplicate entry');
 		});
-		it('may report lint messages with result.push #3', async () => {
+		it('reports declaration lines that don\'t contain "="', async () => {
 			textEditor = await atom.workspace.open(path.join(projectRoot, 'lint', '.editorconfig'));
 			textEditor.setText('root\n');
 			const result = await lintMethod(textEditor);
 			expect(result.length).to.equal(1);
 			expect(result[0].excerpt).to.equal('Declaration line must have an equal symbol\'=\'');
 		});
-		it('may report lint messages with result.push #4', async () => {
+		it('reports `root` lines that appear after a header', async () => {
 			textEditor = await atom.workspace.open(path.join(projectRoot, 'lint', '.editorconfig'));
 			textEditor.setText('[*]\nroot=true\n');
 			const result = await lintMethod(textEditor);
 			expect(result.length).to.equal(1);
-			expect(result[0].excerpt).to.equal('Declaration line \'root\' must be before all header line');
+			expect(result[0].excerpt).to.equal('Declaration line \'root\' must be before all header lines');
 		});
-		it('may report lint messages with result.push #5', async () => {
+		it('reports `root` values with trailing junk', async () => {
 			textEditor = await atom.workspace.open(path.join(projectRoot, 'lint', '.editorconfig'));
 			textEditor.setText('root=Nop\n');
 			const result = await lintMethod(textEditor);
 			expect(result.length).to.equal(1);
 			expect(result[0].excerpt).to.equal('Invalid value.');
 		});
-		it('may report lint messages with result.push #6', async () => {
+		it('reports preamble declaration that aren\'t `root`', async () => {
 			textEditor = await atom.workspace.open(path.join(projectRoot, 'lint', '.editorconfig'));
 			textEditor.setText('indent_style=unset\n');
 			const result = await lintMethod(textEditor);
 			expect(result.length).to.equal(1);
-			expect(result[0].excerpt).to.equal('Only \'root\' Declaration line can be present within the file preamble');
+			expect(result[0].excerpt).to.equal('Only \'root\' declarations can be present within the file preamble');
 		});
-		it('may report lint messages with result.push #7', async () => {
+		it('reports unrecognised declaration names', async () => {
 			textEditor = await atom.workspace.open(path.join(projectRoot, 'lint', '.editorconfig'));
 			textEditor.setText('[*]\nx=y\n');
 			const result = await lintMethod(textEditor);
 			expect(result.length).to.equal(1);
 			expect(result[0].excerpt).to.equal('Unrecognized declaration name');
 		});
-		it('may report lint messages with result.push #8', async () => {
+		it('reports missing values', async () => {
 			textEditor = await atom.workspace.open(path.join(projectRoot, 'lint', '.editorconfig'));
 			textEditor.setText('[*.abc]\ncharset=\n');
 			const result = await lintMethod(textEditor);
 			expect(result.length).to.equal(1);
 			expect(result[0].excerpt).to.equal('Missing value');
 		});
-		it('may report lint messages with result.push #9', async () => {
+		it('reports invalid numeric values', async () => {
 			textEditor = await atom.workspace.open(path.join(projectRoot, 'lint', '.editorconfig'));
 			textEditor.setText('[*]\nindent_size=a\n');
 			const result = await lintMethod(textEditor);
 			expect(result.length).to.equal(1);
 			expect(result[0].excerpt).to.equal('Invalid number.');
 		});
-		it('may report lint messages with result.push #10', async () => {
+		it('reports unrecognised values', async () => {
 			textEditor = await atom.workspace.open(path.join(projectRoot, 'lint', '.editorconfig'));
 			textEditor.setText('root=maybe\n');
 			const result = await lintMethod(textEditor);
 			expect(result.length).to.equal(1);
 			expect(result[0].excerpt).to.equal('Invalid value.');
 		});
-		it('may report lint messages with result.push #11', async () => {
+		it('reports duplicate `=` characters', async () => {
 			textEditor = await atom.workspace.open(path.join(projectRoot, 'lint', '.editorconfig'));
 			textEditor.setText('root==true\n');
 			const result = await lintMethod(textEditor);
 			expect(result.length).to.equal(1);
 			expect(result[0].excerpt).to.equal('Declaration line must have only one equal symbol\'=\'');
 		});
-		it('correctly handle a value of tab for indent_size', async () => {
+		it('recognises `tab` as a valid `indent_size` value', async () => {
 			textEditor = await atom.workspace.open(path.join(projectRoot, 'lint', '.editorconfig'));
 			textEditor.setText('[*.abc]\nindent_size=tab\n');
 			const result = await lintMethod(textEditor);
 			expect(result.length).to.equal(0);
 		});
-		it('correctly handle any value for charset', async () => {
+		it('allows any identifier for `charset` declarations', async () => {
 			textEditor = await atom.workspace.open(path.join(projectRoot, 'lint', '.editorconfig'));
 			textEditor.setText('[*.abc]\ncharset=def\n'); // The value of def is not a known charset
 			const result = await lintMethod(textEditor);
 			expect(result.length).to.equal(0);
 		});
-		it('may fix some issue', async () => {
+		it('can fix issues', async () => {
 			textEditor = await atom.workspace.open(path.join(projectRoot, 'lint', '.editorconfig'));
 			textEditor.setText('[*.abc\n');
 			let result = await lintMethod(textEditor);

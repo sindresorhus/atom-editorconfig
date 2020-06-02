@@ -40,6 +40,9 @@ describe('Issue #67', () => {
 			it('doesn\'t throw an exception', async () => {
 				if (typeof atom.workspace.getActivePaneItem() !== 'undefined') {
 					for (const editor of atom.workspace.getPaneItems()) {
+						if (!atom.workspace.isTextEditor(editor)) {
+							continue;
+						}
 						editor.shouldPromptToSave = () => false;
 						editor.destroy();
 					}
