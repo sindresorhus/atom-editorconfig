@@ -3,14 +3,16 @@ Change Log
 
 This project honours [Semantic Versioning](http://semver.org/).
 
-[Staged]: ../../compare/v2.6.0...HEAD
+[Staged]: ../../compare/v2.6.1...HEAD
 
 
-[Staged]
+[v2.6.1]
 --------------------------------------------------------------------------------
+**June 3rd, 2020**  
 * Fixed [`#244`][]: `max_line_length` not recognised by `linter` integration
 * Trailing newlines are no longer inserted when saving an empty buffer
 
+[v2.6.1]: https://github.com/sindresorhus/atom-editorconfig/releases/tag/v2.6.1
 [`#244`]: https://github.com/sindresorhus/atom-editorconfig/issues/244
 
 
