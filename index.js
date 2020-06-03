@@ -240,7 +240,7 @@ function initializeTextBuffer(buffer) {
 						});
 					}
 
-					if (settings.insert_final_newline !== 'unset') {
+					if (settings.insert_final_newline !== 'unset' && !buffer.isEmpty()) {
 						const lastRow = buffer.getLineCount() - 1;
 
 						if (buffer.isRowBlank(lastRow)) {
