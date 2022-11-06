@@ -6,6 +6,12 @@ This project honours [Semantic Versioning](http://semver.org/).
 [Staged]: ../../compare/v2.6.1...HEAD
 
 
+[Staged]
+--------------------------------------------------------------------------------
+* Raised the per-line tokenisation limit to accommodate editor-specific settings
+
+
+
 [v2.6.1]
 --------------------------------------------------------------------------------
 **June 3rd, 2020**  

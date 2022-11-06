@@ -2,6 +2,8 @@ name: "EditorConfig"
 scopeName: "source.editorconfig"
 fileTypes: ["editorconfig"]
 patterns: [include: "#main"]
+limitLineLength: no
+maxTokensPerLine: 1000
 firstLineMatch: """(?ix)
 
 	# Emacs modeline
