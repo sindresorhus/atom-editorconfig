@@ -28,10 +28,36 @@ repository:
 		]
 
 
+	# Field that quacks like an array
+	array:
+		begin: "(?:\\G|^)(?=\\s*[^#\\s,]+\\s*(?:,\\s*[^#\\s,]+)++\\s*$)"
+		end:   "(?=\\s*(?:$|#))"
+		patterns: [{
+			# Variant of “#bareword” rule that excludes commas
+			name: "string.unquoted.bareword.editorconfig"
+			match: "[^#\\s,]+"
+		}, include: "#comma"]
+
+
 	# Unquoted string, highlighted in custom rules
 	bareword:
 		name:  "string.unquoted.bareword.editorconfig"
 		match: "[^=#;\\s]+"
+
+
+	# Fallback rules used to highlight the values of unrecognised fields
+	bestGuess:
+		patterns: [
+			{include: "#value"}
+			{include: "#bareword"}
+			{include: "#comment"}
+		]
+
+
+	# Brace expansion delimiter
+	comma:
+		name: "punctuation.separator.delimiter.comma.editorconfig"
+		match: ","
 
 
 	# Comment lines
@@ -66,11 +92,11 @@ repository:
 		patterns: [{
 			# Boolean values
 			name:  "constant.language.boolean.${1:/downcase}.editorconfig"
-			match: "(?i)(?<=\\s|=)(true|false|on|off|yes|no)(?=$|\\s)"
+			match: "(?i)(?:\\G|^|(?<=\\s|=))(true|false|on|off|yes|no)(?=$|\\s)"
 		},{
 			# Anything else
 			name:  "constant.language.${1:/downcase}.editorconfig"
-			match: "(?i)(?<=\\s|=)(CRLF|CR|LF|tab|space|unset)(?=$|\\s)"
+			match: "(?i)(?:\\G|^|(?<=\\s|=))(CRLF|CR|LF|tab|space|unset)(?=$|\\s)"
 		}]
 
 
@@ -100,7 +126,7 @@ repository:
 		endCaptures:   0: name: "punctuation.definition.brace.bracket.curly.end.editorconfig"
 		patterns: [
 			{include: "#escape"}
-			{match: ",", name: "punctuation.separator.delimiter.comma.editorconfig"}
+			{include: "#comma"}
 			{include: "#pathRange"}
 			{include: "#pathSpec"}
 		]
@@ -173,6 +199,47 @@ repository:
 				match: "(?i)(?<=\\s|=)([-\\w]+)(?=$|\\s)"
 			}, include: "#value"]
 		},{
+			# IntelliJ-specific settings
+			# https://www.jetbrains.com/help/idea/editorconfig.html
+			name:  "meta.rule.vendor-specific.intellij.editorconfig"
+			begin: "(?i)^\\s*(ij_[^#\\s=]+)\\s*(=)"
+			end:   "(?=\\s*(?:$|#))"
+			beginCaptures:
+				1: name: "keyword.other.definition.vendor-specific.editorconfig"
+				2: name: "punctuation.separator.key-value.editorconfig"
+			patterns: [
+				{include: "#array"}
+				{include: "#value"}
+				{include: "#bareword"}
+			]
+		},{
+			# Microsoft: Visual Studio, C#, .NET, and other IDEs that smell like Windows
+			name:  "meta.rule.vendor-specific.microsoft.${2:/downcase}.editorconfig"
+			begin: '(?i)^\\s*((csharp|dotnet|java|vs|vscode|visual_studio)_[^\\s=]+)\\s*(=)'
+			end:   "$"
+			beginCaptures:
+				1: name: "keyword.other.definition.custom.editorconfig"
+				3: name: "punctuation.separator.key-value.editorconfig"
+			patterns: [{
+				# Qualified pathname with drive-letter: C:\…
+				name:  "string.unquoted.pathname.windows.editorconfig"
+				begin: "[A-Z]:\\\\(?=[^\\s:])"
+				end:   "(?=\\s*(?:$|:|#|;))"
+				patterns: [
+					{match: "\\\\"} # Don't highlight \ as an escape sequence
+					{include: "#pathSpec"}
+				]
+			},{
+				# Warning severity level
+				# https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/configuration-options#severity-level
+				name: "meta.severity-level.editorconfig"
+				match: "\\G\\s*(?:(true|false)(:))?(error|warning|suggestion|silent|none|default)(?=$|[\\s;#])"
+				captures:
+					1: patterns: [include: "#keywords"]
+					2: name: "punctuation.separator.warning.editorconfig"
+					3: name: "constant.language.severity-level.editorconfig"
+			}, include: "#bestGuess"]
+		},{
 			# Anything else: use "best guess" highlighting
 			name:  "meta.rule.custom.editorconfig"
 			begin: "^\\s*(?![\\[#;])([^\\s=]+)\\s*(=)"
@@ -180,10 +247,7 @@ repository:
 			beginCaptures:
 				1: name: "keyword.other.definition.custom.editorconfig"
 				2: name: "punctuation.separator.key-value.editorconfig"
-			patterns: [
-				{include: "#value"}
-				{include: "#bareword"}
-			]
+			patterns: [include: "#bestGuess"]
 		}]
 
 

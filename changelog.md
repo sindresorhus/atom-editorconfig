@@ -9,7 +9,7 @@ This project honours [Semantic Versioning](http://semver.org/).
 [Staged]
 --------------------------------------------------------------------------------
 * Raised the per-line tokenisation limit to accommodate editor-specific settings
-
+* Improved highlighting of array-like values assigned to non-standard fields
 
 
 [v2.6.1]
