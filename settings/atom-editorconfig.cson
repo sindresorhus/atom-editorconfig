@@ -1,3 +1,3 @@
-'.source.editorconfig':
-  'editor':
-    'commentStart': '# '
+".source.editorconfig":
+	editor:
+		commentStart: "# "
