@@ -10,6 +10,10 @@ This project honours [Semantic Versioning](http://semver.org/).
 --------------------------------------------------------------------------------
 * Raised the per-line tokenisation limit to accommodate editor-specific settings
 * Improved highlighting of array-like values assigned to non-standard fields
+* Fixed [`#253`][]: Suppress the highlighting of inline comments
+
+[`#253`]: https://github.com/sindresorhus/atom-editorconfig/issues/253
+
 
 
 [v2.6.1]
